@@ -5,12 +5,12 @@
 
 (function () {
   /* ── detect current page ── */
-  const path = location.pathname.split('/').pop() || 'landing_page.html';
+  const path = location.pathname.split('/').pop() || 'index.html';
 
   const pages = [
-    { href: 'landing_page.html', label: 'Home',          icon: 'fa-home' },
+    { href: 'index.html',        label: 'Home',          icon: 'fa-home' },
     { href: 'm360.html',         label: 'Virtual Tours', icon: 'fa-vr-cardboard' },
-    { href: 'index.html',        label: 'District Map',  icon: 'fa-map-marked-alt' },
+    { href: 'map.html',          label: 'District Map',  icon: 'fa-map-marked-alt' },
     { href: 'audguide.html',     label: 'Audio Guide',   icon: 'fa-headphones' },
     { href: 'audio.html',        label: 'Narration',     icon: 'fa-microphone' },
     { href: 'narrative.html',    label: 'Stories',       icon: 'fa-book-open' },
@@ -151,7 +151,7 @@
 
   /* ── build nav links HTML ── */
   const navItems = pages.map(p => {
-    const active = (p.href === path || (path === '' && p.href === 'landing_page.html')) ? 'active' : '';
+    const active = (p.href === path || (path === '' && p.href === 'index.html')) ? 'active' : '';
     return `<li class="nav-item">
       <a class="nav-link ${active}" href="${p.href}">
         <i class="fas ${p.icon}"></i>${p.label}
@@ -165,7 +165,7 @@
   navbar.className = 'navbar navbar-expand-lg';
   navbar.innerHTML = `
     <div class="container-fluid px-4">
-      <a class="navbar-brand" href="landing_page.html">
+      <a class="navbar-brand" href="index.html">
         <i class="fas fa-dharmachakra me-2" style="font-size:1.4rem;color:#d4af37;-webkit-text-fill-color:#d4af37;"></i>
         Monastery360
       </a>
@@ -189,8 +189,8 @@
   breadcrumb.innerHTML = `
     <div class="container-fluid px-4">
       <ol class="breadcrumb mb-0">
-        <li class="breadcrumb-item"><a href="landing_page.html"><i class="fas fa-home me-1"></i>Home</a></li>
-        ${path !== 'landing_page.html' ? `<li class="breadcrumb-item active">${bcLabel}</li>` : ''}
+        <li class="breadcrumb-item"><a href="index.html"><i class="fas fa-home me-1"></i>Home</a></li>
+        ${path !== 'index.html' ? `<li class="breadcrumb-item active">${bcLabel}</li>` : ''}
       </ol>
     </div>`;
 
@@ -222,7 +222,7 @@
           <div class="footer-heading">Explore</div>
           <ul class="list-unstyled footer-links">
             <li><a href="m360.html"><i class="fas fa-vr-cardboard me-1"></i>Virtual Tours</a></li>
-            <li><a href="index.html"><i class="fas fa-map me-1"></i>District Map</a></li>
+            <li><a href="map.html"><i class="fas fa-map me-1"></i>District Map</a></li>
             <li><a href="audguide.html"><i class="fas fa-headphones me-1"></i>Audio Guide</a></li>
             <li><a href="narrative.html"><i class="fas fa-book-open me-1"></i>Stories</a></li>
           </ul>
@@ -301,7 +301,7 @@
     document.body.insertBefore(navbar, document.body.firstChild);
 
     /* breadcrumb only on inner pages */
-    if (path !== 'landing_page.html') {
+    if (path !== 'index.html') {
       document.body.insertBefore(breadcrumb, navbar.nextSibling);
     }
 
