@@ -1,0 +1,140 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Sikkim — Clickable District Map</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Inter:wght@300;400;500&display=swap');
+  body { font-family:'Inter',system-ui,sans-serif; margin:0; padding:0; background:linear-gradient(135deg,#faf8f5,#f8f6f3,#fff); }
+  .page-hero { background:linear-gradient(135deg,#d4af37 0%,#8b7355 100%); color:#fff; padding:2.5rem 0 1.5rem; text-align:center; }
+  .page-hero h1 { font-family:'Playfair Display',serif; font-size:2rem; margin:0 0 .4rem; }
+  .page-hero p { opacity:.85; margin:0; font-size:.95rem; }
+  .map-wrapper { padding: 1.5rem 1rem 0; max-width:960px; margin:0 auto; }
+  h1 { text-align:center; margin-bottom:8px; }
+  #map { display:block; margin:0 auto; max-width:900px; border:1px solid #ddd; background:white; }
+  .district { stroke:#444; stroke-width:0.7px; cursor:pointer; transition:fill 150ms, transform 120ms; }
+  .district:hover { transform: translateY(-2px); filter:brightness(1.06); }
+  .tooltip {
+    position: absolute;
+    pointer-events: none;
+    background: rgba(0,0,0,0.8);
+    color: white;
+    padding:6px 8px;
+    border-radius:4px;
+    font-size:13px;
+    display:none;
+    z-index:10;
+  }
+  .legend { text-align:center; margin-top:10px; color:#444; font-size:14px; }
+  a.credits { color:#666; text-decoration:none; font-size:13px; display:block; text-align:center; margin-top:10px; }
+</style>
+  <script src="nav.js"></script>
+</head>
+<body>
+  <div class="page-hero">
+    <div class="container">
+      <h1><i class="fas fa-map me-2"></i>Sikkim District Map</h1>
+      <p>Click on any district to explore its monasteries and heritage</p>
+    </div>
+  </div>
+  <div class="map-wrapper">
+  <div id="map"></div>
+  </div><!-- /.map-wrapper -->
+  <div class="text-center py-2" style="color:#6b7280;font-size:.875rem;">Click any district to open its page.</div>
+  <div class="tooltip" id="tt"></div>
+
+  <!-- D3 (v7) -->
+  <script src="https://cdn.jsdelivr.net/npm/d3@7/dist/d3.min.js"></script>
+  <script>
+  (async function(){
+    // --- CONFIG ---
+    const GEOJSON_URL = "Sikkim.geojson"; // local file (next to this HTML)
+
+    const container = d3.select("#map");
+    const width = 900;
+    const height = 900;
+    const svg = container.append("svg").attr("viewBox", `0 0 ${width} ${height}`).attr("id","svgmap")
+      .style("width","100%").style("height","auto");
+
+    const tt = d3.select("#tt");
+
+    function slugify(s){
+      return s.toString().toLowerCase()
+        .replace(/\s+/g,'-')
+        .replace(/[^\w\-]+/g,'')
+        .replace(/\-\-+/g,'-')
+        .replace(/^-+|-+$/g,'');
+    }
+
+    let geojsonData = null;
+    try {
+      const resp = await fetch(GEOJSON_URL);
+      if(!resp.ok) throw new Error("GeoJSON not found");
+      geojsonData = await resp.json();
+    } catch (err) {
+      container.append("div")
+        .style("padding","16px")
+        .style("color","#b74141")
+        .style("font-size","14px")
+        .html("⚠️ Could not load Sikkim.geojson. Place it in the same folder as this HTML file.");
+      return;
+    }
+
+    const projection = d3.geoMercator().precision(0.1);
+    const pathGen = d3.geoPath().projection(projection);
+
+    try {
+      projection.fitExtent([[20,20],[width-20,height-20]], geojsonData);
+    } catch(e){ console.warn("fitExtent failed", e); }
+
+    const fills = ["#8dd3c7","#ffffb3","#bebada","#fb8072","#80b1d3","#fdb462","#b3de69","#fccde5"];
+
+    svg.append("g").attr("class","districts")
+      .selectAll("path")
+      .data(geojsonData.features)
+      .join("path")
+      .attr("d", d => pathGen(d) )
+      .attr("class","district")
+      .attr("fill", (d,i)=>fills[i % fills.length])
+      .on("mouseover", function(event,d){
+         d3.select(this).raise();
+         tt.style("display","block").text(getName(d));
+      })
+      .on("mousemove", function(event){
+         tt.style("left",(event.pageX + 12) + "px")
+           .style("top",(event.pageY + 12) + "px");
+      })
+      .on("mouseout", function(){
+         tt.style("display","none");
+      })
+      .on("click", function(event,d){
+         const name = getName(d);
+         const filename = slugify(name) + ".html";
+         window.location.href = filename;
+      });
+
+    svg.append("g").attr("class","labels")
+      .selectAll("text")
+      .data(geojsonData.features)
+      .join("text")
+      .attr("x", d => pathGen.centroid(d)[0])
+      .attr("y", d => pathGen.centroid(d)[1])
+      .text(d=>shortName(d))
+      .attr("font-size","10px")
+      .attr("text-anchor","middle")
+      .style("pointer-events","none")
+      .style("fill","#222")
+      .style("font-weight","600");
+
+    function getName(feature){
+      return feature?.properties?.district || "unknown";
+    }
+    function shortName(feature){
+      const n = getName(feature);
+      return n.length>18 ? (n.slice(0,15)+"...") : n;
+    }
+  })();
+  </script>
+</body>
+</html>
