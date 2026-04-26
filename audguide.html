@@ -1,0 +1,1099 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Smart Audio Guide - Sikkim Tourist Map with Location Tracking</title>
+
+  <!-- Leaflet CSS -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+
+  <style>
+    @import url("https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Inter:wght@300;400;500;600&display=swap");
+
+    :root {
+      --primary-gold: #d4af37;
+      --primary-dark: #8b7355;
+      --accent-burgundy: #722f37;
+      --soft-cream: #faf8f5;
+      --warm-white: #ffffff;
+      --text-dark: #2c2c2c;
+      --text-muted: #6b7280;
+      --shadow-soft: 0 4px 20px rgba(0, 0, 0, 0.08);
+      --shadow-hover: 0 8px 30px rgba(0, 0, 0, 0.12);
+      --gradient-primary: linear-gradient(135deg, var(--primary-gold) 0%, var(--primary-dark) 100%);
+      --gradient-accent: linear-gradient(135deg, var(--accent-burgundy) 0%, #8b4513 100%);
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      background: linear-gradient(135deg, var(--soft-cream) 0%, #f8f6f3 50%, var(--warm-white) 100%);
+      font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      line-height: 1.6;
+      color: var(--text-dark);
+      min-height: 100vh;
+      position: relative;
+      margin: 0;
+    }
+
+    body::before {
+      content: "";
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: radial-gradient(circle at 20% 80%, rgba(212, 175, 55, 0.1) 0%, transparent 50%),
+        radial-gradient(circle at 80% 20%, rgba(114, 47, 55, 0.08) 0%, transparent 50%);
+      pointer-events: none;
+      z-index: -1;
+    }
+
+    header {
+      background: linear-gradient(135deg, rgba(255, 255, 255, 0.95) 0%, rgba(250, 248, 245, 0.98) 100%) !important;
+      backdrop-filter: blur(20px) !important;
+      border-bottom: 1px solid rgba(212, 175, 55, 0.2) !important;
+      box-shadow: 0 2px 20px rgba(0, 0, 0, 0.05) !important;
+      position: relative;
+      top: 0 !important;
+      z-index: 100 !important;
+      padding: 2rem !important;
+      margin-bottom: 2rem !important;
+    }
+
+    header::before {
+      content: "" !important;
+      position: absolute;
+      bottom: 0 !important;
+      left: 0 !important;
+      right: 0 !important;
+      height: 2px !important;
+      background: linear-gradient(135deg, #d4af37 0%, #8b7355 100%) !important;
+    }
+
+    header h1 {
+      font-family: "Playfair Display", serif !important;
+      font-weight: 700 !important;
+      background: linear-gradient(135deg, #d4af37 0%, #8b7355 100%) !important;
+      -webkit-background-clip: text !important;
+      -webkit-text-fill-color: transparent !important;
+      background-clip: text !important;
+      text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1) !important;
+      letter-spacing: -0.02em !important;
+      margin-bottom: 1rem !important;
+      text-align: center;
+      font-size: 2.5rem;
+    }
+
+    header .lead,
+    header p {
+      font-weight: 400 !important;
+      color: #6b7280 !important;
+      font-style: italic !important;
+      letter-spacing: 0.5px !important;
+      margin-top: 0.5rem !important;
+      text-align: center;
+    }
+
+    .location-panel {
+      background: var(--warm-white);
+      border-radius: 16px;
+      box-shadow: var(--shadow-soft);
+      border: 1px solid rgba(212, 175, 55, 0.15);
+      padding: 1.5rem;
+      margin-bottom: 2rem;
+      position: relative;
+    }
+
+    .location-panel::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 4px;
+      background: var(--gradient-primary);
+      border-radius: 16px 16px 0 0;
+    }
+
+    .location-info {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 1rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .info-item {
+      background: rgba(212, 175, 55, 0.05);
+      padding: 1rem;
+      border-radius: 8px;
+      border-left: 3px solid var(--primary-gold);
+    }
+
+    .info-label {
+      font-weight: 600;
+      color: var(--accent-burgundy);
+      font-size: 0.9rem;
+      margin-bottom: 0.5rem;
+    }
+
+    .info-value {
+      color: var(--text-dark);
+      font-size: 0.95rem;
+    }
+
+    .tracking-controls {
+      display: flex;
+      gap: 1rem;
+      flex-wrap: wrap;
+    }
+
+    .control-btn {
+      background: var(--gradient-primary);
+      color: white;
+      border: none;
+      padding: 0.8rem 1.5rem;
+      border-radius: 8px;
+      cursor: pointer;
+      font-weight: 500;
+      transition: all 0.3s ease;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .control-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: var(--shadow-hover);
+    }
+
+    .search-container {
+      margin-bottom: 2rem;
+      position: relative;
+    }
+
+    .search-input {
+      width: 100%;
+      padding: 1rem 1rem 1rem 3rem;
+      border: 2px solid rgba(212, 175, 55, 0.2);
+      border-radius: 12px;
+      font-size: 1rem;
+      background: var(--warm-white);
+      transition: all 0.3s ease;
+    }
+
+    .search-input:focus {
+      outline: none;
+      border-color: var(--primary-gold);
+      box-shadow: 0 0 0 3px rgba(212, 175, 55, 0.1);
+    }
+
+    .search-icon {
+      position: absolute;
+      left: 1rem;
+      top: 50%;
+      transform: translateY(-50%);
+      color: var(--text-muted);
+      width: 20px;
+      height: 20px;
+    }
+
+    .container {
+      max-width: 1200px;
+      margin: 20px auto;
+      background: var(--warm-white);
+      border-radius: 20px;
+      box-shadow: var(--shadow-soft);
+      overflow: hidden;
+      position: relative;
+    }
+
+    .container::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 3px;
+      background: var(--gradient-primary);
+    }
+
+    #map {
+      height: 80vh;
+      width: 100%;
+      border-bottom: 2px solid rgba(212, 175, 55, 0.2);
+    }
+
+    .list-section {
+      padding: 2rem;
+      background: var(--warm-white);
+    }
+
+    h2 {
+      text-align: center;
+      margin-top: 0;
+      color: var(--text-dark);
+      font-family: "Playfair Display", serif;
+      font-weight: 600;
+      background: var(--gradient-primary);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      font-size: 2rem;
+      margin-bottom: 2rem;
+    }
+
+    .columns-container {
+      display: flex;
+      gap: 2rem;
+      margin-top: 2rem;
+    }
+
+    .column {
+      flex: 1;
+    }
+
+    .column h2 {
+      font-family: "Playfair Display", serif;
+      color: var(--accent-burgundy);
+      font-size: 1.5rem;
+      margin-bottom: 1rem;
+      padding-bottom: 0.5rem;
+      border-bottom: 2px solid var(--primary-gold);
+    }
+
+    .simple-list {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+
+    .simple-item {
+      background: var(--warm-white);
+      padding: 1.5rem;
+      border-radius: 12px;
+      box-shadow: var(--shadow-soft);
+      transition: all 0.3s ease;
+    }
+
+    .simple-item:hover {
+      box-shadow: var(--shadow-hover);
+      transform: translateY(-2px);
+    }
+
+    .simple-item h3 {
+      font-family: "Playfair Display", serif;
+      color: var(--accent-burgundy);
+      margin: 0 0 0.5rem 0;
+      font-size: 1.2rem;
+    }
+
+    .simple-description {
+      color: var(--text-muted);
+      margin: 0 0 1rem 0;
+      line-height: 1.5;
+    }
+
+    .distance-info {
+      color: var(--primary-dark);
+      font-weight: 500;
+      margin: 0 0 1rem 0;
+      font-size: 0.9rem;
+    }
+
+    .view-details-btn {
+      background: var(--gradient-primary);
+      color: white;
+      border: none;
+      padding: 0.75rem 1.5rem;
+      border-radius: 8px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      font-size: 0.9rem;
+    }
+
+    .view-details-btn:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 4px 15px rgba(212, 175, 55, 0.3);
+    }
+
+    .modal {
+      display: none;
+      position: fixed;
+      z-index: 1000;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.5);
+      backdrop-filter: blur(5px);
+    }
+
+    .modal-content {
+      background-color: var(--warm-white);
+      margin: 5% auto;
+      padding: 0;
+      border-radius: 16px;
+      width: 90%;
+      max-width: 600px;
+      max-height: 80vh;
+      overflow-y: auto;
+      box-shadow: var(--shadow-hover);
+      position: relative;
+    }
+
+    .modal-header {
+      padding: 2rem;
+      border-bottom: 1px solid rgba(212, 175, 55, 0.2);
+      background: var(--warm-white);
+      color: var(--text-dark) !important;
+      border-radius: 16px 16px 0 0;
+    }
+
+    /* Fixed modal header text visibility with explicit white colors and important declarations */
+    .modal-title {
+      font-family: "Playfair Display", serif !important;
+      font-size: 1.8rem !important;
+      margin: 0 0 0.5rem 0 !important;
+      color: var(--primary-gold) !important;
+      text-shadow: none !important;
+      font-weight: 600 !important;
+    }
+
+    .modal-subtitle {
+      opacity: 1 !important;
+      font-size: 1rem !important;
+      color: var(--primary-dark) !important;
+      text-shadow: none !important;
+      margin: 0 !important;
+      font-weight: 400 !important;
+    }
+
+    .modal-body {
+      padding: 2rem;
+    }
+
+    .modal-image {
+      width: 100%;
+      height: 200px;
+      object-fit: cover;
+      border-radius: 8px;
+      margin-bottom: 1.5rem;
+    }
+
+    .modal-details {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .detail-item {
+      background: rgba(212, 175, 55, 0.05);
+      padding: 1rem;
+      border-radius: 8px;
+      border-left: 3px solid var(--primary-gold);
+    }
+
+    .detail-label {
+      font-weight: 600;
+      color: var(--accent-burgundy);
+      font-size: 0.9rem;
+      margin-bottom: 0.5rem;
+    }
+
+    .detail-value {
+      color: var(--text-dark);
+      font-size: 0.95rem;
+    }
+
+    .transport-recommendation {
+      background: rgba(114, 47, 55, 0.05);
+      border: 1px solid rgba(114, 47, 55, 0.2);
+      border-radius: 8px;
+      padding: 1rem;
+      margin-top: 1rem;
+    }
+
+    .transport-title {
+      font-weight: 600;
+      color: var(--accent-burgundy);
+      margin-bottom: 0.5rem;
+    }
+
+    .close {
+      color: var(--text-dark) !important;
+      float: right;
+      font-size: 28px;
+      font-weight: bold;
+      cursor: pointer;
+      line-height: 1;
+      text-shadow: none !important;
+    }
+
+    .close:hover {
+      opacity: 0.7;
+    }
+
+    /* Added highlight style for narration */
+    .highlight {
+      background-color: yellow;
+      border-radius: 3px;
+      padding: 2px;
+    }
+
+    /* Added narrate button styling */
+    .narrate-btn {
+      background: var(--gradient-primary);
+      color: var(--warm-white);
+      border: none;
+      padding: 0.75rem 1.5rem;
+      border-radius: 8px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      margin-top: 1rem;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-size: 0.9rem;
+    }
+
+    .narrate-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: var(--shadow-hover);
+    }
+
+    .narrate-btn:active {
+      transform: translateY(0);
+    }
+
+    @media (max-width: 768px) {
+      header h1 {
+        font-size: 2rem !important;
+      }
+
+      .container {
+        margin: 10px;
+        border-radius: 16px;
+      }
+
+      .list-section {
+        padding: 1.5rem;
+      }
+
+      .columns-container {
+        flex-direction: column;
+        gap: 1.5rem;
+      }
+
+      h2 {
+        font-size: 1.5rem;
+      }
+
+      .location-info {
+        grid-template-columns: 1fr;
+      }
+
+      .tracking-controls {
+        justify-content: center;
+      }
+
+      .modal-content {
+        width: 95%;
+        margin: 2% auto;
+      }
+
+      .modal-header {
+        padding: 1.5rem;
+      }
+
+      .modal-body {
+        padding: 1.5rem;
+      }
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    ::-webkit-scrollbar {
+      width: 8px;
+    }
+
+    ::-webkit-scrollbar-track {
+      background: var(--soft-cream);
+    }
+
+    ::-webkit-scrollbar-thumb {
+      background: var(--gradient-primary);
+      border-radius: 4px;
+    }
+
+    ::-webkit-scrollbar-thumb:hover {
+      background: var(--gradient-accent);
+    }
+
+    .popup-img {
+      width: 100%;
+      max-width: 200px;
+      height: auto;
+      border-radius: 4px;
+      margin-top: 8px;
+    }
+
+    .user-location-marker {
+      background: #ff4444;
+      border: 3px solid white;
+      border-radius: 50%;
+      width: 20px;
+      height: 20px;
+      box-shadow: 0 2px 10px rgba(255, 68, 68, 0.5);
+    }
+  </style>
+  <script src="nav.js"></script>
+</head>
+
+<body>
+
+  <header>
+    <div class="container-fluid">
+      <div class="row align-items-center">
+        <div class="col">
+          <h1>Smart Audio Guide</h1>
+          <p class="lead">Interactive Sikkim Tourist Map with Location Tracking</p>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <div class="container">
+    <div class="location-panel">
+      <h3 style="margin-top: 0; color: var(--accent-burgundy); font-family: 'Playfair Display', serif;">Your Location
+      </h3>
+
+      <div class="location-info">
+        <div class="info-item">
+          <div class="info-label">Latitude</div>
+          <div class="info-value" id="latitude">Not available</div>
+        </div>
+        <div class="info-item">
+          <div class="info-label">Longitude</div>
+          <div class="info-value" id="longitude">Not available</div>
+        </div>
+        <div class="info-item">
+          <div class="info-label">Address</div>
+          <div class="info-value" id="address">Not available</div>
+        </div>
+        <div class="info-item">
+          <div class="info-label">Accuracy</div>
+          <div class="info-value" id="accuracy">Not available</div>
+        </div>
+        <div class="info-item">
+          <div class="info-label">Timestamp</div>
+          <div class="info-value" id="timestamp">Not available</div>
+        </div>
+      </div>
+
+      <div class="tracking-controls">
+        <button class="control-btn" onclick="startTracking()">
+          <svg width="16" height="16" fill="currentColor" viewBox="0 0 20 20">
+            <path fill-rule="evenodd"
+              d="M5.05 4.05a7 7 0 119.9 9.9L10 18.9l-4.95-4.95a7 7 0 010-9.9zM10 11a2 2 0 100-4 2 2 0 000 4z"
+              clip-rule="evenodd" />
+          </svg>
+          Start Location Tracking
+        </button>
+      </div>
+    </div>
+
+    <!-- Map Box -->
+    <div id="map"></div>
+
+    <!-- Restructured to show two columns: Tourist Spots and Monasteries -->
+    <div class="list-section">
+      <div class="search-container">
+        <svg class="search-icon" fill="currentColor" viewBox="0 0 20 20">
+          <path fill-rule="evenodd"
+            d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z"
+            clip-rule="evenodd" />
+        </svg>
+        <input type="text" class="search-input" id="searchInput" placeholder="Search tourist spots and monasteries...">
+      </div>
+
+      <div class="columns-container">
+        <div class="column">
+          <h2>Tourist Spots</h2>
+          <div class="simple-list" id="touristSpotsList"></div>
+        </div>
+        <div class="column">
+          <h2>Monasteries</h2>
+          <div class="simple-list" id="monasteriesList"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal for detailed view -->
+  <div id="detailModal" class="modal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <span class="close">&times;</span>
+        <h2 class="modal-title" id="modalTitle"></h2>
+        <p class="modal-subtitle" id="modalSubtitle"></p>
+      </div>
+      <div class="modal-body">
+        <img class="modal-image" id="modalImage" alt="">
+        <p id="modalDescription"></p>
+        <!-- Added narrate button for description -->
+        <button class="narrate-btn" onclick="narrate('modalDescription')">
+          🎧 Narrate Description
+        </button>
+        <div class="modal-details" id="modalDetails"></div>
+        <!-- Added narrate button for details -->
+        <button class="narrate-btn" onclick="narrate('modalDetails')">
+          🎧 Narrate Details
+        </button>
+        <!-- <div class="transport-recommendation" id="transportRecommendation"></div> -->
+      </div>
+    </div>
+  </div>
+
+  <!-- Leaflet JS -->
+  <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+
+  <script>
+    var map = L.map('map').setView([27.533, 88.512], 10);
+
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+      minZoom: 8,
+      maxZoom: 15,
+      attribution: '© <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors'
+    }).addTo(map);
+
+    var sikkimBounds = L.latLngBounds(
+      L.latLng(26.7, 88.0),  // Southwest corner
+      L.latLng(28.2, 89.0)   // Northeast corner
+    );
+    map.setMaxBounds(sikkimBounds);
+    map.on('drag', function () {
+      map.panInsideBounds(sikkimBounds, { animate: false });
+    });
+
+    let watchId;
+    let userLocation = null;
+    let userMarker = null;
+
+    function getAddress(lat, lon) {
+      const url = `https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lon}&zoom=18&addressdetails=1`;
+
+      fetch(url)
+        .then(response => response.json())
+        .then(data => {
+          const address = data.display_name || 'Address not found';
+          document.getElementById('address').textContent = address;
+        })
+        .catch(error => {
+          console.error('Error fetching address:', error);
+          document.getElementById('address').textContent = 'Error fetching address';
+        });
+    }
+
+    function startTracking() {
+      if (navigator.geolocation) {
+        watchId = navigator.geolocation.watchPosition(
+          function (position) {
+            const lat = position.coords.latitude;
+            const lon = position.coords.longitude;
+            const accuracy = position.coords.accuracy;
+            const timestamp = new Date(position.timestamp).toLocaleString();
+
+            userLocation = { lat, lon };
+
+            document.getElementById('latitude').textContent = lat.toFixed(6);
+            document.getElementById('longitude').textContent = lon.toFixed(6);
+            document.getElementById('accuracy').textContent = accuracy.toFixed(0) + ' meters';
+            document.getElementById('timestamp').textContent = timestamp;
+
+            getAddress(lat, lon);
+
+            if (userMarker) {
+              map.removeLayer(userMarker);
+            }
+
+            var userIcon = L.divIcon({
+              className: 'user-location-marker',
+              html: '<div style="background: #ff4444; border: 3px solid white; border-radius: 50%; width: 20px; height: 20px; box-shadow: 0 2px 10px rgba(255,68,68,0.5);"></div>',
+              iconSize: [20, 20],
+              iconAnchor: [10, 10]
+            });
+
+            userMarker = L.marker([lat, lon], { icon: userIcon })
+              .addTo(map)
+              .bindPopup('<b>Your Location</b><br>Accuracy: ' + accuracy.toFixed(0) + ' meters');
+
+            updateDistances();
+          },
+          function (error) {
+            console.error('Geolocation error:', error);
+            alert('Error getting location: ' + error.message);
+          },
+          {
+            enableHighAccuracy: true,
+            timeout: 10000,
+            maximumAge: 60000
+          }
+        );
+      } else {
+        alert('Geolocation is not supported by this browser.');
+      }
+    }
+
+    function calculateDistance(lat1, lon1, lat2, lon2) {
+      const R = 6371;
+      const dLat = (lat2 - lat1) * Math.PI / 180;
+      const dLon = (lon2 - lon1) * Math.PI / 180;
+      const a = Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+        Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) *
+        Math.sin(dLon / 2) * Math.sin(dLon / 2);
+      const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+      return R * c;
+    }
+
+    function getTransportRecommendation(distance) {
+      if (distance < 2) {
+        return { mode: 'Walking', icon: '🚶‍♂️', color: '#10b981' };
+      } else if (distance < 15) {
+        return { mode: 'Local Taxi/Bus', icon: '🚕', color: '#f59e0b' };
+      } else {
+        return { mode: 'Private Cab/Car', icon: '🚗', color: '#ef4444' };
+      }
+    }
+
+    function updateDistances() {
+      if (!userLocation) return;
+
+      spots.forEach(spot => {
+        const distance = calculateDistance(
+          userLocation.lat, userLocation.lon,
+          spot.latitude, spot.longitude
+        );
+        spot.distance = distance;
+      });
+
+      renderSimpleLists();
+    }
+
+    function renderSimpleLists() {
+      const touristSpots = spots.filter(spot => spot.type === 'Tourist Spot');
+      const monasteries = spots.filter(spot => spot.type === 'Monastery');
+
+      const touristSpotsHtml = touristSpots.map(spot => {
+        const distanceText = spot.distance ? `${spot.distance.toFixed(1)} km away` : '';
+        return `
+          <div class="simple-item">
+            <h3>${spot.name}</h3>
+            <p class="simple-description">${spot.description}</p>
+            ${distanceText ? `<p class="distance-info">${distanceText}</p>` : ''}
+            <button class="view-details-btn" onclick="showSpotDetails('${spot.name}')">View Details</button>
+          </div>
+        `;
+      }).join('');
+
+      const monasteriesHtml = monasteries.map(spot => {
+        const distanceText = spot.distance ? `${spot.distance.toFixed(1)} km away` : '';
+        return `
+          <div class="simple-item">
+            <h3>${spot.name}</h3>
+            <p class="simple-description">${spot.description}</p>
+            ${distanceText ? `<p class="distance-info">${distanceText}</p>` : ''}
+            <button class="view-details-btn" onclick="showSpotDetails('${spot.name}')">View Details</button>
+          </div>
+        `;
+      }).join('');
+
+      document.getElementById('touristSpotsList').innerHTML = touristSpotsHtml;
+      document.getElementById('monasteriesList').innerHTML = monasteriesHtml;
+    }
+
+    var spots = [
+      {
+        "name": "Gangtok",
+        "type": "Tourist Spot",
+        "latitude": 27.3389,
+        "longitude": 88.6065,
+        "description": "Gangtok: Capital of Sikkim, famous for vibrant culture, bustling MG Marg, and views of the Kanchenjunga range. Popular for shopping, local cuisine, and easy access to nearby attractions.",
+        "highlights": ["MG Marg pedestrian street", "Cable car ride", "Local markets"],
+        "best_time_to_visit": "March–May and October–December",
+        "recommended_transport": "Taxi or shared cab within town",
+        "image": "https://www.atithitourandtravel.com/wp-content/uploads/2018/07/Gangtok.jpg"
+      },
+      {
+        "name": "Tsomgo Lake",
+        "type": "Tourist Spot",
+        "latitude": 27.3743,
+        "longitude": 88.7638,
+        "description": "Tsomgo Lake: A glacial lake at 3,753 m altitude, known for its striking blue waters and changing colors through the seasons. Yak rides and prayer flags add to its charm.",
+        "highlights": ["Yak rides", "Seasonal wildflowers", "Scenic high-altitude lake"],
+        "best_time_to_visit": "April–May or October–December",
+        "recommended_transport": "Hired taxi or Sikkim Tourism permit vehicle",
+        "image": "https://upload.wikimedia.org/wikipedia/commons/b/b4/Tsongmo_Lake_or_Changu_Lake_-_East_Sikkim.jpg"
+      },
+      {
+        "name": "Nathula Pass",
+        "type": "Tourist Spot",
+        "latitude": 27.3826,
+        "longitude": 88.8306,
+        "description": "Nathula Pass: Historic Indo-China mountain pass at 4,310 m, part of the ancient Silk Route. Offers sweeping views of the snow-clad Himalayas and border trade posts.",
+        "highlights": ["Indo-China border view", "Snow-capped peaks", "Historic trade route"],
+        "best_time_to_visit": "May–October (when roads are open)",
+        "recommended_transport": "Permit vehicle or taxi from Gangtok",
+        "image": "https://media1.thrillophilia.com/filestore/wmv35tgt1clsyhq1i1eib7jywd76_shutterstock_1040258842.jpg?w=400&dpr=2"
+      },
+      {
+        "name": "Yumthang Valley",
+        "type": "Tourist Spot",
+        "latitude": 27.7484,
+        "longitude": 88.7196,
+        "description": "Yumthang Valley: Known as the Valley of Flowers, this high-altitude meadow is carpeted with rhododendrons in spring and offers hot springs and snow in winter.",
+        "highlights": ["Rhododendron blooms", "Hot springs", "Alpine meadows"],
+        "best_time_to_visit": "April–June for flowers, Sept–Nov for clear skies",
+        "recommended_transport": "Shared jeep or hired cab from Lachung",
+        "image": "https://dynamic-media-cdn.tripadvisor.com/media/photo-o/0b/12/96/88/photo0jpg.jpg?w=1200&h=1200&s=1"
+      },
+      {
+        "name": "Pelling",
+        "type": "Tourist Spot",
+        "latitude": 27.2997,
+        "longitude": 88.2416,
+        "description": "Pelling: Hill town famous for breathtaking sunrise views of Mount Kanchenjunga and nearby monasteries.",
+        "highlights": ["Skywalk at Chenrezig Statue", "Kanchenjunga waterfalls", "Rabdentse ruins"],
+        "best_time_to_visit": "March–June and September–December",
+        "recommended_transport": "Shared taxi or private cab from Gangtok or Siliguri",
+        "image": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRn4KOmTQZIKvJJao2hTmRmiBjse1ExkRrf1Q&s"
+      },
+      {
+        "name": "Ravangla",
+        "type": "Tourist Spot",
+        "latitude": 27.3092,
+        "longitude": 88.3648,
+        "description": "Ravangla: Serene hill station with panoramic views of the Himalayas and the famous Buddha Park with a 130-ft Shakyamuni statue.",
+        "highlights": ["Buddha Park", "Ralang Monastery nearby", "Tea gardens"],
+        "best_time_to_visit": "March–May and September–November",
+        "recommended_transport": "Shared jeep or private cab from Namchi or Gangtok",
+        "image": "https://www.esikkimtourism.in/wp-content/uploads/2019/04/ravnglmay.jpg"
+      },
+      {
+        "name": "Rumtek Monastery",
+        "type": "Monastery",
+        "latitude": 27.3193,
+        "longitude": 88.6169,
+        "description": "Rumtek Monastery: Largest and most significant monastery of the Kagyu sect in Sikkim, with stunning architecture and golden stupa.",
+        "highlights": ["Golden stupa", "Buddhist relics", "Panoramic views of Gangtok"],
+        "best_time_to_visit": "Year-round",
+        "recommended_transport": "Taxi from Gangtok (approx 24 km)",
+        "image": "https://upload.wikimedia.org/wikipedia/commons/e/e5/Vikramjit-Kakati-Rumtek.jpg"
+      },
+      {
+        "name": "Pemayangtse Monastery",
+        "type": "Monastery",
+        "latitude": 27.2996,
+        "longitude": 88.2375,
+        "description": "Pemayangtse Monastery: One of the oldest monasteries, near Pelling, known for its ancient sculptures and the annual Cham dance festival.",
+        "highlights": ["Ancient sculptures", "Cham dance festival", "Scenic backdrop of Kanchenjunga"],
+        "best_time_to_visit": "March–June and September–November",
+        "recommended_transport": "Taxi from Pelling",
+        "image": "https://s7ap1.scene7.com/is/image/incredibleindia/spiritual-spots-in-pelling-popular?qlt=82&ts=1726655959297"
+      },
+      {
+        "name": "Tashiding Monastery",
+        "type": "Monastery",
+        "latitude": 27.2618,
+        "longitude": 88.3120,
+        "description": "Tashiding Monastery: Sacred monastery perched atop a hill, famous for the Bhumchu festival and breathtaking views of rivers and mountains.",
+        "highlights": ["Bhumchu festival", "Sacred chortens", "Panoramic views"],
+        "best_time_to_visit": "February for Bhumchu festival or Oct–Dec",
+        "recommended_transport": "Shared cab or private taxi from Yuksom or Pelling",
+        "image": "https://adventuresindbad.com/wp-content/uploads/2019/04/LogoLicious_20190417_150121.png"
+      },
+      {
+        "name": "Enchey Monastery",
+        "type": "Monastery",
+        "latitude": 27.3380,
+        "longitude": 88.6160,
+        "description": "Enchey Monastery: Over 200-year-old monastery in Gangtok, believed to be blessed by the great tantric master Lama Druptob Karpo.",
+        "highlights": ["Mask dance festival", "Old murals", "Peaceful surroundings"],
+        "best_time_to_visit": "December–February for Chaam dance festival",
+        "recommended_transport": "Short taxi ride from central Gangtok",
+        "image": "https://live.staticflickr.com/389/19359749150_3d4facbc6d_b.jpg"
+      },
+      {
+        "name": "Ralang Monastery",
+        "type": "Monastery",
+        "latitude": 27.2511,
+        "longitude": 88.3463,
+        "description": "Ralang Monastery: Famous for its annual Kagyu dance festival and vibrant murals, showcasing Tibetan Buddhist art and culture.",
+        "highlights": ["Kagyu dance festival", "Colorful murals", "Peaceful ambience"],
+        "best_time_to_visit": "July–August for dance festival or Oct–Nov",
+        "recommended_transport": "Taxi from Ravangla (approx 6 km)",
+        "image": "https://1001things.org/wp-content/uploads/2019/09/Ralang12-1200x900.jpg"
+      },
+      {
+        "name": "Phodong Monastery",
+        "type": "Monastery",
+        "latitude": 27.4208,
+        "longitude": 88.6076,
+        "description": "Phodong Monastery: Important Kagyu monastery in North Sikkim, known for vibrant festivals and ancient frescoes.",
+        "highlights": ["Annual mask dance festival", "Ancient frescoes", "Picturesque location"],
+        "best_time_to_visit": "November–February",
+        "recommended_transport": "Taxi or shared cab from Mangan or Gangtok",
+        "image": "https://s7ap1.scene7.com/is/image/incredibleindia/phodong-monastery-gangtok-sikkim-gangtok-1-musthead-hero?qlt=82&ts=1742153343325"
+      }
+    ];
+
+    var monasteryIcon = L.icon({
+      iconUrl: 'https://cdn-icons-png.flaticon.com/512/5967/5967722.png',
+      iconSize: [28, 28],
+      iconAnchor: [14, 28],
+      popupAnchor: [0, -25]
+    });
+
+    var touristSpotIcon = L.icon({
+      iconUrl: 'https://static.thenounproject.com/png/3817730-200.png',
+      iconSize: [28, 28],
+      iconAnchor: [14, 28],
+      popupAnchor: [0, -25]
+    });
+
+    var allMarkers = [];
+
+    spots.forEach(function (spot) {
+      var icon;
+      var markerOptions = {};
+
+      if (spot.type === 'Monastery') {
+        icon = monasteryIcon;
+        markerOptions = { icon: monasteryIcon };
+      } else if (spot.type === 'Tourist Spot') {
+        icon = touristSpotIcon;
+        markerOptions = { icon: touristSpotIcon };
+      } else {
+        icon = L.Icon.Default.prototype;
+        markerOptions = {};
+      }
+
+      var marker = L.marker([spot.latitude, spot.longitude], markerOptions)
+        .addTo(map)
+        .bindPopup('<b>' + spot.name + '</b><br>' + spot.description + '<br><img src="' + spot.image + '" class="popup-img" alt="' + spot.name + '">');
+
+      allMarkers.push(marker);
+    });
+    renderSimpleLists();
+
+    // Modal close functionality
+    var modal = document.getElementById('detailModal');
+    var span = document.getElementsByClassName('close')[0];
+
+    span.onclick = function () {
+      modal.style.display = 'none';
+      speechSynthesis.cancel();
+    }
+
+    window.onclick = function (event) {
+      if (event.target == modal) {
+        modal.style.display = 'none';
+        speechSynthesis.cancel();
+      }
+    }
+
+    function showSpotDetails(name) {
+      var spot = spots.find(s => s.name === name);
+      var modal = document.getElementById('detailModal');
+
+      document.getElementById('modalTitle').textContent = spot.name;
+      document.getElementById('modalSubtitle').textContent = spot.type;
+      document.getElementById('modalImage').src = spot.image;
+      document.getElementById('modalDescription').textContent = spot.description;
+
+      var detailsContainer = document.getElementById('modalDetails');
+      var distance = userLocation ? calculateDistance(userLocation.lat, userLocation.lon, spot.latitude, spot.longitude) : null;
+
+      detailsContainer.innerHTML = `
+        
+        <div class="detail-item">
+          <div class="detail-label">Highlights</div>
+          <div class="detail-value">${spot.highlights}</div>
+        </div>
+
+        <div class="detail-item">
+          <div class="detail-label">Best time to visit</div>
+          <div class="detail-value">${spot.best_time_to_visit}</div>
+        </div>
+
+        <div class="detail-item">
+          <div class="detail-label">Recommended Transport</div>
+          <div class="detail-value">${spot.recommended_transport}</div>
+        </div>
+      `;
+
+      if (distance) {
+        detailsContainer.innerHTML += `
+          <div class="detail-item">
+            <div class="detail-label">Distance from You</div>
+            <div class="detail-value">${distance.toFixed(1)} km</div>
+          </div>
+        `;
+      }
+
+      modal.style.display = 'block';
+    }
+
+    document.getElementById('searchInput').addEventListener('input', function (e) {
+      var searchTerm = e.target.value.toLowerCase();
+      var cards = document.querySelectorAll('.simple-item');
+
+      cards.forEach(function (card) {
+        var spotName = card.querySelector('h3').textContent.toLowerCase();
+        var isVisible = spotName.includes(searchTerm);
+
+        card.style.display = isVisible ? 'block' : 'none';
+      });
+    });
+
+    function narrate(elementId) {
+      let element = document.getElementById(elementId);
+      let text = element.innerText;
+
+      // Split text into words
+      let words = text.split(" ");
+      element.innerHTML = words.map((w, i) => `<span id="word-${i}">${w}</span>`).join(" ");
+
+      // Detect current language (if Google Translate is being used)
+      let langSelect = document.querySelector("select.goog-te-combo");
+      let lang = langSelect ? langSelect.value : "en";
+
+      let utterance = new SpeechSynthesisUtterance(text);
+
+      // Match voices with language
+      if (lang === "hi") utterance.lang = "hi-IN";
+      else if (lang === "bn") utterance.lang = "bn-IN";
+      else if (lang === "ne") utterance.lang = "ne-NP";
+      else utterance.lang = "en-US";
+
+      let wordIndex = 0;
+
+      // Highlight words as narration goes
+      
+
+      speechSynthesis.cancel();
+      speechSynthesis.speak(utterance);
+    }
+  </script>
+</body>
+
+</html>

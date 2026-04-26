@@ -1,0 +1,1339 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cultural Calendar - Monastery360</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css" rel="stylesheet">
+    <style>
+        /* Enhanced Cultural Calendar Styles - Monastery360 */
+        @import url("https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Inter:wght@300;400;500;600&display=swap");
+
+        /* Root Variables */
+        :root {
+            --monastery-gold: #d4af37;
+            --monastery-burgundy: #8b1538;
+            --monastery-cream: #faf8f3;
+            --monastery-dark: #2c1810;
+            --monastery-sage: #9caf88;
+            --shadow-soft: 0 8px 32px rgba(139, 21, 56, 0.1);
+            --shadow-medium: 0 12px 48px rgba(139, 21, 56, 0.15);
+            --shadow-strong: 0 20px 64px rgba(139, 21, 56, 0.2);
+            --gradient-primary: linear-gradient(135deg, var(--monastery-burgundy) 0%, #a91d42 50%, var(--monastery-gold) 100%);
+            --gradient-secondary: linear-gradient(135deg, var(--monastery-cream) 0%, #f5f2eb 100%);
+            --gradient-accent: linear-gradient(135deg, var(--monastery-sage) 0%, #b8c5a6 100%);
+        }
+
+        /* Base Styles */
+        body {
+            background: var(--gradient-secondary);
+            font-family: "Inter", sans-serif;
+            color: var(--monastery-dark);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        /* Enhanced Header */
+        /* Universal Header Styling - Based on digarc.html */
+        /* Universal Header Styling - Based on digarc.html */
+        header {
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.95) 0%, rgba(250, 248, 245, 0.98) 100%) !important;
+            backdrop-filter: blur(20px) !important;
+            border-bottom: 1px solid rgba(212, 175, 55, 0.2) !important;
+            box-shadow: 0 2px 20px rgba(0, 0, 0, 0.05) !important;
+            position: relative;
+            top: 0 !important;
+            z-index: 100 !important;
+            padding: 2rem !important;
+            margin-bottom: 2rem !important;
+        }
+
+        header::before {
+            content: '' !important;
+            position: relative;
+            top: 0 !important;
+            left: 0 !important;
+            right: 0 !important;
+            height: 2px !important;
+            background: linear-gradient(135deg, #d4af37 0%, #8b7355 100%) !important;
+        }
+
+        header h1 {
+            font-family: "Playfair Display", serif !important;
+            font-weight: 700 !important;
+            background: linear-gradient(135deg, #d4af37 0%, #8b7355 100%) !important;
+            -webkit-background-clip: text !important;
+            -webkit-text-fill-color: transparent !important;
+            background-clip: text !important;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1) !important;
+            letter-spacing: -0.02em !important;
+            margin-bottom: 1rem !important;
+        }
+
+        header .lead,
+        header p {
+            font-weight: 400 !important;
+            color: #6b7280 !important;
+            font-style: italic !important;
+            letter-spacing: 0.5px !important;
+            margin-top: 0.5rem !important;
+        }
+
+        /* Enhanced Filter Card */
+        .filter-card,
+        .card {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(212, 175, 55, 0.2);
+            border-radius: 20px;
+            box-shadow: var(--shadow-soft);
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .card:hover {
+            transform: translateY(-8px);
+            box-shadow: var(--shadow-medium);
+            border-color: rgba(212, 175, 55, 0.4);
+        }
+
+        /* Form Controls */
+        .form-label {
+            font-weight: 600;
+            color: var(--monastery-burgundy);
+            font-size: 0.95rem;
+            margin-bottom: 0.75rem;
+        }
+
+        .form-select,
+        .form-control {
+            border: 2px solid rgba(212, 175, 55, 0.3);
+            border-radius: 12px;
+            padding: 0.75rem 1rem;
+            font-weight: 500;
+            background: rgba(255, 255, 255, 0.9);
+            transition: all 0.3s ease;
+        }
+
+        .form-select:focus,
+        .form-control:focus {
+            border-color: var(--monastery-gold);
+            box-shadow: 0 0 0 0.25rem rgba(212, 175, 55, 0.25);
+            background: white;
+            transform: translateY(-2px);
+        }
+
+        /* Enhanced Buttons */
+        .btn-primary {
+            background: var(--gradient-primary);
+            border: none;
+            border-radius: 12px;
+            padding: 0.75rem 2rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn-primary::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transition: left 0.5s;
+        }
+
+        .btn-primary:hover::before {
+            left: 100%;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(139, 21, 56, 0.3);
+        }
+
+        .btn-outline-primary {
+            border: 2px solid var(--monastery-gold);
+            color: var(--monastery-burgundy);
+            border-radius: 10px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .btn-outline-primary:hover {
+            background: var(--monastery-gold);
+            border-color: var(--monastery-gold);
+            color: white;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(212, 175, 55, 0.3);
+        }
+
+        /* Enhanced Calendar Wrapper */
+        .calendar-wrapper {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(20px);
+            border-radius: 24px;
+            box-shadow: var(--shadow-medium);
+            overflow: hidden;
+            margin-bottom: 3rem;
+            border: 1px solid rgba(212, 175, 55, 0.2);
+        }
+
+        /* Enhanced Calendar Header */
+        .calendar-header {
+            background: var(--gradient-primary);
+            color: white;
+            padding: 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: relative;
+        }
+
+        .calendar-header::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url("data:image/svg+xml,%3Csvg width='40' height='40' viewBox='0 0 40 40' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='%23ffffff' fill-opacity='0.05'%3E%3Cpath d='M20 20c0-5.5-4.5-10-10-10s-10 4.5-10 10 4.5 10 10 10 10-4.5 10-10zm0 0c0 5.5 4.5 10 10 10s10-4.5 10-10-4.5-10-10-10-10 4.5-10 10z'/%3E%3C/g%3E%3C/svg%3E") repeat;
+        }
+
+        .calendar-title {
+            font-family: "Playfair Display", serif;
+            font-weight: 600;
+            font-size: 2rem;
+            margin: 0;
+            position: relative;
+            z-index: 2;
+            text-shadow: 1px 2px 4px rgba(0, 0, 0, 0.2);
+        }
+
+        .calendar-nav {
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(10px);
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            color: white;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+            position: relative;
+            z-index: 2;
+        }
+
+        .calendar-nav:hover {
+            background: rgba(255, 255, 255, 0.25);
+            border-color: rgba(255, 255, 255, 0.5);
+            color: white;
+            transform: scale(1.1);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        /* Enhanced Calendar Grid */
+        .calendar-grid {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 2px;
+            background: linear-gradient(135deg, rgba(212, 175, 55, 0.1) 0%, rgba(156, 175, 136, 0.1) 100%);
+            padding: 2px;
+        }
+
+        .calendar-day-header {
+            background: var(--gradient-accent);
+            padding: 1.5rem 0.75rem;
+            text-align: center;
+            font-weight: 700;
+            color: white;
+            font-size: 1rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);
+        }
+
+        .calendar-day {
+            background: rgba(255, 255, 255, 0.95);
+            min-height: 100px;
+            padding: 1rem;
+            cursor: pointer;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: flex-start;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            border-radius: 8px;
+            margin: 1px;
+        }
+
+        .calendar-day:hover {
+            background: rgba(212, 175, 55, 0.1);
+            transform: scale(1.05);
+            box-shadow: 0 4px 15px rgba(212, 175, 55, 0.2);
+        }
+
+        .calendar-day.other-month {
+            background: rgba(248, 249, 250, 0.5);
+            color: #adb5bd;
+            cursor: default;
+        }
+
+        .calendar-day.other-month:hover {
+            background: rgba(248, 249, 250, 0.5);
+            transform: none;
+            box-shadow: none;
+        }
+
+        .calendar-day.today {
+            background: linear-gradient(135deg, rgba(212, 175, 55, 0.2) 0%, rgba(212, 175, 55, 0.1) 100%);
+            border: 2px solid var(--monastery-gold);
+            font-weight: 700;
+        }
+
+        .calendar-day.has-event {
+            background: linear-gradient(135deg, rgba(139, 21, 56, 0.1) 0%, rgba(212, 175, 55, 0.1) 100%);
+            border: 2px solid var(--monastery-burgundy);
+            position: relative;
+        }
+
+        .calendar-day.has-event::before {
+            content: "";
+            position: absolute;
+            top: 8px;
+            right: 8px;
+            width: 12px;
+            height: 12px;
+            background: var(--monastery-burgundy);
+            border-radius: 50%;
+            box-shadow: 0 2px 4px rgba(139, 21, 56, 0.3);
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0% {
+                transform: scale(1);
+                opacity: 1;
+            }
+
+            50% {
+                transform: scale(1.2);
+                opacity: 0.7;
+            }
+
+            100% {
+                transform: scale(1);
+                opacity: 1;
+            }
+        }
+
+        .calendar-day.has-event:hover {
+            background: linear-gradient(135deg, rgba(139, 21, 56, 0.15) 0%, rgba(212, 175, 55, 0.15) 100%);
+            transform: scale(1.08);
+            box-shadow: 0 8px 25px rgba(139, 21, 56, 0.2);
+        }
+
+        .calendar-day.selected {
+            background: var(--gradient-primary) !important;
+            color: white;
+            transform: scale(1.1);
+            box-shadow: 0 8px 30px rgba(139, 21, 56, 0.4);
+            z-index: 10;
+        }
+
+        .day-number {
+            font-weight: 700;
+            font-size: 1.2rem;
+            margin-bottom: 0.5rem;
+            font-family: "Playfair Display", serif;
+        }
+
+        .event-indicator {
+            width: 8px;
+            height: 8px;
+            background: var(--monastery-burgundy);
+            border-radius: 50%;
+            margin-top: auto;
+            box-shadow: 0 2px 4px rgba(139, 21, 56, 0.3);
+        }
+
+        .calendar-day.selected .event-indicator {
+            background: white;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+        }
+
+        /* Enhanced Event Cards */
+        .event-card {
+            height: 100%;
+            border: none;
+            border-left: 6px solid var(--monastery-burgundy);
+            border-radius: 20px;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(20px);
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .event-card::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: var(--gradient-primary);
+        }
+
+        .event-card:hover {
+            transform: translateY(-10px) scale(1.02);
+            box-shadow: var(--shadow-strong);
+            border-left-color: var(--monastery-gold);
+        }
+
+        .event-title {
+            color: var(--monastery-burgundy) !important;
+            font-family: "Playfair Display", serif;
+            font-weight: 600;
+            font-size: 1.4rem;
+            margin-bottom: 1rem;
+            line-height: 1.3;
+        }
+
+        .monastery-name {
+            color: var(--monastery-sage);
+            font-size: 1rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .monastery-name i {
+            color: var(--monastery-gold);
+            font-size: 1.1rem;
+        }
+
+        .event-date-time {
+            background: linear-gradient(135deg, rgba(212, 175, 55, 0.15) 0%, rgba(212, 175, 55, 0.05) 100%);
+            color: var(--monastery-burgundy);
+            padding: 0.75rem 1rem;
+            border-radius: 12px;
+            font-size: 0.95rem;
+            font-weight: 600;
+            display: inline-block;
+            margin-bottom: 1rem;
+            border: 1px solid rgba(212, 175, 55, 0.3);
+        }
+
+        .event-description {
+            color: var(--monastery-dark);
+            font-size: 1rem;
+            line-height: 1.7;
+            margin-bottom: 1.5rem;
+        }
+
+        /* Selected Date Header */
+        .selected-date-header {
+            border-bottom: 3px solid var(--monastery-gold);
+            padding-bottom: 1rem;
+            margin-bottom: 2rem;
+            position: relative;
+        }
+
+        .selected-date-header::after {
+            content: "";
+            position: absolute;
+            bottom: -3px;
+            left: 0;
+            width: 60px;
+            height: 3px;
+            background: var(--monastery-burgundy);
+            border-radius: 2px;
+        }
+
+        .selected-date-header h4 {
+            font-family: "Playfair Display", serif;
+            font-weight: 600;
+            color: var(--monastery-burgundy);
+            font-size: 2rem;
+        }
+
+        /* Ritual Schedule Card */
+        .ritual-schedule-card .card {
+            border-left: 6px solid var(--monastery-sage);
+            background: linear-gradient(135deg, rgba(156, 175, 136, 0.05) 0%, rgba(255, 255, 255, 0.95) 100%);
+        }
+
+        .ritual-timeline {
+            position: relative;
+        }
+
+        .ritual-timeline::before {
+            content: "";
+            position: absolute;
+            left: 35px;
+            top: 0;
+            bottom: 0;
+            width: 2px;
+            background: linear-gradient(to bottom, var(--monastery-sage), rgba(156, 175, 136, 0.3));
+        }
+
+        .ritual-timeline .bg-success {
+            background: var(--monastery-sage) !important;
+            border-radius: 8px !important;
+            font-weight: 600;
+            position: relative;
+            z-index: 2;
+        }
+
+        /* Loading and Error States */
+        .spinner-border {
+            color: var(--monastery-burgundy) !important;
+            width: 3rem;
+            height: 3rem;
+        }
+
+        #loadingMessage {
+            background: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            margin: 2rem;
+            padding: 3rem;
+            box-shadow: var(--shadow-soft);
+        }
+
+        .alert-danger {
+            background: linear-gradient(135deg, rgba(220, 53, 69, 0.1) 0%, rgba(255, 255, 255, 0.9) 100%);
+            border: 2px solid rgba(220, 53, 69, 0.3);
+            border-radius: 16px;
+            backdrop-filter: blur(10px);
+        }
+
+        /* Enhanced Animations */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .card {
+            animation: fadeInUp 0.6s ease-out;
+        }
+
+        .calendar-day {
+            animation: fadeInUp 0.4s ease-out;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            header h1 {
+                font-size: 2.5rem;
+            }
+
+            header .lead {
+                font-size: 1.1rem;
+            }
+
+            .calendar-title {
+                font-size: 1.5rem;
+            }
+
+            .calendar-nav {
+                width: 40px;
+                height: 40px;
+            }
+
+            .calendar-day {
+                min-height: 80px;
+                padding: 0.5rem;
+            }
+
+            .day-number {
+                font-size: 1rem;
+            }
+
+            .event-title {
+                font-size: 1.2rem;
+            }
+        }
+
+        @media (max-width: 576px) {
+            header {
+                padding: 2rem 1rem;
+            }
+
+            header h1 {
+                font-size: 2rem;
+            }
+
+            .calendar-day {
+                min-height: 60px;
+                padding: 0.25rem;
+            }
+
+            .calendar-title {
+                font-size: 1.2rem;
+            }
+        }
+
+        /* Accessibility Enhancements */
+        .calendar-day:focus {
+            outline: 3px solid var(--monastery-gold);
+            outline-offset: 2px;
+        }
+
+        .btn:focus {
+            box-shadow: 0 0 0 0.25rem rgba(212, 175, 55, 0.5);
+        }
+
+        /* Print Styles */
+        @media print {
+            header {
+                background: white !important;
+                color: black !important;
+            }
+
+            .card {
+                box-shadow: none !important;
+                border: 1px solid #ddd !important;
+            }
+
+            .calendar-day {
+                box-shadow: none !important;
+            }
+        }
+    </style>
+  <script src="nav.js"></script>
+</head>
+
+<body>
+    <div class="container-fluid">
+        <!-- header removed - nav.js provides navbar -->
+
+        <!-- Filter Bar -->
+        <div class="row justify-content-center mb-4">
+            <div class="col-lg-8">
+                <div class="card shadow-sm">
+                    <div class="card-body">
+                        <div class="row g-0">
+
+                            <div class="col-md-4 pe-2">
+                                <label for="eventFilter" class="form-label">Filter by Event</label>
+                                <select class="form-select" id="eventFilter">
+                                    <option value="">All Events</option>
+                                </select>
+                            </div>
+
+                            <div class="col-md-4 px-2">
+                                <label for="monasteryFilter" class="form-label">Filter by Monastery</label>
+                                <select class="form-select" id="monasteryFilter">
+                                    <option value="">All Monasteries</option>
+                                </select>
+                            </div>
+
+                            <div class="col-md-4 ps-2">
+                                <label class="form-label">&nbsp;</label>
+                                <button class="btn btn-primary btn-view-details w-100"
+                                    onclick="window.location.href='evbook.html'">
+                                    Book an event
+                                </button>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Calendar Container -->
+        <div class="container">
+            <div id="calendarContainer"></div>
+
+            <!-- Selected Date Events -->
+            <div id="selectedDateEvents" class="mt-4">
+                <div class="text-center text-muted py-4">
+                    <h5>Select a highlighted date to view festival details</h5>
+                    <p>Festival dates are highlighted in yellow on the calendar above.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Loading message -->
+        <div id="loadingMessage" class="text-center py-5">
+            <div class="spinner-border text-primary" role="status">
+                <span class="visually-hidden">Loading...</span>
+            </div>
+            <p class="mt-2 text-muted">Loading monastery events...</p>
+        </div>
+
+        <!-- Error message -->
+        <div id="errorMessage" class="alert alert-danger mx-3" style="display: none;">
+            <h5>Error Loading Events</h5>
+            <p>Unable to load the events data. Please check your connection and try again.</p>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        const eventsData = {
+            "events": [
+                {
+                    "id": 1,
+                    "event_name": "Pang Lhabsol Festival",
+                    "monastery": "Pemayangtse Monastery",
+                    "date": "2025-09-15",
+                    "time": "09:00 AM",
+                    "description": "A sacred festival dedicated to Mount Khangchendzonga, the guardian deity of Sikkim. This colorful celebration features traditional Cham dances, prayers, and offerings to ensure the protection and prosperity of the land."
+                },
+                {
+                    "id": 2,
+                    "event_name": "Losar (Tibetan New Year)",
+                    "monastery": "Rumtek Monastery",
+                    "date": "2026-02-10",
+                    "time": "08:00 AM",
+                    "description": "The Tibetan New Year celebrated with grand pujas, butter-lamp offerings, and traditional music and dance. Monks and devotees gather to welcome the new year with prayers for peace and prosperity."
+                },
+                {
+                    "id": 3,
+                    "event_name": "Saga Dawa",
+                    "monastery": "Tashiding Monastery",
+                    "date": "2026-05-23",
+                    "time": "10:00 AM",
+                    "description": "A holy day marking the birth, enlightenment, and parinirvana of Lord Buddha. Devotees light butter lamps and participate in prayers and processions around the monastery."
+                },
+                {
+                    "id": 4,
+                    "event_name": "Bhumchu Festival",
+                    "monastery": "Tashiding Monastery",
+                    "date": "2026-03-14",
+                    "time": "07:00 AM",
+                    "description": "A unique ceremony where the sacred water vase is opened to predict the fortunes of the coming year. Thousands of devotees gather to receive the blessed water."
+                },
+                {
+                    "id": 5,
+                    "event_name": "Kagyed Dance Festival",
+                    "monastery": "Enchey Monastery",
+                    "date": "2025-12-28",
+                    "time": "03:00 PM",
+                    "description": "Year-end masked Cham dance performed to ward off evil spirits and welcome the New Year. Monks in elaborate costumes enact stories of good triumphing over evil."
+                },
+                {
+                    "id": 6,
+                    "event_name": "Guru Rinpoche Tsechu",
+                    "monastery": "Tashiding Monastery",
+                    "date": "2026-07-14",
+                    "time": "09:30 AM",
+                    "description": "Festival honoring Guru Padmasambhava with colorful masked dances, sacred rituals, and chants that recount his life and teachings."
+                },
+                {
+                    "id": 7,
+                    "event_name": "Drupka Teshi",
+                    "monastery": "Phodong Monastery",
+                    "date": "2026-07-31",
+                    "time": "10:00 AM",
+                    "description": "Commemorates Lord Buddha's first sermon at Sarnath. Monks and devotees gather for prayers and religious discourses, offering butter lamps and flowers."
+                },
+                {
+                    "id": 8,
+                    "event_name": "Lhabab Düchen",
+                    "monastery": "Rumtek Monastery",
+                    "date": "2025-11-15",
+                    "time": "09:00 AM",
+                    "description": "Marks the Buddha's descent from the heavenly realm after teaching his mother. Monks light butter lamps and perform special rituals to celebrate this sacred day."
+                }
+            ]
+        };
+
+        const ritualSchedulesData = {
+            "Pang Lhabsol Festival": [
+                { "time": "6:00 AM", "ritual": "Morning Prayers and Invocation of Mount Khangchendzonga" },
+                { "time": "9:00 AM", "ritual": "Traditional Cham Mask Dances and Offerings" },
+                { "time": "12:00 PM", "ritual": "Community Gathering and Blessings by Senior Lamas" },
+                { "time": "3:00 PM", "ritual": "Cultural Performances and Folk Songs" },
+                { "time": "6:00 PM", "ritual": "Evening Butter Lamp Prayers for State Protection" }
+            ],
+            "Losar (Tibetan New Year)": [
+                { "time": "6:00 AM", "ritual": "Early Morning Smoke Offering (Sang) and New Year Prayers" },
+                { "time": "9:00 AM", "ritual": "Traditional Ceremonies and Offering of Khapsay (New Year pastries)" },
+                { "time": "12:00 PM", "ritual": "Community Feast and Exchange of Greetings" },
+                { "time": "3:00 PM", "ritual": "Folk Dance Performances and Cultural Programs" },
+                { "time": "6:00 PM", "ritual": "Evening Prayers for Peace and Prosperity" }
+            ],
+            "Saga Dawa": [
+                { "time": "6:00 AM", "ritual": "Morning Recitation of the Life of Buddha" },
+                { "time": "9:00 AM", "ritual": "Traditional Lamp Offerings and Circumambulation" },
+                { "time": "12:00 PM", "ritual": "Community Lunch and Distribution of Blessed Food" },
+                { "time": "3:00 PM", "ritual": "Cultural Activities and Religious Discourse" },
+                { "time": "6:00 PM", "ritual": "Evening Prayers and Chanting of Mantras" }
+            ],
+            "Bhumchu Festival": [
+                { "time": "6:00 AM", "ritual": "Opening of the Sacred Vase and Initial Prayers" },
+                { "time": "9:00 AM", "ritual": "Reading of the Water Levels to Predict the Year's Fortunes" },
+                { "time": "12:00 PM", "ritual": "Community Gathering and Distribution of Blessed Water" },
+                { "time": "3:00 PM", "ritual": "Cultural Activities and Traditional Music" },
+                { "time": "6:00 PM", "ritual": "Closing Prayers and Butter Lamp Offering" }
+            ],
+            "Kagyed Dance Festival": [
+                { "time": "6:00 AM", "ritual": "Morning Puja and Invocation of Protective Deities" },
+                { "time": "9:00 AM", "ritual": "Masked Cham Dances Representing the Triumph of Good over Evil" },
+                { "time": "12:00 PM", "ritual": "Community Gathering and Monastic Blessings" },
+                { "time": "3:00 PM", "ritual": "Cultural Folk Dances and Music Performances" },
+                { "time": "6:00 PM", "ritual": "Evening Prayers and Offering of Butter Lamps" }
+            ],
+            "Guru Rinpoche Tsechu": [
+                { "time": "6:00 AM", "ritual": "Morning Prayers to Guru Padmasambhava" },
+                { "time": "9:00 AM", "ritual": "Sacred Cham Dances Depicting Guru Rinpoche's Life" },
+                { "time": "12:00 PM", "ritual": "Community Lunch and Distribution of Blessings" },
+                { "time": "3:00 PM", "ritual": "Cultural Activities and Folk Music" },
+                { "time": "6:00 PM", "ritual": "Evening Recitation of Guru Rinpoche Mantras" }
+            ],
+            "Drupka Teshi": [
+                { "time": "6:00 AM", "ritual": "Morning Chanting of the First Sermon of Buddha" },
+                { "time": "9:00 AM", "ritual": "Traditional Ceremonies and Offering of Butter Lamps" },
+                { "time": "12:00 PM", "ritual": "Community Discussion on the Four Noble Truths" },
+                { "time": "3:00 PM", "ritual": "Cultural Activities and Storytelling" },
+                { "time": "6:00 PM", "ritual": "Evening Prayers and Dedication of Merits" }
+            ],
+            "Lhabab Düchen": [
+                { "time": "6:00 AM", "ritual": "Morning Prayers Commemorating Buddha's Descent from Heaven" },
+                { "time": "9:00 AM", "ritual": "Traditional Ceremonies and Offering of Butter Lamps" },
+                { "time": "12:00 PM", "ritual": "Community Gathering and Sharing of Blessed Food" },
+                { "time": "3:00 PM", "ritual": "Cultural Activities and Devotional Singing" },
+                { "time": "6:00 PM", "ritual": "Evening Prayers and Closing Chanting" }
+            ]
+        };
+
+        const data = eventsData;
+        const events = data.events;
+
+        const eventFilter = document.getElementById('eventFilter');
+        const monasteryFilter = document.getElementById('monasteryFilter');
+
+        // Get unique event names and monasteries
+        const eventNames = [...new Set(events.map(e => e.event_name))];
+        const monasteries = [...new Set(events.map(e => e.monastery))];
+
+        // Populate event dropdown
+        eventNames.forEach(event => {
+            const option = document.createElement('option');
+            option.value = event;
+            option.textContent = event;
+            eventFilter.appendChild(option);
+        });
+
+        // Populate monastery dropdown
+        monasteries.forEach(monastery => {
+            const option = document.createElement('option');
+            option.value = monastery;
+            option.textContent = monastery;
+            monasteryFilter.appendChild(option);
+        });
+
+        eventFilter.addEventListener('change', handleEventFilterChange);
+        monasteryFilter.addEventListener('change', handleMonasteryFilterChange);
+
+        function handleEventFilterChange() {
+            const eventFilter = document.getElementById('eventFilter');
+            const monasteryFilter = document.getElementById('monasteryFilter');
+            const selectedEvent = eventFilter.value;
+
+            if (selectedEvent) {
+                monasteryFilter.value = '';
+                const event = events.find(e => e.event_name === selectedEvent);
+                if (event) {
+                    showSpecificEvent(event);
+                }
+            } else {
+                clearEventDisplay();
+            }
+        }
+
+        function handleMonasteryFilterChange() {
+            const eventFilter = document.getElementById('eventFilter');
+            const monasteryFilter = document.getElementById('monasteryFilter');
+            const selectedMonastery = monasteryFilter.value;
+
+            if (selectedMonastery) {
+                eventFilter.value = '';
+                const monasteryEvents = events.filter(e => e.monastery === selectedMonastery);
+                if (monasteryEvents.length > 0) {
+                    showMonasteryEvents(selectedMonastery, monasteryEvents);
+                }
+            } else {
+                clearEventDisplay();
+            }
+        }
+
+        function showSpecificEvent(event) {
+            const eventsContainer = document.getElementById('selectedDateEvents');
+            const formattedDate = formatDate(event.date);
+            const formattedTime = event.time || 'Time TBA';
+
+            eventsContainer.innerHTML = `
+                <div class="selected-date-header mb-4">
+                    <h4 class="text-primary">Selected Event: ${event.event_name}</h4>
+                </div>
+                <div class="row">
+                    <div class="col-lg-6 col-md-12 mb-4">
+                        <div class="card event-card h-100 shadow-sm">
+                            <div class="card-body">
+                                <h5 class="event-title">${event.event_name}</h5>
+                                <p class="monastery-name">
+                                    <i class="bi bi-geo-alt"></i> ${event.monastery}
+                                </p>
+                                <div class="event-date-time">
+                                    📅 ${formattedDate} • ⏰ ${formattedTime}
+                                </div>
+                                <p class="event-description">${event.description}</p>
+                                <div class="mt-3">
+                                    <button class="btn btn-outline-primary btn-sm" onclick="showRitualSchedule('${event.event_name}', '${event.monastery}', this)">
+                                        <i class="bi bi-calendar-check"></i> View Ritual Schedule
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+
+        function showMonasteryEvents(monasteryName, events) {
+            const eventsContainer = document.getElementById('selectedDateEvents');
+
+            eventsContainer.innerHTML = `
+                <div class="selected-date-header mb-4">
+                    <h4 class="text-primary">Events at ${monasteryName}</h4>
+                    <p class="text-muted">Showing ${events.length} event(s)</p>
+                </div>
+                <div class="row">
+                    ${events.map(event => {
+                const formattedDate = formatDate(event.date);
+                const formattedTime = event.time || 'Time TBA';
+
+                return `
+                            <div class="col-lg-6 col-md-12 mb-4">
+                                <div class="card event-card h-100 shadow-sm">
+                                    <div class="card-body">
+                                        <h5 class="event-title">${event.event_name}</h5>
+                                        <p class="monastery-name">
+                                            <i class="bi bi-geo-alt"></i> ${event.monastery}
+                                        </p>
+                                        <div class="event-date-time">
+                                            📅 ${formattedDate} • ⏰ ${formattedTime}
+                                        </div>
+                                        <p class="event-description">${event.description}</p>
+                                        <div class="mt-3">
+                                            <button class="btn btn-outline-primary btn-sm" onclick="showRitualSchedule('${event.event_name}', '${event.monastery}', this)">
+                                                <i class="bi bi-calendar-check"></i> View Ritual Schedule
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        `;
+            }).join('')}
+                </div>
+            `;
+        }
+
+        function clearEventDisplay() {
+            const eventsContainer = document.getElementById('selectedDateEvents');
+            eventsContainer.innerHTML = `
+                <div class="text-center text-muted py-4">
+                    <h5>Select a highlighted date to view festival details</h5>
+                    <p>Festival dates are highlighted in yellow on the calendar above.</p>
+                </div>
+            `;
+        }
+
+        function formatDate(dateString) {
+            const date = new Date(dateString);
+            const options = {
+                year: 'numeric',
+                month: 'long',
+                day: 'numeric',
+                weekday: 'long'
+            };
+            return date.toLocaleDateString('en-US', options);
+        }
+    </script>
+
+    <script>
+        // Beautiful Calendar Component for Monastery Events
+        class MonasteryCalendar {
+            constructor(containerId, eventsData) {
+                this.container = document.getElementById(containerId)
+                this.events = eventsData
+                this.currentDate = new Date()
+                this.selectedDate = null
+                this.eventsByDate = this.groupEventsByDate()
+
+                this.monthNames = [
+                    "January",
+                    "February",
+                    "March",
+                    "April",
+                    "May",
+                    "June",
+                    "July",
+                    "August",
+                    "September",
+                    "October",
+                    "November",
+                    "December",
+                ]
+
+                this.dayNames = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"]
+
+                this.render()
+            }
+
+            groupEventsByDate() {
+                const grouped = {}
+                this.events.forEach((event) => {
+                    const date = event.date
+                    if (!grouped[date]) {
+                        grouped[date] = []
+                    }
+                    grouped[date].push(event)
+                })
+                return grouped
+            }
+
+            render() {
+                this.container.innerHTML = `
+            <div class="calendar-wrapper">
+                <div class="calendar-header">
+                    <button class="btn btn-outline-primary calendar-nav" id="prevMonth">
+                        <i class="bi bi-chevron-left"></i>
+                    </button>
+                    <h3 class="calendar-title" id="calendarTitle">
+                        ${this.monthNames[this.currentDate.getMonth()]} ${this.currentDate.getFullYear()}
+                    </h3>
+                    <button class="btn btn-outline-primary calendar-nav" id="nextMonth">
+                        <i class="bi bi-chevron-right"></i>
+                    </button>
+                </div>
+                <div class="calendar-grid">
+                    ${this.renderDayHeaders()}
+                    ${this.renderCalendarDays()}
+                </div>
+            </div>
+        `
+
+                this.attachEventListeners()
+            }
+
+            renderDayHeaders() {
+                return this.dayNames.map((day) => `<div class="calendar-day-header">${day}</div>`).join("")
+            }
+
+            renderCalendarDays() {
+                const year = this.currentDate.getFullYear()
+                const month = this.currentDate.getMonth()
+                const firstDay = new Date(year, month, 1)
+                const lastDay = new Date(year, month + 1, 0)
+                const startDate = new Date(firstDay)
+                startDate.setDate(startDate.getDate() - firstDay.getDay())
+
+                let daysHTML = ""
+                const currentDate = new Date(startDate)
+
+                // Generate 6 weeks of calendar
+                for (let week = 0; week < 6; week++) {
+                    for (let day = 0; day < 7; day++) {
+                        const year = currentDate.getFullYear()
+                        const month = String(currentDate.getMonth() + 1).padStart(2, '0')
+                        const dayNum = String(currentDate.getDate()).padStart(2, '0')
+                        const dateStr = `${year}-${month}-${dayNum}`
+                        
+                        const isCurrentMonth = currentDate.getMonth() === this.currentDate.getMonth()
+                        const hasEvent = this.eventsByDate[dateStr]
+                        const isToday = this.isToday(currentDate)
+
+                        let dayClass = "calendar-day"
+                        if (!isCurrentMonth) dayClass += " other-month"
+                        if (hasEvent) dayClass += " has-event"
+                        if (isToday) dayClass += " today"
+
+                        daysHTML += `
+                    <div class="${dayClass}" data-date="${dateStr}">
+                        <span class="day-number">${currentDate.getDate()}</span>
+                        ${hasEvent ? '<div class="event-indicator"></div>' : ""}
+                    </div>
+                `
+
+                        currentDate.setDate(currentDate.getDate() + 1)
+                    }
+                }
+
+                return daysHTML
+            }
+
+            isToday(date) {
+                const today = new Date()
+                return date.toDateString() === today.toDateString()
+            }
+
+            attachEventListeners() {
+                // Navigation buttons
+                document.getElementById("prevMonth").addEventListener("click", () => {
+                    this.currentDate.setMonth(this.currentDate.getMonth() - 1)
+                    this.render()
+                })
+
+                document.getElementById("nextMonth").addEventListener("click", () => {
+                    this.currentDate.setMonth(this.currentDate.getMonth() + 1)
+                    this.render()
+                })
+
+                // Day clicks
+                this.container.addEventListener("click", (e) => {
+                    const dayElement = e.target.closest(".calendar-day")
+                    if (dayElement && !dayElement.classList.contains("other-month")) {
+                        const date = dayElement.dataset.date
+                        this.selectDate(date)
+                    }
+                })
+            }
+
+            selectDate(dateStr) {
+                // Remove previous selection
+                this.container.querySelectorAll(".calendar-day.selected").forEach((day) => {
+                    day.classList.remove("selected")
+                })
+
+                // Add selection to clicked date
+                const dayElement = this.container.querySelector(`[data-date="${dateStr}"]`)
+                if (dayElement) {
+                    dayElement.classList.add("selected")
+                }
+
+                this.selectedDate = dateStr
+
+                // Show events for selected date
+                this.showEventsForDate(dateStr)
+            }
+
+            showEventsForDate(dateStr) {
+                const eventsContainer = document.getElementById("selectedDateEvents")
+                const events = this.eventsByDate[dateStr]
+
+                if (!events || events.length === 0) {
+                    eventsContainer.innerHTML = `
+                <div class="text-center text-muted py-4">
+                    <h5>No events on this date</h5>
+                    <p>Select a highlighted date to view festival details.</p>
+                </div>
+            `
+                    return
+                }
+
+                const formattedDate = this.formatDate(dateStr)
+                eventsContainer.innerHTML = `
+            <div class="selected-date-header mb-4">
+                <h4 class="text-primary">Events on ${formattedDate}</h4>
+            </div>
+            <div class="row">
+                ${events.map((event) => this.createEventCard(event)).join("")}
+            </div>
+        `
+            }
+
+            createEventCard(event) {
+                const formattedDate = this.formatDate(event.date)
+                const formattedTime = event.time || "Time TBA"
+
+                return `
+            <div class="col-lg-6 col-md-12 mb-4">
+                <div class="card event-card h-100 shadow-sm">
+                    <div class="card-body">
+                        <h5 class="event-title">${event.event_name}</h5>
+                        <p class="monastery-name">
+                            <i class="bi bi-geo-alt"></i> ${event.monastery}
+                        </p>
+                        <div class="event-date-time">
+                            📅 ${formattedDate} • ⏰ ${formattedTime}
+                        </div>
+                        <p class="event-description">${event.description}</p>
+                        <div class="mt-3">
+                            <button class="btn btn-outline-primary btn-sm" onclick="showRitualSchedule('${event.event_name}', '${event.monastery}', this)">
+                                <i class="bi bi-calendar-check"></i> View Ritual Schedule
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        `
+            }
+
+            formatDate(dateString) {
+                const date = new Date(dateString)
+                const options = {
+                    year: "numeric",
+                    month: "long",
+                    day: "numeric",
+                    weekday: "long",
+                }
+                return date.toLocaleDateString("en-US", options)
+            }
+
+            filterEvents(searchTerm, selectedDate) {
+                let filteredEvents = this.events
+
+                if (searchTerm) {
+                    filteredEvents = filteredEvents.filter(
+                        (event) =>
+                            event.event_name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                            event.monastery.toLowerCase().includes(searchTerm.toLowerCase()),
+                    )
+                }
+
+                if (selectedDate) {
+                    filteredEvents = filteredEvents.filter((event) => event.date === selectedDate)
+                }
+
+                this.events = filteredEvents
+                this.eventsByDate = this.groupEventsByDate()
+                this.render()
+
+                if (filteredEvents.length === 0) {
+                    document.getElementById("selectedDateEvents").innerHTML = `
+                <div class="text-center text-muted py-4">
+                    <h5>No events match your filters</h5>
+                    <p>Try adjusting your search criteria or clearing the filters.</p>
+                </div>
+            `
+                }
+            }
+        }
+    </script>
+
+    <script>
+        // Main application logic
+        let allEvents = [];
+        let calendar = null;
+
+        const loadingMessage = document.getElementById("loadingMessage");
+        const errorMessage = document.getElementById("errorMessage");
+
+        // Initialize the application
+        document.addEventListener("DOMContentLoaded", () => {
+            loadEvents();
+        });
+
+        async function loadEvents() {
+            try {
+                showLoading(true);
+                
+                // Use embedded data instead of fetch
+                allEvents = eventsData.events || [];
+
+                showLoading(false);
+                initializeCalendar();
+            } catch (error) {
+                console.error("Error loading events:", error);
+                showError(true);
+                showLoading(false);
+            }
+        }
+
+        function initializeCalendar() {
+            calendar = new MonasteryCalendar('calendarContainer', allEvents);
+        }
+
+        function showLoading(show) {
+            if (loadingMessage) {
+                loadingMessage.style.display = show ? "block" : "none";
+            }
+        }
+
+        function showError(show) {
+            if (errorMessage) {
+                errorMessage.style.display = show ? "block" : "none";
+            }
+        }
+
+        async function showRitualSchedule(eventName, monastery, buttonElement) {
+            try {
+                // Use embedded data instead of fetch
+                const ritualSchedules = ritualSchedulesData;
+
+                const schedule = ritualSchedules[eventName] || [
+                    { time: "6:00 AM", ritual: "Morning Prayers" },
+                    { time: "9:00 AM", ritual: "Traditional Ceremonies" },
+                    { time: "12:00 PM", ritual: "Community Gathering" },
+                    { time: "3:00 PM", ritual: "Cultural Activities" },
+                    { time: "6:00 PM", ritual: "Evening Prayers" }
+                ];
+
+                const eventCard = buttonElement.closest('.col-lg-6');
+                const parentRow = eventCard.parentElement;
+                const existingSchedule = parentRow.querySelector('.ritual-schedule-card');
+
+                if (existingSchedule) {
+                    existingSchedule.remove();
+                    return;
+                }
+
+                const scheduleCardHTML = `
+                    <div class="col-lg-6 col-md-12 mb-4 ritual-schedule-card">
+                        <div class="card h-100 shadow-sm" style="border-left: 4px solid #28a745;">
+                            <div class="card-body">
+                                <h5 class="text-success fw-bold mb-3">
+                                    <i class="bi bi-calendar-check"></i> Ritual Schedule
+                                </h5>
+                                <h6 class="text-muted mb-3">${eventName} - ${monastery}</h6>
+                                <div class="ritual-timeline">
+                                    ${schedule.map(item => `
+                                        <div class="d-flex align-items-start mb-3">
+                                            <div class="bg-success text-white rounded px-2 py-1 me-3" style="min-width: 70px; font-size: 0.85rem;">
+                                                ${item.time}
+                                            </div>
+                                            <div class="flex-grow-1">
+                                                <p class="mb-0" style="font-size: 0.9rem; line-height: 1.4;">
+                                                    ${item.ritual}
+                                                </p>
+                                            </div>
+                                        </div>
+                                    `).join('')}
+                                </div>
+                                <div class="mt-3 pt-3 border-top">
+                                    <small class="text-muted">
+                                        <i class="bi bi-info-circle"></i> 
+                                        Times may vary. Please confirm with monastery staff.
+                                    </small>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                `;
+
+                eventCard.insertAdjacentHTML('afterend', scheduleCardHTML);
+
+            } catch (error) {
+                console.error('Error loading ritual schedules:', error);
+                alert('Unable to load ritual schedule. Please try again later.');
+            }
+        }
+    </script>
+</body>
+
+</html>

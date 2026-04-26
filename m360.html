@@ -1,0 +1,897 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sikkim Monasteries 360° Virtual Tours</title>
+
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <!-- Google Fonts -->
+    <link
+        href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Inter:wght@300;400;500;600&display=swap"
+        rel="stylesheet">
+
+    <style>
+        /* Updated CSS variables and styling to match digarc.html elegant design */
+        @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Inter:wght@300;400;500;600&display=swap');
+
+        :root {
+            --primary-gold: #d4af37;
+            --primary-dark: #8b7355;
+            --accent-burgundy: #722f37;
+            --soft-cream: #faf8f5;
+            --warm-white: #ffffff;
+            --text-dark: #2c2c2c;
+            --text-muted: #6b7280;
+            --shadow-soft: 0 4px 20px rgba(0, 0, 0, 0.08);
+            --shadow-hover: 0 8px 30px rgba(0, 0, 0, 0.12);
+            --gradient-primary: linear-gradient(135deg, var(--primary-gold) 0%, var(--primary-dark) 100%);
+            --gradient-accent: linear-gradient(135deg, var(--accent-burgundy) 0%, #8b4513 100%);
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            background: linear-gradient(135deg, var(--soft-cream) 0%, #f8f6f3 50%, var(--warm-white) 100%);
+            font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+            line-height: 1.6;
+            color: var(--text-dark);
+            min-height: 100vh;
+            position: relative;
+        }
+
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background:
+                radial-gradient(circle at 20% 80%, rgba(212, 175, 55, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 80% 20%, rgba(114, 47, 55, 0.08) 0%, transparent 50%);
+            pointer-events: none;
+            z-index: -1;
+        }
+
+        /* Hero Section */
+        .hero-section {
+            padding-top: 68px;
+            background: var(--gradient-primary);
+            min-height: 70vh;
+            display: flex;
+            align-items: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('https://www.tripsavvy.com/thmb/LV9cMvf0PkFRA1hO6-CfTyFBxgs=/1500x0/filters:no_upscale():max_bytes(150000):strip_icc()/GettyImages-606222988-5a823cff1d64040037dfd9a1.jpg') center/cover;
+            opacity: 0.2;
+            z-index: 1;
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 2;
+            text-align: center;
+            color: white;
+        }
+
+        .hero-title {
+            font-family: "Playfair Display", serif;
+            font-size: 3.5rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+            letter-spacing: -0.02em;
+        }
+
+        .hero-subtitle {
+            font-size: 1.3rem;
+            margin-bottom: 2rem;
+            opacity: 0.95;
+            font-style: italic;
+            letter-spacing: 0.5px;
+        }
+
+        /* Search Section */
+        .search-section {
+            padding: 2rem 0;
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.95) 0%, rgba(250, 248, 245, 0.98) 100%);
+            backdrop-filter: blur(20px);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: var(--shadow-soft);
+            border-bottom: 1px solid rgba(212, 175, 55, 0.2);
+        }
+
+        .search-container {
+            max-width: 600px;
+            margin: 0 auto;
+            position: relative;
+        }
+
+        .search-input {
+            width: 100%;
+            padding: 1rem 1rem 1rem 3rem;
+            border: 2px solid rgba(212, 175, 55, 0.3);
+            border-radius: 50px;
+            font-size: 1.1rem;
+            outline: none;
+            transition: all 0.3s ease;
+            background: var(--warm-white);
+        }
+
+        .search-input:focus {
+            border-color: var(--primary-gold);
+            box-shadow: 0 0 0 3px rgba(212, 175, 55, 0.1);
+        }
+
+        .search-icon {
+            position: absolute;
+            left: 1rem;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--primary-gold);
+            font-size: 1.2rem;
+        }
+
+        .search-results-info {
+            text-align: center;
+            margin-top: 1rem;
+            color: var(--primary-gold);
+            font-weight: 500;
+        }
+
+        /* Monastery Section */
+        .monastery-section {
+            padding: 4rem 0;
+        }
+
+        .section-title {
+            font-family: "Playfair Display", serif;
+            font-size: 2.5rem;
+            font-weight: 700;
+            text-align: center;
+            margin-bottom: 3rem;
+            background: var(--gradient-primary);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            letter-spacing: -0.02em;
+        }
+
+        .monastery-row {
+            margin-bottom: 3rem;
+        }
+
+        .monastery-card {
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            border: none;
+            box-shadow: var(--shadow-soft);
+            border-radius: 16px;
+            overflow: hidden;
+            background: var(--warm-white);
+            position: relative;
+            height: 100%;
+        }
+
+        .monastery-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: var(--gradient-primary);
+            transform: scaleX(0);
+            transition: transform 0.3s ease;
+        }
+
+        .monastery-card:hover {
+            transform: translateY(-8px) scale(1.02);
+            box-shadow: var(--shadow-hover);
+        }
+
+        .monastery-card:hover::before {
+            transform: scaleX(1);
+        }
+
+        .monastery-card:hover .monastery-image {
+            transform: scale(1.05);
+        }
+
+        .monastery-image {
+            height: 300px;
+            background-size: cover;
+            background-position: center;
+            position: relative;
+            transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            filter: brightness(0.95) contrast(1.05);
+        }
+
+        .monastery-badge {
+            position: absolute;
+            top: 1rem;
+            left: 1rem;
+            background: rgba(212, 175, 55, 0.9);
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            font-weight: 500;
+            backdrop-filter: blur(10px);
+        }
+
+        .monastery-content {
+            padding: 2rem;
+        }
+
+        .monastery-title {
+            font-family: "Playfair Display", serif;
+            font-size: 1.8rem;
+            font-weight: 600;
+            color: var(--text-dark);
+            margin-bottom: 0.5rem;
+            line-height: 1.3;
+            transition: color 0.3s ease;
+        }
+
+        .monastery-card:hover .monastery-title {
+            color: var(--primary-dark);
+        }
+
+        .monastery-location {
+            color: var(--primary-gold);
+            margin-bottom: 1rem;
+            font-weight: 500;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            font-size: 0.95rem;
+        }
+
+        .monastery-location i {
+            margin-right: 0.5rem;
+            color: var(--primary-gold);
+        }
+
+        .monastery-description {
+            color: var(--text-muted);
+            margin-bottom: 2rem;
+            line-height: 1.6;
+            font-size: 0.95rem;
+        }
+
+        /* Action Buttons */
+        .action-buttons {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .vr-btn,
+        .tour-btn {
+            flex: 1;
+            min-width: 150px;
+            padding: 0.75rem 1.5rem;
+            border: none;
+            border-radius: 50px;
+            font-weight: 500;
+            font-size: 0.85rem;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .vr-btn::before,
+        .tour-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transition: left 0.5s;
+        }
+
+        .vr-btn:hover::before,
+        .tour-btn:hover::before {
+            left: 100%;
+        }
+
+        .vr-btn {
+            background: var(--gradient-primary);
+            color: white;
+        }
+
+        .vr-btn:hover {
+            background: var(--gradient-accent);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(212, 175, 55, 0.3);
+        }
+
+        .tour-btn {
+            background: var(--gradient-accent);
+            color: white;
+        }
+
+        .tour-btn:hover {
+            background: var(--gradient-primary);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(114, 47, 55, 0.3);
+        }
+
+        /* No Results */
+        .no-results {
+            text-align: center;
+            padding: 4rem 2rem;
+            color: var(--text-muted);
+            display: none;
+            background: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            margin: 2rem 0;
+        }
+
+        .no-results i {
+            font-size: 4rem;
+            margin-bottom: 1rem;
+            opacity: 0.5;
+            color: var(--primary-gold);
+        }
+
+        .no-results h3 {
+            font-size: 1.5rem;
+            margin-bottom: 0.5rem;
+            font-family: "Playfair Display", serif;
+        }
+
+        /* Animations */
+        .fade-in {
+            animation: fadeInUp 0.6s ease-out forwards;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .monastery-card:nth-child(1) { animation-delay: 0.1s; }
+        .monastery-card:nth-child(2) { animation-delay: 0.2s; }
+        .monastery-card:nth-child(3) { animation-delay: 0.3s; }
+        .monastery-card:nth-child(4) { animation-delay: 0.4s; }
+        .monastery-card:nth-child(5) { animation-delay: 0.5s; }
+        .monastery-card:nth-child(6) { animation-delay: 0.6s; }
+
+        /* Custom scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: var(--soft-cream);
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: var(--gradient-primary);
+            border-radius: 4px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--gradient-accent);
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .hero-title {
+                font-size: 2.5rem;
+            }
+
+            .hero-subtitle {
+                font-size: 1.1rem;
+            }
+
+            .action-buttons {
+                flex-direction: column;
+            }
+
+            .vr-btn,
+            .tour-btn {
+                min-width: 100%;
+            }
+
+            .monastery-card:hover {
+                transform: translateY(-4px) scale(1.01);
+            }
+        }
+    </style>
+  <script src="nav.js"></script>
+</head>
+
+<body>
+    <!-- Hero Section -->
+    <section class="hero-section">
+        <div class="container">
+            <div class="hero-content">
+                <h1 class="hero-title">Sikkim Monasteries 360°</h1>
+                <p class="hero-subtitle">Experience Sacred Buddhist Heritage Through Immersive Virtual Tours</p>
+                <a href="#monasteries" class="btn btn-light btn-lg rounded-pill px-4 py-3">
+                    Start Virtual Journey <i class="fas fa-vr-cardboard ms-2"></i>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Search Section -->
+    <section class="search-section">
+        <div class="container">
+            <div class="search-container">
+                <i class="fas fa-search search-icon"></i>
+                <input type="text" class="search-input" id="monasterySearch"
+                    placeholder="Search monasteries by name or location (e.g., 'Rumtek', 'Gangtok', 'West Sikkim')..."
+                    autocomplete="off">
+            </div>
+            <div class="search-results-info" id="searchResults"></div>
+        </div>
+    </section>
+
+    <!-- Monasteries Section -->
+    <section class="monastery-section" id="monasteries">
+        <div class="container">
+            <h2 class="section-title fade-in">Explore Sacred Monasteries</h2>
+
+            <!-- No Results Message -->
+            <div class="no-results" id="noResults">
+                <i class="fas fa-search"></i>
+                <h3>No monasteries found</h3>
+                <p>Try searching with different keywords like monastery names or locations.</p>
+            </div>
+
+            <!-- Row 1 -->
+            <div class="row monastery-row">
+                <!-- Rumtek Monastery -->
+                <div class="col-lg-6 col-md-12 mb-4">
+                    <div class="monastery-card fade-in" data-name="rumtek monastery dharma chakra centre"
+                        data-location="gangtok east sikkim">
+                        <div class="monastery-image"
+                            style="background-image: url('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ79hd8Q7rZGHtObY4kJPKRKTOp6O6uYN-UZQ&s');">
+                            <div class="monastery-badge">Dharma Chakra Centre</div>
+                        </div>
+                        <div class="monastery-content">
+                            <h3 class="monastery-title">Rumtek Monastery</h3>
+                            <div class="monastery-location">
+                                <i class="fas fa-map-marker-alt"></i>
+                                Near Gangtok, East Sikkim
+                            </div>
+                            <p class="monastery-description">
+                                The largest monastery in Sikkim and the main seat of the Karma Kagyu lineage outside
+                                Tibet. Known as the "Dharma Chakra Centre," it houses precious relics and serves as a
+                                center for Buddhist learning and meditation practices.
+                            </p>
+
+                            <div class="action-buttons">
+                                <button class="vr-btn" onclick="view360('rumtek')">
+                                    <i class="fas fa-globe"></i> 360° View
+                                </button>
+                                <button class="tour-btn" onclick="startVirtualTour('rumtek')">
+                                    <i class="fas fa-route"></i> Start Virtual Tour
+                                </button>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Pemayangtse Monastery -->
+                <div class="col-lg-6 col-md-12 mb-4">
+                    <div class="monastery-card fade-in" data-name="pemayangtse monastery perfect sublime lotus"
+                        data-location="pelling west sikkim">
+                        <div class="monastery-image"
+                            style="background-image: url('https://s7ap1.scene7.com/is/image/incredibleindia/spiritual-spots-in-pelling-popular?qlt=82&ts=1726655959297');">
+                            <div class="monastery-badge">Perfect Sublime Lotus</div>
+                        </div>
+                        <div class="monastery-content">
+                            <h3 class="monastery-title">Pemayangtse Monastery</h3>
+                            <div class="monastery-location">
+                                <i class="fas fa-map-marker-alt"></i>
+                                Near Pelling, West Sikkim
+                            </div>
+                            <p class="monastery-description">
+                                One of the oldest and most important monasteries in Sikkim, meaning "Perfect Sublime
+                                Lotus." It's the head monastery of the Nyingma order and offers stunning views of
+                                Kanchenjunga mountain range.
+                            </p>
+
+                            <div class="action-buttons">
+                                <button class="vr-btn" onclick="view360('pemayangtse')">
+                                    <i class="fas fa-globe"></i> 360° View
+                                </button>
+                                <button class="tour-btn" onclick="startVirtualTour('pemayangtse')">
+                                    <i class="fas fa-route"></i> Start Virtual Tour
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Row 2 -->
+            <div class="row monastery-row">
+                <!-- Tashiding Monastery -->
+                <div class="col-lg-6 col-md-12 mb-4">
+                    <div class="monastery-card fade-in" data-name="tashiding monastery devoted central glory"
+                        data-location="west sikkim">
+                        <div class="monastery-image"
+                            style="background-image: url('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSIXyt-cm5XzjDMIeJ5y7vZykuq--Vd5sioyvC9vGqDChD2ZJEi62kWHI0z006cCmvU1Xw&usqp=CAU');">
+                            <div class="monastery-badge">Devoted Central Glory</div>
+                        </div>
+                        <div class="monastery-content">
+                            <h3 class="monastery-title">Tashiding Monastery</h3>
+                            <div class="monastery-location">
+                                <i class="fas fa-map-marker-alt"></i>
+                                West Sikkim
+                            </div>
+                            <p class="monastery-description">
+                                Perched on a hilltop between Rathong and Rangeet rivers, this sacred monastery is
+                                believed to cleanse sins of devotees. It's famous for the holy water ceremony during
+                                Bhumchu festival.
+                            </p>
+
+                            <div class="action-buttons">
+                                <button class="vr-btn" onclick="view360('tashiding')">
+                                    <i class="fas fa-globe"></i> 360° View
+                                </button>
+                                <button class="tour-btn" onclick="startVirtualTour('tashiding')">
+                                    <i class="fas fa-route"></i> Start Virtual Tour
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Phodong Monastery -->
+                <div class="col-lg-6 col-md-12 mb-4">
+                    <div class="monastery-card fade-in" data-name="phodong monastery blooming lotus"
+                        data-location="north sikkim">
+                        <div class="monastery-image"
+                            style="background-image: url('https://live.staticflickr.com/778/21514854359_c795d1008b_b.jpg');">
+                            <div class="monastery-badge">Blooming Lotus</div>
+                        </div>
+                        <div class="monastery-content">
+                            <h3 class="monastery-title">Phodong Monastery</h3>
+                            <div class="monastery-location">
+                                <i class="fas fa-map-marker-alt"></i>
+                                North Sikkim
+                            </div>
+                            <p class="monastery-description">
+                                A beautiful monastery of the Kagyu sect, rebuilt after the original was destroyed by
+                                earthquake. Known for its annual Chaam dance during the festival season and serene
+                                mountain setting.
+                            </p>
+
+                            <div class="action-buttons">
+                                <button class="vr-btn" onclick="view360('phodong')">
+                                    <i class="fas fa-globe"></i> 360° View
+                                </button>
+                                <button class="tour-btn" onclick="startVirtualTour('phodong')">
+                                    <i class="fas fa-route"></i> Start Virtual Tour
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Row 3 -->
+            <div class="row monastery-row">
+                <!-- Enchey Monastery -->
+                <div class="col-lg-6 col-md-12 mb-4">
+                    <div class="monastery-card fade-in" data-name="enchey monastery solitary temple"
+                        data-location="gangtok east sikkim">
+                        <div class="monastery-image"
+                            style="background-image: url('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQJzeaitZVy75FAaIj-RsZav9gBOCOMfUl9Be9GQ-LmmGHVVP89swbU0liGA7jBKs2u3pU&usqp=CAU');">
+                            <div class="monastery-badge">Solitary Temple</div>
+                        </div>
+                        <div class="monastery-content">
+                            <h3 class="monastery-title">Enchey Monastery</h3>
+                            <div class="monastery-location">
+                                <i class="fas fa-map-marker-alt"></i>
+                                Gangtok, East Sikkim
+                            </div>
+                            <p class="monastery-description">
+                                Located on a hilltop in Gangtok, this 200-year-old monastery belongs to the Nyingma
+                                order. It's famous for its annual Chaam dance and offers panoramic views of
+                                Kanchenjunga.
+                            </p>
+
+                            <div class="action-buttons">
+                                <button class="vr-btn" onclick="view360('enchey')">
+                                    <i class="fas fa-globe"></i> 360° View
+                                </button>
+                                <button class="tour-btn" onclick="startVirtualTour('enchey')">
+                                    <i class="fas fa-route"></i> Start Virtual Tour
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Ralang Monastery -->
+                <div class="col-lg-6 col-md-12 mb-4">
+                    <div class="monastery-card fade-in" data-name="ralang monastery small heaven"
+                        data-location="ravangla south sikkim">
+                        <div class="monastery-image"
+                            style="background-image: url('https://upload.wikimedia.org/wikipedia/commons/6/60/Ralang_monastery_sikkim_1.jpg');">
+                            <div class="monastery-badge">Small Heaven</div>
+                        </div>
+                        <div class="monastery-content">
+                            <h3 class="monastery-title">Ralang Monastery</h3>
+                            <div class="monastery-location">
+                                <i class="fas fa-map-marker-alt"></i>
+                                Ravangla, South Sikkim
+                            </div>
+                            <p class="monastery-description">
+                                A serene monastery of the Kagyu order, known for its peaceful atmosphere and beautiful
+                                location. It's an important center for Buddhist learning and meditation practices in
+                                South Sikkim.
+                            </p>
+
+                            <div class="action-buttons">
+                                <button class="vr-btn" onclick="view360('ralang')">
+                                    <i class="fas fa-globe"></i> 360° View
+                                </button>
+                                <button class="tour-btn" onclick="startVirtualTour('ralang')">
+                                    <i class="fas fa-route"></i> Start Virtual Tour
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- Row 4 -->
+            <div class="row monastery-row">
+                <!-- Kaalapathar -->
+                <div class="col-lg-6 col-md-12 mb-4">
+                    <div class="monastery-card fade-in" data-name="kaalapathar viewpoint" data-location="east sikkim">
+                        <div class="monastery-image"
+                            style="background-image: url('https://static2.tripoto.com/media/filter/tst/img/21942/TripDocument/1439455805_img_0044.jpg');">
+                            <div class="monastery-badge">Scenic Viewpoint</div>
+                        </div>
+                        <div class="monastery-content">
+                            <h3 class="monastery-title">Kaalapathar, Sikkim</h3>
+                            <div class="monastery-location">
+                                <i class="fas fa-map-marker-alt"></i>
+                                Near Tsomgo Lake, East Sikkim
+                            </div>
+                            <p class="monastery-description">
+                                Kaalapathar is a stunning viewpoint near Tsomgo Lake in East Sikkim, known for its
+                                mesmerizing views of snow-covered mountains, pine forests, and valleys.
+                                It's a popular stop for tourists seeking natural beauty and photography opportunities.
+                            </p>
+
+                            <div class="action-buttons">
+                                <button class="vr-btn" onclick="view360('kaalapathar')">
+                                    <i class="fas fa-globe"></i> 360° View
+                                </button>
+                                <button class="tour-btn" onclick="startVirtualTour('kaalapathar')">
+                                    <i class="fas fa-route"></i> Start Virtual Tour
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- Nathula Pass -->
+                <div class="col-lg-6 col-md-12 mb-4">
+                    <div class="monastery-card fade-in" data-name="nathula pass" data-location="east sikkim">
+                        <div class="monastery-image"
+                            style="background-image: url('https://i.ytimg.com/vi/97VD8a5EqZU/maxresdefault.jpg');">
+                            <div class="monastery-badge">Indo-China Border</div>
+                        </div>
+                        <div class="monastery-content">
+                            <h3 class="monastery-title">Nathula Pass, Sikkim</h3>
+                            <div class="monastery-location">
+                                <i class="fas fa-map-marker-alt"></i>
+                                East Sikkim, Indo-China Border
+                            </div>
+                            <p class="monastery-description">
+                                Nathula Pass, located at 14,140 ft on the Indo-China border, is one of the highest
+                                motorable roads in the world.
+                                Known for its strategic importance and breathtaking views of the Himalayas, it attracts
+                                tourists for its natural beauty and historical significance.
+                                Visitors can also see Chinese soldiers across the border.
+                            </p>
+
+                            <div class="action-buttons">
+                                <button class="vr-btn" onclick="view360('nathula')">
+                                    <i class="fas fa-globe"></i> 360° View
+                                </button>
+                                <button class="tour-btn" onclick="startVirtualTour('nathula')">
+                                    <i class="fas fa-route"></i> Start Virtual Tour
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+    <script>
+        // 360 View Function
+        function view360(monasteryName) {
+            const views = {
+                rumtek: "https://www.google.com/maps/@27.2886244,88.5618065,3a,75y,110.76h,87.94t/data=!3m8!1e1!3m6!1sCIHM0ogKEICAgID27fSJJw!2e10!3e11!6shttps:%2F%2Flh3.googleusercontent.com%2Fgpms-cs-s%2FAB8u6HY0qI0O66Y_cQshWjsgWS4U257eWyOWh4N9AYPfkQgLUNbkgGseEomBcJZ6SB5Fvx9KXayJ5PS60EzC4V4oJ7Y3GgcF76GaNVC42kq9bZ2IzxCt0ze9qTCrQXBXQeqjTeQIBqMf%3Dw900-h600-k-no-pi2.0564501098985346-ya314.7614494543527-ro0-fo100!7i10240!8i5120?entry=ttu&g_ep=EgoyMDI1MDkxNC4wIKXMDSoASAFQAw%3D%3D",       // YouTube 360° video link
+                pemayangtse: "https://www.360cities.net/image/pemayangste-monastery-in-sikkim",
+                tashiding: "https://www.google.com/maps/@27.3089194,88.2978798,3a,75y,283.12h,98.52t/data=!3m8!1e1!3m6!1sCIHM0ogKEICAgICEzsO3Ig!2e10!3e11!6shttps:%2F%2Flh3.googleusercontent.com%2Fgpms-cs-s%2FAB8u6HbJVhzv3yXqK8CnJew70hASxXA5AJOPwXncNFooLJpGJYkcCcdNUUog32MhkUDJrN-oyACG9YDtShD_MQP8wuCSvfnJRjQAGF-b6kLUUM-a45iYiqYKIzMNpmwIrSEdOvhsRG7m%3Dw900-h600-k-no-pi-8.515996978537231-ya141.12352152649726-ro0-fo100!7i8704!8i4352?entry=ttu&g_ep=EgoyMDI1MDkxNC4wIKXMDSoASAFQAw%3D%3D",
+                phodong: "https://www.google.com/maps/@27.4125004,88.5836105,3a,75y,26.52h,90t/data=!3m8!1e1!3m6!1sCIHM0ogKEICAgIDE-I2AmwE!2e10!3e11!6shttps:%2F%2Flh3.googleusercontent.com%2Fgpms-cs-s%2FAB8u6HaWO08svQadgb-r-Ij0DtELRI-4RjNu3iTKlLMuaRCzgy3FINt3DAZHOGlr2korOEv9a6k_vZ4GXtT_xrQCDfkjUeOyFI-SF4Bn1EuXoB-D-NkBTePnyuu5yPSbsIzLQZNwC_7_XA%3Dw900-h600-k-no-pi0-ya26.52441929447426-ro0-fo100!7i5376!8i2688?entry=ttu&g_ep=EgoyMDI1MDkxNC4wIKXMDSoASAFQAw%3D%3D",
+                enchey: "https://www.google.com/maps/place/Enchey+Monastery/@27.3359459,88.6193257,3a,75y,276.03h,98.67t/data=!3m8!1e1!3m6!1sCIHM0ogKEICAgIDG9tzWTA!2e10!3e11!6shttps:%2F%2Flh3.googleusercontent.com%2Fgpms-cs-s%2FAB8u6HZem2vDRTNJSM11s48jrVmy-TDLrWJ818CLagHqLYZHrDdbetK_6D4GP6opdbULKl66yTBhHvo8iq9Op9kjS6HudGnIlwm2D5unNaP0DCSos0VBBRMcP7auuFf78pZ4eOIDcUo%3Dw900-h600-k-no-pi-8.674469711218933-ya342.02741847145217-ro0-fo100!7i11264!8i5632!4m16!1m8!3m7!1s0x39e6ba848fe4b38f:0xf1c23957008e31e8!2sEnchey+Monastery!8m2!3d27.3359368!4d88.6191659!10e5!16zL20vMDZyZDM1!3m6!1s0x39e6ba848fe4b38f:0xf1c23957008e31e8!8m2!3d27.3359368!4d88.6191659!10e5!16zL20vMDZyZDM1?entry=ttu&g_ep=EgoyMDI1MDkxNC4wIKXMDSoASAFQAw%3D%3D",
+                ralang: "https://www.google.com/maps/place/Ralang+New+Monastery/@27.3284964,88.3352478,3a,75y,87.56h,98.36t/data=!3m8!1e1!3m6!1sCIHM0ogKEICAgIC4upiluQE!2e10!3e11!6shttps:%2F%2Flh3.googleusercontent.com%2Fgpms-cs-s%2FAB8u6HZNg0XLcoC1VA-6nhY56Z66k4MO1J-ek_9b7-KP7eTBZD4ZEf5cCFuDMsfN2PyoioLoLxmv42mn7yBzUXT09WxCYYtEyeQ7I7yk6PW5w7BYIml0N539AfV7vIZwWVWsYc55km-DHg%3Dw900-h600-k-no-pi-8.355497691428425-ya174.55797372910263-ro0-fo100!7i7168!8i3584!4m6!3m5!1s0x39e69ab876f2e433:0xe595a93fb0b1c33e!8m2!3d27.3284964!4d88.3352477!16s%2Fm%2F09ggz16?entry=ttu&g_ep=EgoyMDI1MDkxNC4wIKXMDSoASAFQAw%3D%3D",
+                kaalapathar: "https://www.google.com/maps/@27.896483,88.4751209,3a,75y,295.47h,103.92t/data=!3m8!1e1!3m6!1sCIHM0ogKEICAgIDG6rqB0wE!2e10!3e11!6shttps:%2F%2Flh3.googleusercontent.com%2Fgpms-cs-s%2FAB8u6HYEcmLJd2AINTUkmutWoInAcYmPT1lqB37McjDITALbY7AgboMQ4b729SKM2O2yO000Ysk7l5k41dk1gT9TgRPIKfnaONBiFO6h_gSoMJRqSDBkMnnPC4-SWwGkugeNEq5gHTjj%3Dw900-h600-k-no-pi-13.91893810642621-ya223.4697928941399-ro0-fo100!7i11264!8i5632?entry=ttu&g_ep=EgoyMDI1MDkxNC4wIKXMDSoASAFQAw%3D%3D",
+                nathula: "https://www.google.com/maps/@27.3852864,88.8283782,3a,75y,107h,89.34t/data=!3m8!1e1!3m6!1sCIHM0ogKEICAgICEquu1Iw!2e10!3e11!6shttps:%2F%2Flh3.googleusercontent.com%2Fgpms-cs-s%2FAB8u6HbmyarU0EGHE1C1MXjMfpQQo1i3aiGTlHDdkFjJ4BXTQgDN4xBLgkz9pPhXV_L9cKIUToPd4uuIobjwtK-aPOW_Rj0-UF9sUSNA0hKw8sXm83xwrrlNpUljvcMpWxXlz7A9su8v%3Dw900-h600-k-no-pi0.6643573155954812-ya60.99628160163317-ro0-fo100!7i8192!8i4096?entry=ttu&g_ep=EgoyMDI1MDkxNC4wIKXMDSoASAFQAw%3D%3D"
+            };
+
+            if (views[monasteryName]) {
+                window.open(views[monasteryName], "_blank"); // Opens in a new tab
+            } else {
+                alert("360° view not available yet for " + monasteryName);
+            }
+        }
+
+
+        // Virtual Tour Function
+        function startVirtualTour(monasteryName) {
+            // Add your YouTube links here
+            const videos = {
+                rumtek: "https://www.youtube.com/embed/1S9DZtPMe90?si=A2WGhNRr4FWRwM1W",
+                pemayangtse: "https://www.youtube.com/watch?v=VIDEO_ID2",
+                tashiding: "https://www.youtube.com/watch?v=VIDEO_ID3",
+                phodong: "https://www.youtube.com/watch?v=VIDEO_ID4",
+                enchey: "https://www.youtube.com/watch?v=VIDEO_ID5",
+                ralang: "https://www.youtube.com/watch?v=VIDEO_ID6",
+                kaalapathar: "https://youtu.be/5DB09d3tqQ8?si=d2LiRVVl_0M25OUU",
+                nathula: "https://youtu.be/_qIVoNg4sNo?si=TmyhS0puXN2LACm-"
+            };
+
+            if (videos[monasteryName]) {
+                // Open in a new tab
+                window.open(videos[monasteryName]);
+
+                // OR embed in-page (replace a div with iframe)
+                /*
+                document.getElementById("video-player").innerHTML = `
+                    <iframe width="560" height="315"
+                        src="${videos[monasteryName].replace("watch?v=", "embed/")}?autoplay=1"
+                        frameborder="0"
+                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                        allowfullscreen>
+                    </iframe>`;
+                */
+            } else {
+                alert("Virtual tour not available yet for " + monasteryName);
+            }
+        }
+
+
+        // Search Functionality
+        function searchMonasteries() {
+            var searchTerm = document.getElementById('monasterySearch').value.toLowerCase();
+            var monasteryCards = document.querySelectorAll('.monastery-card');
+            var monasteryRows = document.querySelectorAll('.monastery-row');
+            var searchResults = document.getElementById('searchResults');
+            var noResults = document.getElementById('noResults');
+            var visibleCount = 0;
+
+            // Hide all rows first
+            monasteryRows.forEach(function (row) {
+                row.style.display = 'none';
+            });
+
+            // Search through monastery cards
+            monasteryCards.forEach(function (card) {
+                var name = card.getAttribute('data-name').toLowerCase();
+                var location = card.getAttribute('data-location').toLowerCase();
+                var description = card.querySelector('.monastery-description').textContent.toLowerCase();
+
+                var isVisible = searchTerm === '' ||
+                    name.includes(searchTerm) ||
+                    location.includes(searchTerm) ||
+                    description.includes(searchTerm);
+
+                if (isVisible) {
+                    card.style.display = 'block';
+                    visibleCount++;
+                    // Show the parent row
+                    var row = card.closest('.monastery-row');
+                    row.style.display = 'flex';
+                } else {
+                    card.style.display = 'none';
+                }
+            });
+
+            // Update search results info
+            if (searchTerm === '') {
+                searchResults.style.display = 'none';
+                noResults.style.display = 'none';
+            } else {
+                if (visibleCount > 0) {
+                    searchResults.innerHTML = 'Found ' + visibleCount + ' monastery' + (visibleCount !== 1 ? 'ies' : '') + ' matching "' + searchTerm + '"';
+                    searchResults.style.display = 'block';
+                    noResults.style.display = 'none';
+                } else {
+                    searchResults.style.display = 'none';
+                    noResults.style.display = 'block';
+                }
+            }
+        }
+
+        // Add search event listeners
+        document.getElementById('monasterySearch').addEventListener('input', searchMonasteries);
+        document.getElementById('monasterySearch').addEventListener('keyup', searchMonasteries);
+
+        // Smooth scrolling for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                document.querySelector(this.getAttribute('href')).scrollIntoView({
+                    behavior: 'smooth'
+                });
+            });
+        });
+
+        // Add fade-in animation on scroll
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver(function (entries) {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.opacity = '1';
+                    entry.target.style.transform = 'translateY(0)';
+                }
+            });
+        }, observerOptions);
+
+        // Observe all monastery cards
+        document.querySelectorAll('.monastery-card').forEach(card => {
+            card.style.opacity = '0';
+            card.style.transform = 'translateY(30px)';
+            card.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+            observer.observe(card);
+        });
+    </script>
+</body>
+
+</html>

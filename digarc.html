@@ -1,0 +1,800 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Monastery360 Digital Archives</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <!-- Merged CSS styles inline instead of external file -->
+  <style>
+    /* Enhanced custom styles for Monastery360 Digital Archives with modern design elements */
+
+    @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Inter:wght@300;400;500;600&display=swap');
+
+    :root {
+      --primary-gold: #d4af37;
+      --primary-dark: #8b7355;
+      --accent-burgundy: #722f37;
+      --soft-cream: #faf8f5;
+      --warm-white: #ffffff;
+      --text-dark: #2c2c2c;
+      --text-muted: #6b7280;
+      --shadow-soft: 0 4px 20px rgba(0, 0, 0, 0.08);
+      --shadow-hover: 0 8px 30px rgba(0, 0, 0, 0.12);
+      --gradient-primary: linear-gradient(135deg, var(--primary-gold) 0%, var(--primary-dark) 100%);
+      --gradient-accent: linear-gradient(135deg, var(--accent-burgundy) 0%, #8b4513 100%);
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      background: linear-gradient(135deg, var(--soft-cream) 0%, #f8f6f3 50%, var(--warm-white) 100%);
+      font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      line-height: 1.6;
+      color: var(--text-dark);
+      min-height: 100vh;
+      position: relative;
+    }
+
+    body::before {
+      content: '';
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background:
+        radial-gradient(circle at 20% 80%, rgba(212, 175, 55, 0.1) 0%, transparent 50%),
+        radial-gradient(circle at 80% 20%, rgba(114, 47, 55, 0.08) 0%, transparent 50%);
+      pointer-events: none;
+      z-index: -1;
+    }
+
+    /* Header styles */
+    /* Universal Header Styling - Based on digarc.html */
+    /* Universal Header Styling - Based on digarc.html */
+    header {
+      background: linear-gradient(135deg, rgba(255, 255, 255, 0.95) 0%, rgba(250, 248, 245, 0.98) 100%) !important;
+      backdrop-filter: blur(20px) !important;
+      border-bottom: 1px solid rgba(212, 175, 55, 0.2) !important;
+      box-shadow: 0 2px 20px rgba(0, 0, 0, 0.05) !important;
+      position: relative;
+      top: 0 !important;
+      z-index: 100 !important;
+      padding: 2rem !important;
+      margin-bottom: 2rem !important;
+    }
+
+    header::before {
+      content: '' !important;
+      position: relative;
+      top: 0 !important;
+      left: 0 !important;
+      right: 0 !important;
+      height: 2px !important;
+      background: linear-gradient(135deg, #d4af37 0%, #8b7355 100%) !important;
+    }
+
+    header h1 {
+      font-family: "Playfair Display", serif !important;
+      font-weight: 700 !important;
+      background: linear-gradient(135deg, #d4af37 0%, #8b7355 100%) !important;
+      -webkit-background-clip: text !important;
+      -webkit-text-fill-color: transparent !important;
+      background-clip: text !important;
+      text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1) !important;
+      letter-spacing: -0.02em !important;
+      margin-bottom: 1rem !important;
+    }
+
+    header .lead,
+    header p {
+      font-weight: 400 !important;
+      color: #6b7280 !important;
+      font-style: italic !important;
+      letter-spacing: 0.5px !important;
+      margin-top: 0.5rem !important;
+    }
+
+    #main-title {
+      font-family: "Playfair Display", serif;
+      font-weight: 700;
+      background: var(--gradient-primary);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+      letter-spacing: -0.02em;
+    }
+
+    #main-subtitle {
+      font-weight: 400;
+      color: var(--text-muted);
+      font-style: italic;
+      letter-spacing: 0.5px;
+    }
+
+    /* Card styles */
+    .archive-card {
+      transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+      border: none;
+      box-shadow: var(--shadow-soft);
+      border-radius: 16px;
+      overflow: hidden;
+      background: var(--warm-white);
+      position: relative;
+    }
+
+    .archive-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 3px;
+      background: var(--gradient-primary);
+      transform: scaleX(0);
+      transition: transform 0.3s ease;
+    }
+
+    .archive-card:hover {
+      transform: translateY(-8px) scale(1.02);
+      box-shadow: var(--shadow-hover);
+    }
+
+    .archive-card:hover::before {
+      transform: scaleX(1);
+    }
+
+    .archive-card:hover .card-img-top {
+      transform: scale(1.05);
+    }
+
+    /* Thumbnail styles */
+    .card-img-top {
+      height: 280px;
+      object-fit: cover;
+      object-position: center;
+      transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+      filter: brightness(0.95) contrast(1.05);
+    }
+
+    /* Card body styles */
+    .card-body {
+      padding: 2rem;
+      position: relative;
+    }
+
+    .card-title {
+      font-family: "Playfair Display", serif;
+      font-size: 1.25rem;
+      font-weight: 600;
+      color: var(--text-dark);
+      margin-bottom: 0.75rem;
+      line-height: 1.3;
+      transition: color 0.3s ease;
+    }
+
+    .archive-card:hover .card-title {
+      color: var(--primary-dark);
+    }
+
+    .card-subtitle {
+      font-size: 0.95rem;
+      color: var(--primary-gold);
+      margin-bottom: 1rem;
+      font-weight: 500;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .card-text {
+      color: var(--text-muted);
+      line-height: 1.6;
+      font-size: 0.95rem;
+    }
+
+    /* Button styles */
+    .btn-view-details {
+      background: var(--gradient-primary);
+      border: none;
+      font-weight: 500;
+      padding: 0.75rem 2rem;
+      border-radius: 50px;
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      color: white;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      font-size: 0.85rem;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .btn-view-details::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+      transition: left 0.5s;
+    }
+
+    .btn-view-details:hover::before {
+      left: 100%;
+    }
+
+    .btn-view-details:hover {
+      background: var(--gradient-accent);
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(114, 47, 55, 0.3);
+    }
+
+    .btn-outline-primary {
+      border: 2px solid var(--primary-gold);
+      color: var(--primary-gold);
+      font-weight: 500;
+      border-radius: 50px;
+      padding: 0.5rem 1.5rem;
+      transition: all 0.3s ease;
+    }
+
+    .btn-outline-primary:hover {
+      background: var(--gradient-primary);
+      border-color: var(--primary-gold);
+      color: white;
+      transform: translateY(-2px);
+      box-shadow: 0 4px 15px rgba(212, 175, 55, 0.3);
+    }
+
+    /* Loading and error states */
+    #loading {
+      min-height: 400px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      background: rgba(255, 255, 255, 0.8);
+      backdrop-filter: blur(10px);
+      border-radius: 20px;
+      margin: 2rem 0;
+    }
+
+    .spinner-border {
+      width: 3rem;
+      height: 3rem;
+      border-width: 0.3em;
+    }
+
+    .spinner-border.text-primary {
+      color: var(--primary-gold) !important;
+    }
+
+    /* Archive details page styles */
+    #archive-details .card {
+      border: none;
+      box-shadow: var(--shadow-soft);
+      border-radius: 20px;
+      background: var(--warm-white);
+      overflow: hidden;
+    }
+
+    #archive-details .card-body {
+      padding: 2.5rem;
+    }
+
+    #archive-title {
+      font-family: "Playfair Display", serif;
+      color: var(--text-dark);
+      font-weight: 600;
+      margin-bottom: 1.5rem;
+    }
+
+    #file-container {
+      background: var(--soft-cream);
+      border-radius: 12px;
+      padding: 1rem;
+    }
+
+    #file-container embed,
+    #file-container img {
+      max-width: 100%;
+      border-radius: 12px;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    }
+
+    /* Enhanced alert styles */
+    .alert-danger {
+      background: linear-gradient(135deg, #fee2e2 0%, #fecaca 100%);
+      border: 1px solid #fca5a5;
+      border-radius: 16px;
+      color: #991b1b;
+    }
+
+    /* Responsive adjustments */
+    @media (max-width: 768px) {
+      .display-4 {
+        font-size: 2.2rem;
+      }
+
+      .display-5 {
+        font-size: 1.8rem;
+      }
+
+      .card-img-top {
+        height: 220px;
+      }
+
+      .card-body {
+        padding: 1.5rem;
+      }
+
+      #file-container embed {
+        height: 400px;
+      }
+
+      .archive-card:hover {
+        transform: translateY(-4px) scale(1.01);
+      }
+    }
+
+    @media (max-width: 576px) {
+      .container {
+        padding-left: 15px;
+        padding-right: 15px;
+      }
+
+      .card-body {
+        padding: 1.25rem;
+      }
+
+      #file-container embed {
+        height: 300px;
+      }
+
+      .btn-view-details {
+        padding: 0.6rem 1.5rem;
+        font-size: 0.8rem;
+      }
+    }
+
+    /* Footer styles */
+    footer {
+      margin-top: auto;
+      background: linear-gradient(135deg, var(--soft-cream) 0%, rgba(250, 248, 245, 0.95) 100%);
+      border-top: 1px solid rgba(212, 175, 55, 0.2);
+      backdrop-filter: blur(10px);
+    }
+
+    footer p {
+      color: var(--text-muted);
+      font-size: 0.9rem;
+    }
+
+    /* Utility classes */
+    .text-primary {
+      color: var(--primary-gold) !important;
+    }
+
+    .bg-light {
+      background: var(--soft-cream) !important;
+    }
+
+    /* Smooth scrolling */
+    html {
+      scroll-behavior: smooth;
+    }
+
+    /* Custom scrollbar */
+    ::-webkit-scrollbar {
+      width: 8px;
+    }
+
+    ::-webkit-scrollbar-track {
+      background: var(--soft-cream);
+    }
+
+    ::-webkit-scrollbar-thumb {
+      background: var(--gradient-primary);
+      border-radius: 4px;
+    }
+
+    ::-webkit-scrollbar-thumb:hover {
+      background: var(--gradient-accent);
+    }
+
+    /* Animation for page load */
+    @keyframes fadeInUp {
+      from {
+        opacity: 0;
+        transform: translateY(30px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .archive-card {
+      animation: fadeInUp 0.6s ease-out forwards;
+    }
+
+    .archive-card:nth-child(1) {
+      animation-delay: 0.1s;
+    }
+
+    .archive-card:nth-child(2) {
+      animation-delay: 0.2s;
+    }
+
+    .archive-card:nth-child(3) {
+      animation-delay: 0.3s;
+    }
+
+    .archive-card:nth-child(4) {
+      animation-delay: 0.4s;
+    }
+
+    .archive-card:nth-child(5) {
+      animation-delay: 0.5s;
+    }
+
+    .archive-card:nth-child(6) {
+      animation-delay: 0.6s;
+    }
+  </style>
+  <script src="nav.js"></script>
+</head>
+
+<body>
+  <div class="container-fluid">
+    <!-- Header -->
+    <header class="py-4 mb-4">
+      <div class="container">
+        <div class="row align-items-center">
+          <div class="col-auto">
+            <button id="back-btn" class="btn btn-outline-primary d-none" onclick="showGallery()">
+              ← Back to Gallery
+            </button>
+          </div>
+          <div class="col">
+            <h1 id="main-title" class="display-4 text-center text-primary mb-0">Monastery360 Digital Archives</h1>
+            <p id="main-subtitle" class="text-center text-muted mt-2">Preserving Sacred Heritage Through Digital
+              Innovation</p>
+          </div>
+          <div class="col-auto">
+            <!-- Spacer for centering -->
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="container">
+      <!-- Loading State -->
+      <div id="loading" class="text-center py-5">
+        <div class="spinner-border text-primary" role="status">
+          <span class="visually-hidden">Loading...</span>
+        </div>
+        <p class="mt-3">Loading archives...</p>
+      </div>
+
+      <!-- Error State -->
+      <div id="error" class="alert alert-danger d-none" role="alert">
+        <h4 class="alert-heading">Error Loading Archives</h4>
+        <p>We encountered an issue while loading the digital archives. Please try refreshing the page.</p>
+      </div>
+
+      <!-- Gallery -->
+      <div id="gallery" class="row g-4 d-none">
+        <!-- Cards will be dynamically inserted here -->
+      </div>
+
+      <!-- Added archive details section from archive-detail.html -->
+      <!-- Archive Details -->
+      <div id="archive-details" class="d-none">
+        <div class="row">
+          <div class="col-lg-8 mx-auto">
+            <!-- Archive Info -->
+            <div class="card mb-4">
+              <div class="card-body">
+                <h2 id="archive-title" class="card-title h3 text-primary"></h2>
+                <div class="row text-muted mb-3">
+                  <div class="col-md-6">
+                    <strong>Monastery:</strong> <span id="monastery-name"></span>
+                  </div>
+                  <div class="col-md-6">
+                    <strong>Author:</strong> <span id="author"></span>
+                  </div>
+                </div>
+                <div class="row text-muted mb-3">
+                  <div class="col-md-6">
+                    <strong>Date:</strong> <span id="date"></span>
+                  </div>
+                </div>
+                <div class="mt-3">
+                  <h5>Description</h5>
+                  <p id="description" class="text-muted"></p>
+                </div>
+              </div>
+            </div>
+
+            <!-- File Display -->
+            <div class="card">
+              <div class="card-body">
+                <h5 class="card-title">Document</h5>
+                <div id="file-container" class="text-center">
+                  <!-- PDF or Image will be inserted here -->
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="mt-5 py-4 bg-light">
+      <div class="container text-center">
+        <p class="text-muted mb-0">&copy; 2024 Monastery360 Digital Archives. Preserving history for future generations.
+        </p>
+      </div>
+    </footer>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+  <!-- Merged JavaScript inline instead of external file -->
+  <script>
+    // Monastery360 Digital Archives - Main JavaScript
+
+    // Embedded archives data - merged from archives.json
+    const archivesData = {
+      "archives": [
+        {
+          "id": 1,
+          "title": "Kangyur Buddhist Canon",
+          "monastery_name": "Rumtek Monastery",
+          "author": "Anonymous Tibetan Lamas",
+          "date": "17th Century",
+          "description": "A complete set of the Kangyur—canonical scriptures containing the spoken teachings of the Buddha—brought to Sikkim from Tibet during the founding of Rumtek Monastery. These hand-copied texts are written in classical Tibetan on traditional paper and preserved in ornate wooden bookcases. The collection represents one of the most sacred scriptural treasures of the Karma Kagyu lineage and is still used in major ritual ceremonies today.",
+          "thumbnail": "https://upload.wikimedia.org/wikipedia/commons/e/e5/Vikramjit-Kakati-Rumtek.jpg",
+          "file": "https://srijan1652871.github.io/sikkim.pdf/Kangyur_manuscripts.pdf"
+        },
+        {
+          "id": 2,
+          "title": "Guru Padmasambhava Thangka Series",
+          "monastery_name": "Pemayangtse Monastery",
+          "author": "Unknown Sikkimese Artisans",
+          "date": "18th Century",
+          "description": "A series of thangka scroll paintings depicting key episodes from the life of Guru Padmasambhava, the revered founder of Tibetan Buddhism in Sikkim. These vivid artworks feature natural mineral pigments and fine gold detailing. Unfurled only during annual festivals such as Pang Lhabsol, the thangkas are an outstanding example of Sikkim's vibrant Himalayan art tradition.",
+          "thumbnail": "https://s7ap1.scene7.com/is/image/incredibleindia/spiritual-spots-in-pelling-popular?qlt=82&ts=1726655959297",
+          "file": "https://norbulingka.org/cdn/shop/files/THPGCB018-1.webp?v=1718817144&width=2048"
+        },
+        {
+          "id": 3,
+          "title": "Royal Edicts of the Namgyal Dynasty",
+          "monastery_name": "Tashiding Monastery",
+          "author": "Chogyal Chakdor Namgyal and Royal Council",
+          "date": "Late 17th Century",
+          "description": "A collection of royal decrees and land-grant documents issued by the early Namgyal kings of Sikkim. Written in Tibetan script on handmade paper and sealed with the royal insignia, these records outline the allocation of land and privileges to various monasteries. They provide crucial insight into the political and spiritual governance of the kingdom's formative years.",
+          "thumbnail": "https://adventuresindbad.com/wp-content/uploads/2019/04/LogoLicious_20190417_150121.png",
+          "file": "https://serindia.com/cdn/shop/products/Sikkim00_1024x1024@2x.jpg?v=1621693946"
+        },
+        {
+          "id": 4,
+          "title": "Protective Deities Wall Murals",
+          "monastery_name": "Enchey Monastery",
+          "author": "Local Sikkimese Painters",
+          "date": "19th Century",
+          "description": "A vibrant series of wall murals portraying Mahakala and other protective deities that guard the monastery and its practitioners. The paintings use natural mineral pigments and traditional Tibetan techniques. These murals, carefully maintained through generations, embody the fusion of Sikkimese artistry and Vajrayana Buddhist symbolism.",
+          "thumbnail": "https://live.staticflickr.com/389/19359749150_3d4facbc6d_b.jpg",
+          "file": "https://live.staticflickr.com/65535/19359806598_62bf6777bc_b.jpg"
+        },
+        {
+          "id": 5,
+          "title": "Monastic Tax and Land Records",
+          "monastery_name": "Phodong Monastery",
+          "author": "Administrative Scribes of the Namgyal Court",
+          "date": "18th–19th Century",
+          "description": "Handwritten scrolls documenting annual taxes, offerings, and land tenancy agreements between the Namgyal rulers and the monastic estates of Phodong. These records, composed in classical Tibetan, provide valuable historical data on the economic and social ties between Sikkim's royal administration and its religious institutions.",
+          "thumbnail": "https://s7ap1.scene7.com/is/image/incredibleindia/phodong-monastery-gangtok-sikkim-gangtok-1-musthead-hero?qlt=82&ts=1742153343325",
+          "file": "http://14.139.206.50:8080/jspui/bitstream/1/7760/1/Gnudup%20Sangmo%20Bhutia-History-PhD.pdf"
+        },
+        {
+          "id": 6,
+          "title": "Ritual Dance Mask Catalogue",
+          "monastery_name": "Lingdum (Ranka) Monastery",
+          "author": "Senior Monastic Dance Masters",
+          "date": "Early 20th Century",
+          "description": "An illustrated inventory of the monastery's ceremonial cham dance masks, each accompanied by notes on its associated deity, ritual significance, and choreography. The catalogue combines hand-drawn sketches with descriptive Tibetan text, preserving the intangible heritage of Sikkim's sacred masked dance traditions for future generations.",
+          "thumbnail": "https://s7ap1.scene7.com/is/image/incredibleindia/lingdum-monastery-gangtok-sikkim-1-attr-hero?qlt=82&ts=1742166048831",
+          "file": "https://www.windhorsetours.com/wp-content/uploads/2014/11/Sikkim-festival-Mask-sance.jpg"
+        }
+      ]
+    };
+
+    document.addEventListener("DOMContentLoaded", () => {
+      loadArchives()
+    })
+
+    async function loadArchives() {
+      try {
+        // Show loading state
+        showLoading()
+
+        // Use embedded data instead of fetching from external file
+        const data = archivesData;
+
+        // Display the archives
+        displayArchives(data.archives)
+      } catch (error) {
+        console.error("Error loading archives:", error)
+        showError()
+      }
+    }
+
+    function displayArchives(archives) {
+      const gallery = document.getElementById("gallery")
+      const loading = document.getElementById("loading")
+
+      // Hide loading, show gallery
+      loading.classList.add("d-none")
+      gallery.classList.remove("d-none")
+
+      // Clear existing content
+      gallery.innerHTML = ""
+
+      // Create cards for each archive
+      archives.forEach((archive) => {
+        const card = createArchiveCard(archive)
+        gallery.appendChild(card)
+      })
+    }
+
+    function createArchiveCard(archive) {
+      // Create card container
+      const colDiv = document.createElement("div")
+      colDiv.className = "col-lg-4 col-md-6 col-sm-12"
+
+      // Create card HTML
+      colDiv.innerHTML = `
+                <div class="card archive-card h-100">
+                    <img src="${archive.thumbnail}" class="card-img-top" alt="${archive.title}" onerror="this.src='data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMzAwIiBoZWlnaHQ9IjI1MCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSIjZGVlMmU2Ii8+PHRleHQgeD0iNTAlIiB5PSI1MCUiIGZvbnQtZmFtaWx5PSJBcmlhbCwgc2Fucy1zZXJpZiIgZm9udC1zaXplPSIxNCIgZmlsbD0iIzZjNzU3ZCIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZHk9Ii4zZW0iPkltYWdlIE5vdCBGb3VuZDwvdGV4dD48L3N2Zz4='">
+                    <div class="card-body d-flex flex-column">
+                        <h5 class="card-title">${escapeHtml(archive.title)}</h5>
+                        <h6 class="card-subtitle mb-2 text-muted">${escapeHtml(archive.monastery_name)}</h6>
+                        <p class="card-text flex-grow-1">${escapeHtml(truncateText(archive.description, 100))}</p>
+                        <div class="mt-auto">
+                            <button class="btn btn-primary btn-view-details w-100" onclick="viewDetails(${archive.id})">
+                                View Details
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            `
+
+      return colDiv
+    }
+
+    function viewDetails(archiveId) {
+      loadArchiveDetails(archiveId)
+    }
+
+    async function loadArchiveDetails(archiveId) {
+      try {
+        // Show loading state
+        showLoading()
+
+        // Use embedded data instead of fetching from external file
+        const data = archivesData;
+        const archive = data.archives.find(item => item.id === parseInt(archiveId))
+
+        if (!archive) {
+          showError()
+          return
+        }
+
+        // Display the archive details
+        displayArchiveDetails(archive)
+
+      } catch (error) {
+        console.error('Error loading archive details:', error)
+        showError()
+      }
+    }
+
+    function displayArchiveDetails(archive) {
+      // Hide gallery and loading, show details
+      document.getElementById('loading').classList.add('d-none')
+      document.getElementById('gallery').classList.add('d-none')
+      document.getElementById('archive-details').classList.remove('d-none')
+
+      // Update header
+      document.getElementById('main-title').textContent = 'Archive Details'
+      document.getElementById('main-title').className = 'display-5 text-center text-primary mb-0'
+      document.getElementById('main-subtitle').style.display = 'none'
+      document.getElementById('back-btn').classList.remove('d-none')
+
+      // Populate the details
+      document.getElementById('archive-title').textContent = archive.title
+      document.getElementById('monastery-name').textContent = archive.monastery_name
+      document.getElementById('author').textContent = archive.author
+      document.getElementById('date').textContent = archive.date
+      document.getElementById('description').textContent = archive.description
+
+      // Display the file
+      const fileContainer = document.getElementById('file-container')
+      const fileExtension = archive.file.split('.').pop().toLowerCase()
+
+      if (fileExtension === 'pdf') {
+        // Display PDF
+        fileContainer.innerHTML = `
+                <embed src="${archive.file}" type="application/pdf" width="100%" height="600px" class="border rounded">
+                <p class="mt-2 text-muted">
+                    <a href="${archive.file}" target="_blank" class="btn btn-outline-primary">
+                        Open PDF in New Tab
+                    </a>
+                </p>
+            `
+      } else {
+        // Display as image
+        fileContainer.innerHTML = `
+                <img src="${archive.file}" alt="${archive.title}" class="img-fluid rounded shadow">
+            `
+      }
+    }
+
+    function showGallery() {
+      // Hide details, show gallery
+      document.getElementById('archive-details').classList.add('d-none')
+      document.getElementById('gallery').classList.remove('d-none')
+
+      // Reset header
+      document.getElementById('main-title').textContent = 'Monastery360 Digital Archives'
+      document.getElementById('main-title').className = 'display-4 text-center text-primary mb-0'
+      document.getElementById('main-subtitle').style.display = 'block'
+      document.getElementById('back-btn').classList.add('d-none')
+    }
+
+    function showLoading() {
+      document.getElementById("loading").classList.remove("d-none")
+      document.getElementById("gallery").classList.add("d-none")
+      document.getElementById("archive-details").classList.add("d-none")
+      document.getElementById("error").classList.add("d-none")
+    }
+
+    function showError() {
+      document.getElementById("loading").classList.add("d-none")
+      document.getElementById("gallery").classList.add("d-none")
+      document.getElementById("archive-details").classList.add("d-none")
+      document.getElementById("error").classList.remove("d-none")
+    }
+
+    // Utility functions
+    function escapeHtml(text) {
+      const div = document.createElement("div")
+      div.textContent = text
+      return div.innerHTML
+    }
+
+    function truncateText(text, maxLength) {
+      if (text.length <= maxLength) {
+        return text
+      }
+      return text.substring(0, maxLength) + "..."
+    }
+
+    // Handle image loading errors
+    function handleImageError(img) {
+      img.src =
+        "data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMzAwIiBoZWlnaHQ9IjI1MCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSIjZGVlMmU2Ii8+PHRleHQgeD0iNTAlIiB5PSI1MCUiIGZvbnQtZmFtaWx5PSJBcmlhbCwgc2Fucy1zZXJpZiIgZm9udC1zaXplPSIxNCIgZmlsbD0iIzZjNzU3ZCIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZHk9Ii4zZW0iPkltYWdlIE5vdCBGb3VuZDwvdGV4dD48L3N2Zz4="
+    }
+  </script>
+</body>
+
+</html>

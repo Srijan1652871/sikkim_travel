@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Monastery360</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Inter:wght@300;400;500;600&display=swap');
+    :root {
+      --primary-gold: #d4af37; --primary-dark: #8b7355; --accent-burgundy: #722f37;
+      --soft-cream: #faf8f5; --text-dark: #2c2c2c; --text-muted: #6b7280;
+      --shadow-soft: 0 4px 20px rgba(0,0,0,.08);
+      --grad: linear-gradient(135deg,#d4af37 0%,#8b7355 100%);
+    }
+    body { font-family: 'Inter', sans-serif; background: linear-gradient(135deg,#faf8f5,#f8f6f3,#fff); color: var(--text-dark); min-height:100vh; margin:0; }
+    .page-hero { background: var(--grad); color:#fff; padding:3rem 0 2rem; text-align:center; }
+    .page-hero h1 { font-family:'Playfair Display',serif; font-size:2.5rem; margin:0 0 .5rem; }
+    .page-hero p { opacity:.85; margin:0; }
+    .narration-card { background:#fff; border-radius:16px; box-shadow: var(--shadow-soft); padding:2rem; margin-bottom:1.5rem; border-left:4px solid var(--primary-gold); transition: transform .3s, box-shadow .3s; }
+    .narration-card:hover { transform:translateY(-3px); box-shadow:0 8px 30px rgba(0,0,0,.12); }
+    .narration-card h2 { font-family:'Playfair Display',serif; color:var(--accent-burgundy); margin-top:0; }
+    .narrate-btn { background: var(--grad); border:none; color:#fff; padding:.6rem 1.4rem; border-radius:50px; font-weight:600; cursor:pointer; transition:transform .2s,box-shadow .2s; display:inline-flex; align-items:center; gap:.4rem; }
+    .narrate-btn:hover { transform:translateY(-2px); box-shadow:0 4px 15px rgba(212,175,55,.4); }
+    .highlight { background:linear-gradient(135deg,rgba(212,175,55,.3),rgba(139,115,85,.2)); border-radius:3px; padding:2px; }
+    #google_translate_element { position: fixed; bottom: 5rem; right: 1.5rem; z-index:999; background:rgba(255,255,255,.95); backdrop-filter:blur(20px); padding:10px; border-radius:12px; box-shadow:var(--shadow-soft); border:1px solid rgba(212,175,55,.2); }
+  </style>
+  <script src="nav.js"></script>
+</head>
+<body>
+
+  <div class="page-hero">
+    <div class="container">
+      <h1><i class="fas fa-microphone me-2"></i>Narration Studio</h1>
+      <p>Listen to monastery stories with multi-language text-to-speech narration</p>
+    </div>
+  </div>
+
+  <div class="container py-4">
+
+  <!-- Google Translate Dropdown -->
+  <div id="google_translate_element"></div>
+
+  <div class="narration-card" id="intro-section">
+    <h2>Welcome to Monastery360</h2>
+    <p id="intro-text">
+      Rumtek Monastery is one of the largest monasteries in Sikkim. 
+      It is open from 9:00 AM to 5:00 PM. Entry is free. 
+      Hello, I am Sagnik Paul. I am from Barrackpore. 
+      I am studying computer science and engineering in RCCIIT.
+    </p>
+    <button class='narrate-btn' onclick="narrate('intro-text')"><i class='fas fa-headphones'></i> Narrate</button>
+  </div>
+
+  <div class="narration-card" id="about-section">
+    <h2>About This Platform</h2>
+    <p id="about-text">
+      This platform provides 360° tours, cultural history, and festival details for tourists and students.
+    </p>
+    <button class='narrate-btn' onclick="narrate('about-text')"><i class='fas fa-headphones'></i> Narrate</button>
+  </div>
+
+  </div><!-- /.container -->
+
+  <!-- Google Translate Script -->
+  <script type="text/javascript">
+    function googleTranslateElementInit() {
+      new google.translate.TranslateElement(
+        {pageLanguage: 'en', includedLanguages: 'en,hi,bn,ne'},
+        'google_translate_element'
+      );
+    }
+  </script>
+  <script src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+
+  <!-- Karaoke Narration Script -->
+  <script>
+    function narrate(elementId) {
+      let element = document.getElementById(elementId);
+      let text = element.innerText;
+
+      // Split text into words
+      let words = text.split(" ");
+      element.innerHTML = words.map((w, i) => `<span id="word-${i}">${w}</span>`).join(" ");
+
+      // Detect current language
+      let langSelect = document.querySelector("select.goog-te-combo");
+      let lang = langSelect ? langSelect.value : "en";
+
+      let utterance = new SpeechSynthesisUtterance(text);
+
+      // Match voices with language
+      if (lang === "hi") utterance.lang = "hi-IN";
+      else if (lang === "bn") utterance.lang = "bn-IN";
+      else if (lang === "ne") utterance.lang = "ne-NP";
+      else utterance.lang = "en-US";
+
+      let wordIndex = 0;
+
+      // Highlight words as narration goes
+      utterance.onboundary = function(event) {
+        if (event.name === "word" || event.charIndex !== undefined) {
+          let currentWord = document.getElementById(`word-${wordIndex}`);
+          if (currentWord) {
+            // Reset previous word
+            let prev = document.querySelector(".highlight");
+            if (prev) prev.classList.remove("highlight");
+
+            // Highlight current word
+            currentWord.classList.add("highlight");
+            wordIndex++;
+          }
+        }
+      };
+
+      utterance.onend = () => {
+        // Clear highlight after narration ends
+        let prev = document.querySelector(".highlight");
+        if (prev) prev.classList.remove("highlight");
+      };
+
+      speechSynthesis.cancel();
+      speechSynthesis.speak(utterance);
+    }
+  </script>
+
+</body>
+</html>

@@ -1,0 +1,817 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Monastery360 - Digital Heritage Platform for Sikkim's Monasteries</title>
+  <meta name="description" content="Explore Sikkim's 200+ monasteries through immersive virtual tours, digital archives, and cultural experiences. Preserving Buddhist heritage for future generations.">
+  
+  <!-- Bootstrap CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <!-- Font Awesome for icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <!-- AOS Animation Library -->
+  <link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css" />
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+  
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Inter:wght@300;400;500;600&display=swap');
+
+    :root {
+      --primary-gold: #d4af37;
+      --primary-dark: #8b7355;
+      --accent-burgundy: #722f37;
+      --soft-cream: #faf8f5;
+      --warm-white: #ffffff;
+      --text-dark: #2c2c2c;
+      --text-muted: #6b7280;
+      --shadow-soft: 0 4px 20px rgba(0, 0, 0, 0.08);
+      --shadow-hover: 0 8px 30px rgba(0, 0, 0, 0.12);
+      --gradient-primary: linear-gradient(135deg, var(--primary-gold) 0%, var(--primary-dark) 100%);
+      --gradient-accent: linear-gradient(135deg, var(--accent-burgundy) 0%, #8b4513 100%);
+      --gradient-secondary: linear-gradient(135deg, var(--primary-dark) 0%, var(--accent-burgundy) 100%);
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      background: linear-gradient(135deg, var(--soft-cream) 0%, #f8f6f3 50%, var(--warm-white) 100%);
+      font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      color: var(--text-dark);
+      overflow-x: hidden;
+      line-height: 1.6;
+      min-height: 100vh;
+      position: relative;
+    }
+
+    body::before {
+      content: '';
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background:
+        radial-gradient(circle at 20% 80%, rgba(212, 175, 55, 0.1) 0%, transparent 50%),
+        radial-gradient(circle at 80% 20%, rgba(114, 47, 55, 0.08) 0%, transparent 50%);
+      pointer-events: none;
+      z-index: -1;
+    }
+
+    h1, h2, h3, h4, h5, h6 {
+      font-family: 'Playfair Display', serif;
+      font-weight: 600;
+    }
+
+    .btn-primary {
+      background: var(--gradient-primary);
+      border: none;
+      transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+      font-weight: 500;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      box-shadow: var(--shadow-soft);
+      border-radius: 50px;
+      padding: 0.75rem 2rem;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .btn-primary::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+      transition: left 0.5s;
+    }
+
+    .btn-primary:hover::before {
+      left: 100%;
+    }
+
+    .btn-primary:hover {
+      background: var(--gradient-accent);
+      transform: translateY(-3px);
+      box-shadow: var(--shadow-hover);
+    }
+
+    .btn-outline-primary {
+      border: 2px solid var(--primary-gold);
+      color: var(--primary-gold);
+      font-weight: 500;
+      border-radius: 50px;
+      padding: 0.5rem 1.5rem;
+      transition: all 0.3s ease;
+    }
+
+    .btn-outline-primary:hover {
+      background: var(--gradient-primary);
+      border-color: var(--primary-gold);
+      color: white;
+      transform: translateY(-2px);
+      box-shadow: 0 4px 15px rgba(212, 175, 55, 0.3);
+    }
+
+    .btn-outline-light {
+      border: 2px solid rgba(255, 255, 255, 0.8);
+      color: rgba(255, 255, 255, 0.9);
+      font-weight: 500;
+      border-radius: 50px;
+      padding: 0.75rem 2rem;
+      transition: all 0.3s ease;
+    }
+
+    .btn-outline-light:hover {
+      background: rgba(255, 255, 255, 0.1);
+      border-color: white;
+      color: white;
+      transform: translateY(-2px);
+    }
+
+    .hero-section {
+      min-height: 100vh;
+      background: linear-gradient(rgba(44, 44, 44, 0.7), rgba(44, 44, 44, 0.5)), 
+                  url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 1000"><defs><radialGradient id="a" cx="50%" cy="50%"><stop offset="0%" stop-color="%23d4af37" stop-opacity="0.1"/><stop offset="100%" stop-color="%23722f37" stop-opacity="0.05"/></radialGradient></defs><rect width="100%" height="100%" fill="url(%23a)"/></svg>');
+      background-size: cover;
+      background-position: center;
+      display: flex;
+      align-items: center;
+      position: relative;
+      overflow: hidden;
+      padding-top: 2rem;
+    }
+
+    .hero-section::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: var(--gradient-primary);
+      opacity: 0.1;
+      z-index: 1;
+    }
+
+    .hero-content {
+      position: relative;
+      z-index: 2;
+    }
+
+    .feature-card {
+      background: var(--warm-white);
+      border-radius: 20px;
+      padding: 2.5rem;
+      height: 100%;
+      transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+      border: none;
+      box-shadow: var(--shadow-soft);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .feature-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 3px;
+      background: var(--gradient-primary);
+      transform: scaleX(0);
+      transition: transform 0.3s ease;
+    }
+
+    .feature-card:hover::before {
+      transform: scaleX(1);
+    }
+
+    .feature-card:hover {
+      transform: translateY(-8px) scale(1.02);
+      box-shadow: var(--shadow-hover);
+    }
+
+    .feature-icon {
+      width: 80px;
+      height: 80px;
+      background: var(--gradient-primary);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 1.5rem;
+      font-size: 2rem;
+      color: white;
+      transition: all 0.3s ease;
+    }
+
+    .feature-card:hover .feature-icon {
+      background: var(--gradient-accent);
+      transform: scale(1.1);
+    }
+
+    .stats-section {
+      background: var(--gradient-accent);
+      color: white;
+      padding: 5rem 0;
+      position: relative;
+    }
+
+    .stats-section::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><circle cx="50" cy="50" r="2" fill="%23FFFFFF" opacity="0.1"/></svg>');
+      background-size: 50px 50px;
+    }
+
+    .stat-item {
+      text-align: center;
+      position: relative;
+      z-index: 2;
+    }
+
+    .stat-number {
+      font-size: 3.5rem;
+      font-weight: 700;
+      color: var(--primary-gold);
+      display: block;
+      margin-bottom: 0.5rem;
+    }
+
+    .navbar {
+      background: linear-gradient(135deg, rgba(255, 255, 255, 0.95) 0%, rgba(250, 248, 245, 0.98) 100%) !important;
+      backdrop-filter: blur(20px) !important;
+      border-bottom: 1px solid rgba(212, 175, 55, 0.2) !important;
+      box-shadow: var(--shadow-soft) !important;
+      transition: all 0.3s ease;
+      padding: 1rem 0;
+    }
+
+    .navbar.scrolled {
+      box-shadow: var(--shadow-hover) !important;
+      padding: 0.5rem 0;
+    }
+
+    .navbar-brand {
+      font-size: 1.8rem;
+      font-weight: 700;
+      background: var(--gradient-primary);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .nav-link {
+      color: var(--text-dark) !important;
+      font-weight: 500;
+      transition: color 0.3s ease;
+      position: relative;
+    }
+
+    .nav-link:hover {
+      color: var(--primary-gold) !important;
+    }
+
+    .nav-link::after {
+      content: '';
+      position: absolute;
+      bottom: -5px;
+      left: 50%;
+      width: 0;
+      height: 2px;
+      background: var(--gradient-primary);
+      transition: all 0.3s ease;
+      transform: translateX(-50%);
+    }
+
+    .nav-link:hover::after {
+      width: 100%;
+    }
+
+    footer {
+      background: linear-gradient(135deg, var(--text-dark), #1a1a1a);
+      position: relative;
+      margin-top: auto;
+      color: white;
+    }
+
+    footer::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 3px;
+      background: var(--gradient-primary);
+    }
+
+    .footer-link {
+      transition: color 0.3s ease;
+      color: white !important;
+    }
+
+    .footer-link:hover {
+      color: var(--primary-gold) !important;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    .btn {
+      position: relative;
+      overflow: hidden;
+    }
+
+    .text-balance {
+      text-wrap: balance;
+    }
+
+    .text-primary {
+      color: var(--primary-gold) !important;
+    }
+
+    .bg-light {
+      background: var(--soft-cream) !important;
+    }
+
+    ::-webkit-scrollbar {
+      width: 8px;
+    }
+
+    ::-webkit-scrollbar-track {
+      background: var(--soft-cream);
+    }
+
+    ::-webkit-scrollbar-thumb {
+      background: var(--gradient-primary);
+      border-radius: 4px;
+    }
+
+    ::-webkit-scrollbar-thumb:hover {
+      background: var(--gradient-accent);
+    }
+
+    @keyframes fadeInUp {
+      from {
+        opacity: 0;
+        transform: translateY(30px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .feature-card {
+      animation: fadeInUp 0.6s ease-out forwards;
+    }
+
+    .feature-card:nth-child(1) { animation-delay: 0.1s; }
+    .feature-card:nth-child(2) { animation-delay: 0.2s; }
+    .feature-card:nth-child(3) { animation-delay: 0.3s; }
+    .feature-card:nth-child(4) { animation-delay: 0.4s; }
+    .feature-card:nth-child(5) { animation-delay: 0.5s; }
+    .feature-card:nth-child(6) { animation-delay: 0.6s; }
+
+    @media (max-width: 768px) {
+      .hero-section {
+        min-height: 80vh;
+        text-align: center;
+        /* Reduced top padding for mobile */
+        padding-top: 80px;
+      }
+      
+      .stat-number {
+        font-size: 2.5rem;
+      }
+      
+      .feature-card {
+        margin-bottom: 2rem;
+        padding: 2rem;
+      }
+
+      .feature-card:hover {
+        transform: translateY(-4px) scale(1.01);
+      }
+    }
+
+    @media (max-width: 576px) {
+      .feature-card {
+        padding: 1.5rem;
+      }
+    }
+  </style>
+  <script src="nav.js"></script>
+</head>
+<body>
+  <!-- navbar injected by nav.js -->
+
+  <section class="hero-section" id="home">
+    <div class="container hero-content">
+      <div class="row align-items-center">
+        <div class="col-lg-6" data-aos="fade-right">
+          <h1 class="display-3 fw-bold text-white mb-4 text-balance">
+            Discover Sikkim's Sacred <span style="color: var(--primary-gold);">Monasteries</span>
+          </h1>
+          <p class="lead text-white-50 mb-5 text-balance">
+            Immerse yourself in the spiritual heritage of the Himalayas through cutting-edge virtual reality, 
+            interactive maps, and digital archives preserving 200+ monasteries for future generations.
+          </p>
+          <div class="d-flex flex-wrap gap-3">
+            <a class="btn btn-primary btn-lg" href="m360.html">
+              <i class="fas fa-vr-cardboard me-2"></i>Start Virtual Tour
+            </a>
+            <a class="btn btn-outline-light btn-lg" href="index.html">
+              <i class="fas fa-map-marked-alt me-2"></i>Explore Map
+            </a>
+          </div>
+        </div>
+        <div class="col-lg-6" data-aos="fade-left">
+          <div class="text-center">
+            <img src="https://t4.ftcdn.net/jpg/04/16/47/89/360_F_416478921_IgcnUmprlQqGjfrnZ0dPBu1rlWhCBHgK.jpg" 
+                 alt="Sikkim Monastery" class="img-fluid rounded-4 shadow-lg">
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="stats-section">
+    <div class="container">
+      <div class="row g-4">
+        <div class="col-lg-3 col-md-6">
+          <div class="stat-item" data-aos="fade-up" data-aos-delay="100">
+            <span class="stat-number" data-count="200">0</span>
+            <h5 class="fw-semibold">Monasteries Digitized</h5>
+          </div>
+        </div>
+        <div class="col-lg-3 col-md-6">
+          <div class="stat-item" data-aos="fade-up" data-aos-delay="200">
+            <span class="stat-number" data-count="50000">0</span>
+            <h5 class="fw-semibold">Virtual Visitors</h5>
+          </div>
+        </div>
+        <div class="col-lg-3 col-md-6">
+          <div class="stat-item" data-aos="fade-up" data-aos-delay="300">
+            <span class="stat-number" data-count="15">0</span>
+            <h5 class="fw-semibold">Languages Supported</h5>
+          </div>
+        </div>
+        <div class="col-lg-3 col-md-6">
+          <div class="stat-item" data-aos="fade-up" data-aos-delay="400">
+            <span class="stat-number" data-count="5000">0</span>
+            <h5 class="fw-semibold">Digital Artifacts</h5>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="py-5" id="features">
+    <div class="container">
+      <div class="text-center mb-5" data-aos="fade-up">
+        <h2 class="display-4 fw-bold mb-4 text-balance">Revolutionary Features</h2>
+        <p class="lead text-muted text-balance">
+          Experience Sikkim's monastic heritage through innovative technology that bridges ancient wisdom with modern accessibility.
+        </p>
+      </div>
+      
+      <div class="row g-4">
+        <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="100">
+          <div class="feature-card">
+            <div class="feature-icon">
+              <i class="fas fa-vr-cardboard"></i>
+            </div>
+            <h4 class="fw-bold mb-3">Virtual Tours</h4>
+            <div class="mb-3">
+              <video autoplay muted loop class="img-fluid rounded" style="width: 100%; height: 200px; object-fit: cover;">
+                <source src="/placeholder.mp4?query=360 degree monastery interior virtual tour with prayer wheels and Buddhist monks" type="video/mp4">
+                Your browser does not support the video tag.
+              </video>
+            </div>
+            <ul class="list-unstyled mb-4">
+              <li class="mb-2"><i class="fas fa-check text-primary me-2"></i>360° panoramic views of monastery interiors and surroundings</li>
+              <li class="mb-2"><i class="fas fa-check text-primary me-2"></i>Narrated walkthroughs in multiple languages (English, Hindi, Nepali, Bhutia, Lepcha)</li>
+              <li class="mb-2"><i class="fas fa-check text-primary me-2"></i>Interactive hotspots revealing historical significance</li>
+              <li class="mb-2"><i class="fas fa-check text-primary me-2"></i>VR headset compatibility for immersive experiences</li>
+            </ul>
+            <button class="btn btn-outline-primary" onclick="location.href='m360.html'">Explore Tours</button>
+          </div>
+        </div>
+
+        <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="200">
+          <div class="feature-card">
+            <div class="feature-icon">
+              <i class="fas fa-map-marked-alt"></i>
+            </div>
+            <h4 class="fw-bold mb-3">Interactive Map</h4>
+            <div class="mb-3">
+              <video autoplay muted loop class="img-fluid rounded" style="width: 100%; height: 200px; object-fit: cover;">
+                <source src="/placeholder.mp4?query=interactive map of Sikkim monasteries with GPS markers and travel routes" type="video/mp4">
+                Your browser does not support the video tag.
+              </video>
+            </div>
+            <ul class="list-unstyled mb-4">
+              <li class="mb-2"><i class="fas fa-check text-primary me-2"></i>Geo-tagged monastery locations with travel routes and nearby attractions</li>
+              <li class="mb-2"><i class="fas fa-check text-primary me-2"></i>Integration with local transport and tourism services</li>
+              <li class="mb-2"><i class="fas fa-check text-primary me-2"></i>Real-time weather and accessibility updates</li>
+              <li class="mb-2"><i class="fas fa-check text-primary me-2"></i>Offline map downloads for remote areas</li>
+            </ul>
+            <button class="btn btn-outline-primary" onclick="location.href='index.html'">View Map</button>
+          </div>
+        </div>
+
+        <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="300">
+          <div class="feature-card">
+            <div class="feature-icon">
+              <i class="fas fa-archive"></i>
+            </div>
+            <h4 class="fw-bold mb-3">Digital Archives</h4>
+            <div class="mb-3">
+              <video autoplay muted loop class="img-fluid rounded" style="width: 100%; height: 200px; object-fit: cover;">
+                <source src="/placeholder.mp4?query=ancient Buddhist manuscripts and murals being digitally scanned and archived" type="video/mp4">
+                Your browser does not support the video tag.
+              </video>
+            </div>
+            <ul class="list-unstyled mb-4">
+              <li class="mb-2"><i class="fas fa-check text-primary me-2"></i>Scanned manuscripts, murals, and historical documents</li>
+              <li class="mb-2"><i class="fas fa-check text-primary me-2"></i>AI-powered search and categorization</li>
+              <li class="mb-2"><i class="fas fa-check text-primary me-2"></i>High-resolution artifact documentation</li>
+              <li class="mb-2"><i class="fas fa-check text-primary me-2"></i>Scholarly annotations and historical context</li>
+            </ul>
+            <button class="btn btn-outline-primary" onclick="location.href='digarc.html'">Browse Archives</button>
+          </div>
+        </div>
+
+        <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="400">
+          <div class="feature-card">
+            <div class="feature-icon">
+              <i class="fas fa-headphones"></i>
+            </div>
+            <h4 class="fw-bold mb-3">Smart Audio Guide App</h4>
+            <div class="mb-3">
+              <video autoplay muted loop class="img-fluid rounded" style="width: 100%; height: 200px; object-fit: cover;">
+                <source src="/placeholder.mp4?query=smartphone app showing audio guide interface with Bluetooth beacons in monastery" type="video/mp4">
+                Your browser does not support the video tag.
+              </video>
+            </div>
+            <ul class="list-unstyled mb-4">
+              <li class="mb-2"><i class="fas fa-check text-primary me-2"></i>Location-based audio guides using Bluetooth beacons or GPS</li>
+              <li class="mb-2"><i class="fas fa-check text-primary me-2"></i>Offline mode for remote areas</li>
+              <li class="mb-2"><i class="fas fa-check text-primary me-2"></i>Personalized content based on interests and time available</li>
+              <li class="mb-2"><i class="fas fa-check text-primary me-2"></i>Professional narration by Buddhist scholars and local guides</li>
+            </ul>
+            <button class="btn btn-outline-primary" onclick="location.href='audguide.html'">Download App</button>
+          </div>
+        </div>
+
+        <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="500">
+          <div class="feature-card">
+            <div class="feature-icon">
+              <i class="fas fa-calendar-alt"></i>
+            </div>
+            <h4 class="fw-bold mb-3">Cultural Calendar</h4>
+            <div class="mb-3">
+              <video autoplay muted loop class="img-fluid rounded" style="width: 100%; height: 200px; object-fit: cover;">
+                <source src="/placeholder.mp4?query=Buddhist festival calendar with colorful prayer flags and monastery celebrations" type="video/mp4">
+                Your browser does not support the video tag.
+              </video>
+            </div>
+            <ul class="list-unstyled mb-4">
+              <li class="mb-2"><i class="fas fa-check text-primary me-2"></i>Events, festivals, and rituals schedule</li>
+              <li class="mb-2"><i class="fas fa-check text-primary me-2"></i>Booking and participation options for tourists</li>
+              <li class="mb-2"><i class="fas fa-check text-primary me-2"></i>Cultural significance explanations and preparation guides</li>
+              <li class="mb-2"><i class="fas fa-check text-primary me-2"></i>Integration with accommodation and travel planning</li>
+            </ul>
+            <button class="btn btn-outline-primary" onclick="location.href='cultcal.html'">View Calendar</button>
+          </div>
+        </div>
+
+        <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="600">
+          <div class="feature-card">
+            <div class="feature-icon">
+              <i class="fas fa-users"></i>
+            </div>
+            <h4 class="fw-bold mb-3">Community Platform</h4>
+            <div class="mb-3">
+              <video autoplay muted loop class="img-fluid rounded" style="width: 100%; height: 200px; object-fit: cover;">
+                <source src="/placeholder.mp4?query=diverse group of travelers sharing monastery experiences on digital platform" type="video/mp4">
+                Your browser does not support the video tag.
+              </video>
+            </div>
+            <ul class="list-unstyled mb-4">
+              <li class="mb-2"><i class="fas fa-check text-primary me-2"></i>Connect with fellow travelers and Buddhist practitioners</li>
+              <li class="mb-2"><i class="fas fa-check text-primary me-2"></i>Share experiences and monastery photography</li>
+              <li class="mb-2"><i class="fas fa-check text-primary me-2"></i>Expert-led discussions on Buddhist philosophy and culture</li>
+              <li class="mb-2"><i class="fas fa-check text-primary me-2"></i>Local guide recommendations and travel tips</li>
+            </ul>
+            <button class="btn btn-outline-primary" onclick="location.href='narrative.html'">Join Community</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="py-5 bg-light" id="explore">
+    <div class="container">
+      <div class="text-center mb-5" data-aos="fade-up">
+        <h2 class="display-4 fw-bold mb-4 text-balance">Start Your Journey</h2>
+        <p class="lead text-muted text-balance">
+          Choose your path to discover the spiritual treasures of Sikkim's monasteries.
+        </p>
+      </div>
+      
+      <div class="row g-4 justify-content-center">
+        <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="100">
+          <div class="text-center">
+            <div class="mb-4">
+              <img src="https://cdn.dollsofindia.com/images/p/photography/dechhen-chhyoling-gumpa-IS11_l.jpg" 
+                   alt="Virtual Tour" class="img-fluid rounded-4 shadow">
+            </div>
+            <h4 class="fw-bold mb-3">Begin Virtual Exploration</h4>
+            <p class="text-muted mb-4">Start with our most popular monastery tours and experience the serenity from anywhere in the world.</p>
+            <a class="btn btn-primary btn-lg" href="m360.html">Start Now</a>
+          </div>
+        </div>
+        
+        <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="200">
+          <div class="text-center">
+            <div class="mb-4">
+              <img src="https://www.naturetravelagency.com/uploads/1718780722hill%20stations%20in%20sikkim.jpg" 
+                   alt="Plan Visit" class="img-fluid rounded-4 shadow">
+            </div>
+            <h4 class="fw-bold mb-3">Plan Your Physical Visit</h4>
+            <p class="text-muted mb-4">Use our interactive tools to plan the perfect monastery pilgrimage through Sikkim's sacred sites.</p>
+            <button class="btn btn-primary btn-lg" onclick="location.href='index.html'">Plan Visit</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- footer injected by nav.js -->
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="https://unpkg.com/aos@next/dist/aos.js"></script>
+  
+  <script>
+    AOS.init({
+      duration: 1000,
+      once: true,
+      offset: 100
+    });
+
+    window.addEventListener('scroll', function() {
+      const navbar = document.getElementById('mainNavbar');
+      if (window.scrollY > 50) {
+        navbar.classList.add('scrolled');
+      } else {
+        navbar.classList.remove('scrolled');
+      }
+    });
+
+    function animateCounters() {
+      const counters = document.querySelectorAll('.stat-number');
+      counters.forEach(counter => {
+        const target = parseInt(counter.getAttribute('data-count'));
+        const increment = target / 100;
+        let current = 0;
+        
+        const updateCounter = () => {
+          if (current < target) {
+            current += increment;
+            counter.textContent = Math.floor(current).toLocaleString();
+            requestAnimationFrame(updateCounter);
+          } else {
+            counter.textContent = target.toLocaleString();
+          }
+        };
+        
+        updateCounter();
+      });
+    }
+
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          animateCounters();
+          observer.unobserve(entry.target);
+        }
+      });
+    });
+
+    const statsSection = document.querySelector('.stats-section');
+    if (statsSection) {
+      observer.observe(statsSection);
+    }
+
+    function scrollToExplore() {
+      document.getElementById('explore').scrollIntoView({ behavior: 'smooth' });
+    }
+
+    function startVirtualTour() {
+      alert('🏛️ Virtual Tour launching! Experience Sikkim\'s monasteries in 360° immersive views with multi-language narration.');
+    }
+
+    function exploreMap() {
+      alert('🗺️ Interactive Map opening! Discover geo-tagged monastery locations with optimized travel routes.');
+    }
+
+    function openVirtualTour() {
+      alert('🎯 Opening Virtual Tours section with 360° panoramic monastery experiences!');
+    }
+
+    function openInteractiveMap() {
+      alert('📍 Loading Interactive Map with geo-tagged locations and travel integration!');
+    }
+
+    function browseArchives() {
+      alert('📚 Accessing Digital Archives with AI-powered search through manuscripts and historical documents!');
+    }
+
+    function downloadAudioGuide() {
+      alert('🎧 Smart Audio Guide App download starting! Features location-based guides with offline mode.');
+    }
+
+    function viewCalendar() {
+      alert('📅 Cultural Calendar opening! View festivals, rituals, and booking options for monastery events.');
+    }
+
+    function joinCommunity() {
+      alert('👥 Community Platform launching! Connect with travelers and Buddhist practitioners worldwide.');
+    }
+
+    function planVisit() {
+      alert('✈️ Visit Planning tools loading! Create your perfect monastery pilgrimage itinerary.');
+    }
+
+    function subscribeNewsletter() {
+      const email = document.getElementById('emailInput').value;
+      if (email && email.includes('@')) {
+        alert(`✅ Thank you! ${email} has been subscribed to Monastery360 updates.`);
+        document.getElementById('emailInput').value = '';
+      } else {
+        alert('⚠️ Please enter a valid email address.');
+      }
+    }
+
+    function openSocial(platform) {
+      alert(`🌐 Opening ${platform.charAt(0).toUpperCase() + platform.slice(1)} page for Monastery360!`);
+    }
+
+    function showPrivacyPolicy() {
+      alert('📋 Privacy Policy: We protect your data while you explore Sikkim\'s digital heritage.');
+    }
+
+    function showTerms() {
+      alert('📜 Terms of Service: Guidelines for using Monastery360 digital heritage platform.');
+    }
+
+    function getTravelInfo() {
+      alert('ℹ️ Travel Information: Comprehensive guides for visiting Sikkim\'s monasteries safely.');
+    }
+
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+      anchor.addEventListener('click', function (e) {
+        e.preventDefault();
+        const target = document.querySelector(this.getAttribute('href'));
+        if (target) {
+          target.scrollIntoView({
+            behavior: 'smooth',
+            block: 'start'
+          });
+        }
+      });
+    });
+
+    document.querySelectorAll('.btn').forEach(button => {
+      button.addEventListener('click', function(e) {
+        let ripple = document.createElement('span');
+        ripple.classList.add('ripple');
+        this.appendChild(ripple);
+        
+        let x = e.clientX - e.target.offsetLeft;
+        let y = e.clientY - e.target.offsetTop;
+        
+        ripple.style.left = `${x}px`;
+        ripple.style.top = `${y}px`;
+        
+        setTimeout(() => {
+          ripple.remove();
+        }, 600);
+      });
+    });
+  </script>
+</body>
+</html>
