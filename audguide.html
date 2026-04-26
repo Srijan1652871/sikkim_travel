@@ -53,52 +53,6 @@
       z-index: -1;
     }
 
-    header {
-      background: linear-gradient(135deg, rgba(255, 255, 255, 0.95) 0%, rgba(250, 248, 245, 0.98) 100%) !important;
-      backdrop-filter: blur(20px) !important;
-      border-bottom: 1px solid rgba(212, 175, 55, 0.2) !important;
-      box-shadow: 0 2px 20px rgba(0, 0, 0, 0.05) !important;
-      position: relative;
-      top: 0 !important;
-      z-index: 100 !important;
-      padding: 2rem !important;
-      margin-bottom: 2rem !important;
-    }
-
-    header::before {
-      content: "" !important;
-      position: absolute;
-      bottom: 0 !important;
-      left: 0 !important;
-      right: 0 !important;
-      height: 2px !important;
-      background: linear-gradient(135deg, #d4af37 0%, #8b7355 100%) !important;
-    }
-
-    header h1 {
-      font-family: "Playfair Display", serif !important;
-      font-weight: 700 !important;
-      background: linear-gradient(135deg, #d4af37 0%, #8b7355 100%) !important;
-      -webkit-background-clip: text !important;
-      -webkit-text-fill-color: transparent !important;
-      background-clip: text !important;
-      text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1) !important;
-      letter-spacing: -0.02em !important;
-      margin-bottom: 1rem !important;
-      text-align: center;
-      font-size: 2.5rem;
-    }
-
-    header .lead,
-    header p {
-      font-weight: 400 !important;
-      color: #6b7280 !important;
-      font-style: italic !important;
-      letter-spacing: 0.5px !important;
-      margin-top: 0.5rem !important;
-      text-align: center;
-    }
-
     .location-panel {
       background: var(--warm-white);
       border-radius: 16px;
@@ -202,17 +156,17 @@
       height: 20px;
     }
 
-    .container {
+    .page-wrapper {
       max-width: 1200px;
       margin: 20px auto;
       background: var(--warm-white);
       border-radius: 20px;
       box-shadow: var(--shadow-soft);
-      overflow: hidden;
+      overflow: visible;
       position: relative;
     }
 
-    .container::before {
+    .page-wrapper::before {
       content: "";
       position: absolute;
       top: 0;
@@ -474,11 +428,8 @@
     }
 
     @media (max-width: 768px) {
-      header h1 {
-        font-size: 2rem !important;
-      }
 
-      .container {
+      .page-wrapper {
         margin: 10px;
         border-radius: 16px;
       }
@@ -555,24 +506,44 @@
       height: 20px;
       box-shadow: 0 2px 10px rgba(255, 68, 68, 0.5);
     }
+
+    /* page title banner */
+    .page-title-banner {
+      background: linear-gradient(135deg, var(--primary-gold) 0%, var(--primary-dark) 100%);
+      color: #fff;
+      padding: 2.5rem 0 1.8rem;
+      text-align: center;
+      margin-bottom: 2rem;
+    }
+    .page-title-banner h1 {
+      font-family: "Playfair Display", serif;
+      font-size: 2.2rem;
+      font-weight: 700;
+      margin: 0 0 .4rem;
+      color: #fff !important;
+      background: none !important;
+      -webkit-text-fill-color: #fff !important;
+    }
+    .page-title-banner p {
+      color: rgba(255,255,255,.85);
+      margin: 0;
+      font-size: .95rem;
+    }
   </style>
   <script src="nav.js"></script>
 </head>
 
 <body>
 
-  <header>
-    <div class="container-fluid">
-      <div class="row align-items-center">
-        <div class="col">
-          <h1>Smart Audio Guide</h1>
-          <p class="lead">Interactive Sikkim Tourist Map with Location Tracking</p>
-        </div>
-      </div>
+  <!-- old header removed — nav.js injects shared navbar -->
+  <div class="page-title-banner">
+    <div class="container">
+      <h1><i class="fas fa-headphones me-2"></i>Smart Audio Guide</h1>
+      <p>Interactive Sikkim Tourist Map with Location Tracking</p>
     </div>
-  </header>
+  </div>
 
-  <div class="container">
+  <div class="page-wrapper">
     <div class="location-panel">
       <h3 style="margin-top: 0; color: var(--accent-burgundy); font-family: 'Playfair Display', serif;">Your Location
       </h3>
