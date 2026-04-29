@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>West Sikkim — Monastery360</title>
+  <script src="/static/nav.js"></script>
+  <style>
+    @import url("https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Cormorant+Garamond:wght@300;400;500;600&family=Inter:wght@300;400;500;600&display=swap");
+
+    :root {
+      --primary-gold: #d4af37;
+      --primary-dark: #8b7355;
+      --soft-cream: #faf8f5;
+      --text-dark: #2c2c2c;
+      --text-muted: #6b7280;
+      --shadow-soft: 0 4px 20px rgba(0,0,0,.08);
+      --shadow-hover: 0 8px 30px rgba(0,0,0,.14);
+      --gradient-primary: linear-gradient(135deg,#d4af37 0%,#8b7355 100%);
+      --district-color: #6a1e8a;
+      --district-light: #f3e5f5;
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: "Inter", sans-serif; background: linear-gradient(135deg,#faf8f5 0%,#fdf5ff 50%,#fff 100%); color: var(--text-dark); min-height: 100vh; }
+
+    .district-hero {
+      background: linear-gradient(160deg,#1a0030 0%,#3d0a5c 40%,#6a1e8a 100%);
+      color: #fff; padding: 4rem 0 3rem; position: relative; overflow: hidden;
+    }
+    .district-hero::before {
+      content:''; position:absolute; inset:0;
+      background: radial-gradient(ellipse at 10% 50%,rgba(212,175,55,.18) 0%,transparent 60%),
+                  radial-gradient(ellipse at 90% 20%,rgba(255,255,255,.06) 0%,transparent 50%);
+    }
+    .district-hero::after {
+      content:''; position:absolute; bottom:0; left:0; right:0; height:60px;
+      background: linear-gradient(to bottom right,transparent 49%,#faf8f5 50%);
+    }
+    .hero-inner { position:relative; z-index:1; text-align:center; padding:0 1rem; }
+    .district-badge { display:inline-block; background:rgba(212,175,55,.2); border:1px solid rgba(212,175,55,.5); color:#d4af37; font-size:.75rem; font-weight:600; letter-spacing:.12em; text-transform:uppercase; padding:.35rem 1rem; border-radius:50px; margin-bottom:1.2rem; }
+    .hero-title { font-family:"Playfair Display",serif; font-size:clamp(2.5rem,6vw,4.5rem); font-weight:700; line-height:1.1; margin-bottom:.8rem; }
+    .hero-subtitle { font-family:"Cormorant Garamond",serif; font-size:clamp(1.1rem,2.5vw,1.5rem); font-weight:300; color:rgba(255,255,255,.8); margin-bottom:2rem; }
+    .hero-stats { display:flex; justify-content:center; gap:2.5rem; flex-wrap:wrap; }
+    .stat-item { text-align:center; }
+    .stat-number { font-family:"Playfair Display",serif; font-size:1.8rem; font-weight:700; color:#d4af37; display:block; }
+    .stat-label { font-size:.75rem; color:rgba(255,255,255,.65); letter-spacing:.06em; text-transform:uppercase; }
+
+    .content-section { padding:4rem 0; }
+    .container { max-width:1100px; margin:0 auto; padding:0 1.5rem; }
+    .section-label { display:flex; align-items:center; gap:.75rem; margin-bottom:1rem; }
+    .section-label span { font-size:.7rem; font-weight:700; letter-spacing:.14em; text-transform:uppercase; color:var(--district-color); }
+    .section-label::before, .section-label::after { content:''; flex:1; height:1px; background:linear-gradient(90deg,transparent,rgba(106,30,138,.3)); }
+    .section-heading { font-family:"Playfair Display",serif; font-size:clamp(1.6rem,3vw,2.4rem); font-weight:700; color:var(--text-dark); margin-bottom:1rem; text-align:center; }
+    .section-intro { text-align:center; color:var(--text-muted); max-width:620px; margin:0 auto 3rem; font-size:.95rem; line-height:1.8; }
+
+    .overview-grid { display:grid; grid-template-columns:1fr 1fr; gap:2rem; align-items:start; }
+    @media(max-width:768px){ .overview-grid { grid-template-columns:1fr; } }
+    .overview-text { font-size:.95rem; line-height:1.9; color:#444; }
+    .overview-text p { margin-bottom:1rem; }
+    .quick-facts { background:#fff; border-radius:16px; box-shadow:var(--shadow-soft); border:1px solid rgba(106,30,138,.12); padding:1.8rem; }
+    .quick-facts h3 { font-family:"Playfair Display",serif; font-size:1.15rem; color:var(--district-color); margin-bottom:1.2rem; padding-bottom:.6rem; border-bottom:2px solid var(--district-light); }
+    .fact-row { display:flex; justify-content:space-between; align-items:center; padding:.55rem 0; border-bottom:1px solid #f0f0f0; font-size:.875rem; }
+    .fact-row:last-child { border-bottom:none; }
+    .fact-label { color:var(--text-muted); font-weight:500; }
+    .fact-value { font-weight:600; color:var(--text-dark); text-align:right; max-width:55%; }
+
+    .cards-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(300px,1fr)); gap:1.5rem; }
+    .monastery-card { background:#fff; border-radius:16px; box-shadow:var(--shadow-soft); border:1px solid rgba(212,175,55,.1); overflow:hidden; transition:transform .3s,box-shadow .3s; }
+    .monastery-card:hover { transform:translateY(-6px); box-shadow:var(--shadow-hover); }
+    .card-accent { height:5px; background:var(--gradient-primary); }
+    .card-body { padding:1.5rem; }
+    .card-icon { width:44px; height:44px; border-radius:12px; background:var(--district-light); display:flex; align-items:center; justify-content:center; margin-bottom:1rem; font-size:1.3rem; }
+    .card-title { font-family:"Playfair Display",serif; font-size:1.1rem; font-weight:600; margin-bottom:.4rem; color:var(--text-dark); }
+    .card-meta { font-size:.75rem; color:var(--district-color); font-weight:600; letter-spacing:.05em; text-transform:uppercase; margin-bottom:.8rem; }
+    .card-desc { font-size:.875rem; line-height:1.7; color:var(--text-muted); }
+
+    .attractions-bg { background:linear-gradient(135deg,#1a0030,#3d0a5c); }
+    .attractions-bg .section-label span { color:#d4af37; }
+    .attractions-bg .section-heading { color:#fff; }
+    .attractions-bg .section-intro { color:rgba(255,255,255,.7); }
+    .attr-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(240px,1fr)); gap:1.2rem; }
+    .attr-card { background:rgba(255,255,255,.06); border:1px solid rgba(255,255,255,.12); border-radius:14px; padding:1.5rem; transition:background .3s,transform .3s; }
+    .attr-card:hover { background:rgba(255,255,255,.1); transform:translateY(-4px); }
+    .attr-icon { font-size:2rem; margin-bottom:.8rem; }
+    .attr-name { font-family:"Playfair Display",serif; font-size:1rem; font-weight:600; color:#fff; margin-bottom:.4rem; }
+    .attr-desc { font-size:.82rem; color:rgba(255,255,255,.65); line-height:1.6; }
+
+    .culture-items { display:grid; grid-template-columns:repeat(auto-fill,minmax(200px,1fr)); gap:1rem; }
+    .culture-item { text-align:center; padding:1.8rem 1rem; border-radius:14px; background:var(--district-light); transition:transform .25s; }
+    .culture-item:hover { transform:translateY(-4px); }
+    .culture-item .ci-icon { font-size:2.2rem; margin-bottom:.8rem; }
+    .culture-item h4 { font-family:"Playfair Display",serif; font-size:.95rem; font-weight:600; color:var(--district-color); margin-bottom:.3rem; }
+    .culture-item p { font-size:.8rem; color:var(--text-muted); line-height:1.5; }
+
+    .travel-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(260px,1fr)); gap:1.5rem; }
+    .travel-card { background:#fff; border-radius:14px; padding:1.5rem; box-shadow:var(--shadow-soft); border-left:4px solid var(--district-color); }
+    .travel-card h4 { font-family:"Playfair Display",serif; font-size:1rem; color:var(--text-dark); margin-bottom:.8rem; }
+    .travel-card p, .travel-card li { font-size:.875rem; color:var(--text-muted); line-height:1.7; }
+    .travel-card ul { padding-left:1.2rem; }
+  </style>
+</head>
+<body>
+
+  <section class="district-hero">
+    <div class="hero-inner container">
+      <div class="district-badge">✦ Sikkim District</div>
+      <h1 class="hero-title">West Sikkim</h1>
+      <p class="hero-subtitle">The Monastery Heartland — Pemayangtse, Khecheopalri & Pristine Wilderness</p>
+      <div class="hero-stats">
+        <div class="stat-item"><span class="stat-number">1,166 km²</span><span class="stat-label">Area</span></div>
+        <div class="stat-item"><span class="stat-number">1,36,435</span><span class="stat-label">Population</span></div>
+        <div class="stat-item"><span class="stat-number">Gyalshing</span><span class="stat-label">District HQ</span></div>
+        <div class="stat-item"><span class="stat-number">1,780 m</span><span class="stat-label">Gyalshing Altitude</span></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="content-section">
+    <div class="container">
+      <div class="section-label"><span>Overview</span></div>
+      <h2 class="section-heading">The Monastic Soul of Sikkim</h2>
+      <div class="overview-grid">
+        <div class="overview-text">
+          <p>West Sikkim is widely regarded as the spiritual heartland of the state. Its dense forests, mist-covered valleys, and ancient monasteries perched on ridges create an atmosphere of timeless serenity that has drawn Buddhist pilgrims and seekers for centuries.</p>
+          <p>The district is home to Pemayangtse Monastery — the oldest and most prestigious monastery in Sikkim, a direct link to the kingdom's founding. The holy lake of Khecheopalri, considered a wish-fulfilling lake in both Buddhist and Hindu traditions, draws pilgrims throughout the year.</p>
+          <p>West Sikkim borders Nepal to the west and is the gateway to the Kangchenjunga Conservation Area — a UNESCO World Heritage site covering vast tracts of pristine Himalayan wilderness and high-altitude ecosystems.</p>
+          <p>The district is also the starting point for the famous Goecha La trek, one of the most celebrated high-altitude treks in India, offering face-to-face views of the Kangchenjunga massif from a distance of just a few kilometres.</p>
+        </div>
+        <div class="quick-facts">
+          <h3>📋 Quick Facts</h3>
+          <div class="fact-row"><span class="fact-label">District HQ</span><span class="fact-value">Gyalshing (Geyzing)</span></div>
+          <div class="fact-row"><span class="fact-label">Area</span><span class="fact-value">1,166 km²</span></div>
+          <div class="fact-row"><span class="fact-label">Population (2011)</span><span class="fact-value">1,36,435</span></div>
+          <div class="fact-row"><span class="fact-label">Literacy Rate</span><span class="fact-value">79.4%</span></div>
+          <div class="fact-row"><span class="fact-label">Major Religion</span><span class="fact-value">Buddhism</span></div>
+          <div class="fact-row"><span class="fact-label">Languages</span><span class="fact-value">Nepali, Bhutia, Lepcha</span></div>
+          <div class="fact-row"><span class="fact-label">Best Time to Visit</span><span class="fact-value">Mar–May, Oct–Nov</span></div>
+          <div class="fact-row"><span class="fact-label">UNESCO Heritage</span><span class="fact-value">Kangchenjunga Conservation Area</span></div>
+          <div class="fact-row"><span class="fact-label">Nearest Airport</span><span class="fact-value">Pakyong (96 km)</span></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="content-section" style="background:#f8f9fb; padding-top:0;">
+    <div class="container">
+      <div class="section-label"><span>Sacred Sites</span></div>
+      <h2 class="section-heading">Monasteries & Holy Places</h2>
+      <p class="section-intro">West Sikkim contains some of the oldest and most revered Buddhist monasteries in the Himalayan world.</p>
+      <div class="cards-grid">
+        <div class="monastery-card">
+          <div class="card-accent"></div>
+          <div class="card-body">
+            <div class="card-icon">👑</div>
+            <div class="card-meta">Pemayangtse · Nyingma</div>
+            <h3 class="card-title">Pemayangtse Monastery</h3>
+            <p class="card-desc">Founded in 1705, Pemayangtse is one of the oldest, most important, and most revered monasteries in Sikkim. Meaning "Perfect Sublime Lotus", it sits at 6,800 ft and was the royal monastery of the Kingdom of Sikkim. Its seven-storey wooden sculpture of Sangthokpalri (Guru Rinpoche's celestial palace) is a masterpiece of Buddhist art.</p>
+          </div>
+        </div>
+        <div class="monastery-card">
+          <div class="card-accent"></div>
+          <div class="card-body">
+            <div class="card-icon">💧</div>
+            <div class="card-meta">Khecheopalri · Sacred Lake</div>
+            <h3 class="card-title">Khecheopalri Lake</h3>
+            <p class="card-desc">A sacred wish-fulfilling lake revered by Buddhists and Hindus alike. According to legend, birds remove every fallen leaf from the lake's surface, keeping it perpetually pure. Prayer flags surround the shoreline, and the atmosphere is one of deep spiritual peace.</p>
+          </div>
+        </div>
+        <div class="monastery-card">
+          <div class="card-accent"></div>
+          <div class="card-body">
+            <div class="card-icon">🏛️</div>
+            <div class="card-meta">Sanga Choeling · Nyingma</div>
+            <h3 class="card-title">Sanga Choeling Monastery</h3>
+            <p class="card-desc">One of the oldest monasteries in Sikkim, predating even Pemayangtse. Accessible only by a steep uphill trek, it rewards visitors with spectacular views and ancient wall paintings. The monastery is known for its traditional Thangka paintings and spiritual isolation.</p>
+          </div>
+        </div>
+        <div class="monastery-card">
+          <div class="card-accent"></div>
+          <div class="card-body">
+            <div class="card-icon">🌿</div>
+            <div class="card-meta">Tashiding Area · Ruins</div>
+            <h3 class="card-title">Rabdentse Palace Ruins</h3>
+            <p class="card-desc">The ruins of the ancient capital of the Kingdom of Sikkim (1670–1814), now a protected archaeological site. Set in a clearing surrounded by forest, with views toward Kangchenjunga, the site has a haunting, meditative quality.</p>
+          </div>
+        </div>
+        <div class="monastery-card">
+          <div class="card-accent"></div>
+          <div class="card-body">
+            <div class="card-icon">🙏</div>
+            <div class="card-meta">Dentam · Kagyu</div>
+            <h3 class="card-title">Rinchenpong Monastery</h3>
+            <p class="card-desc">A peaceful monastery near Rinchenpong village, offering sweeping views of the Kangchenjunga range. The surrounding village is known for its traditional Sikkimese architecture and community orchid cultivation.</p>
+          </div>
+        </div>
+        <div class="monastery-card">
+          <div class="card-accent"></div>
+          <div class="card-body">
+            <div class="card-icon">⛩️</div>
+            <div class="card-meta">Uttarey · Remote</div>
+            <h3 class="card-title">Barsey Rhododendron Sanctuary</h3>
+            <p class="card-desc">A high-altitude sanctuary at the Nepal border, carpeted with 40+ species of rhododendron. Sacred forested groves are interspersed with small shrines and trekking trails leading to views of Kangchenjunga and Singalila ridge.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="content-section attractions-bg">
+    <div class="container">
+      <div class="section-label"><span>Explore</span></div>
+      <h2 class="section-heading">Natural Wonders & Trekking</h2>
+      <p class="section-intro">West Sikkim is Sikkim's premier trekking and wilderness destination.</p>
+      <div class="attr-grid">
+        <div class="attr-card">
+          <div class="attr-icon">🥾</div>
+          <div class="attr-name">Goecha La Trek</div>
+          <p class="attr-desc">One of India's greatest high-altitude treks, culminating at 4,940 m with direct views of Kangchenjunga's south face from just 5 km away. An unforgettable 11-day journey through pristine Himalayan terrain.</p>
+        </div>
+        <div class="attr-card">
+          <div class="attr-icon">🌸</div>
+          <div class="attr-name">Barsey Rhododendron Sanctuary</div>
+          <p class="attr-desc">Over 40 species of rhododendron transform the hillsides into a sea of red, pink, and white blooms each spring. A paradise for botanists and nature photographers.</p>
+        </div>
+        <div class="attr-card">
+          <div class="attr-icon">🌊</div>
+          <div class="attr-name">Rimbi Waterfalls & Orangery</div>
+          <p class="attr-desc">A scenic cascade surrounded by orange orchards — one of the most photographed spots in West Sikkim. The surrounding terraced farmland is picturesque in every season.</p>
+        </div>
+        <div class="attr-card">
+          <div class="attr-icon">🏔️</div>
+          <div class="attr-name">Dzongri & Samiti Lake</div>
+          <p class="attr-desc">Intermediate stops on the Goecha La route, offering stunning views and peaceful camping by glacial lakes. The Dzongri Top sunrise over Kangchenjunga is legendary among trekkers.</p>
+        </div>
+        <div class="attr-card">
+          <div class="attr-icon">🌿</div>
+          <div class="attr-name">Singshore Bridge</div>
+          <p class="attr-desc">The highest suspension bridge in Sikkim at 198 m above a deep gorge — an engineering feat and a thrilling experience for visitors, with views of Khecheopalri Valley below.</p>
+        </div>
+        <div class="attr-card">
+          <div class="attr-icon">🌄</div>
+          <div class="attr-name">Uttarey & Chewabhanjyang</div>
+          <p class="attr-desc">A remote village near the Nepal border offering untouched forests, community homestays, and a genuine off-grid Himalayan experience far from tourist crowds.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="content-section" style="background:#fff;">
+    <div class="container">
+      <div class="section-label"><span>Living Heritage</span></div>
+      <h2 class="section-heading">Culture & Traditions</h2>
+      <p class="section-intro">West Sikkim preserves some of the most ancient and authentic Sikkimese cultural practices.</p>
+      <div class="culture-items">
+        <div class="culture-item">
+          <div class="ci-icon">🎭</div>
+          <h4>Pang Lhabsol</h4>
+          <p>A uniquely Sikkimese festival celebrating Kangchenjunga as the guardian deity of Sikkim. Celebrated annually at Pemayangtse with warrior dances and ceremonial offerings.</p>
+        </div>
+        <div class="culture-item">
+          <div class="ci-icon">🌸</div>
+          <h4>Lepcha Heritage</h4>
+          <p>The indigenous Lepcha people — the original inhabitants of Sikkim — maintain a living culture of forest knowledge, unique script, music, and a deep spiritual connection to the land.</p>
+        </div>
+        <div class="culture-item">
+          <div class="ci-icon">🎋</div>
+          <h4>Bamboo Craft</h4>
+          <p>West Sikkim's artisans produce exquisite bamboo and cane furniture, baskets, and household items. Villages near Gyalshing have active craft cooperatives.</p>
+        </div>
+        <div class="culture-item">
+          <div class="ci-icon">🍶</div>
+          <h4>Tongba & Chang</h4>
+          <p>Traditional millet-based alcoholic beverages integral to community life. Tongba is a warm beer made by pouring hot water over fermented millet — the definitive West Sikkimese drink.</p>
+        </div>
+        <div class="culture-item">
+          <div class="ci-icon">🎵</div>
+          <h4>Mask Dance (Chaam)</h4>
+          <p>Performed at Pemayangtse and Sanga Choeling each year, the elaborate Chaam masked dance depicts cosmic battles between good and evil, with costumes crafted by monks over months.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="content-section" style="background:#f8f9fb;">
+    <div class="container">
+      <div class="section-label"><span>Plan Your Visit</span></div>
+      <h2 class="section-heading">Travel Information</h2>
+      <p class="section-intro">West Sikkim rewards travellers who seek authentic, off-the-beaten-path Himalayan experiences.</p>
+      <div class="travel-grid">
+        <div class="travel-card">
+          <h4>🚗 How to Get There</h4>
+          <p>Gyalshing is ~112 km from Gangtok via Ravangla or Jorethang. Shared jeeps connect Gyalshing to Gangtok, Namchi, and Pelling. Pelling (15 km from Gyalshing) is the most popular tourist base in West Sikkim.</p>
+        </div>
+        <div class="travel-card">
+          <h4>📄 Permits & Trekking</h4>
+          <ul>
+            <li>No special permit for most of West Sikkim</li>
+            <li>Goecha La trek: special trekking permit required</li>
+            <li>Permits available via registered Sikkim tour operators</li>
+            <li>Kangchenjunga Conservation Area entry fee applicable</li>
+          </ul>
+        </div>
+        <div class="travel-card">
+          <h4>🌤️ Best Season</h4>
+          <p><strong>Mar–May:</strong> Rhododendrons, clear skies, ideal for Goecha La.<br>
+          <strong>Oct–Nov:</strong> Post-monsoon clarity, best mountain views.<br>
+          <strong>Winter (Dec–Feb):</strong> Cold but serene; high passes inaccessible.</p>
+        </div>
+        <div class="travel-card">
+          <h4>🏨 Where to Stay</h4>
+          <p>Pelling offers the widest range of hotels and resorts with Kangchenjunga views. Village homestays near Khecheopalri and Uttarey provide authentic cultural immersion. Book trekking packages well in advance for Goecha La.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+</body>
+</html>

@@ -1,0 +1,457 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>North Sikkim — Monastery360</title>
+  <script src="/static/nav.js"></script>
+  <style>
+    @import url("https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Cormorant+Garamond:wght@300;400;500;600&family=Inter:wght@300;400;500;600&display=swap");
+
+    :root {
+      --primary-gold: #d4af37;
+      --primary-dark: #8b7355;
+      --accent-burgundy: #722f37;
+      --soft-cream: #faf8f5;
+      --text-dark: #2c2c2c;
+      --text-muted: #6b7280;
+      --shadow-soft: 0 4px 20px rgba(0,0,0,.08);
+      --shadow-hover: 0 8px 30px rgba(0,0,0,.14);
+      --gradient-primary: linear-gradient(135deg,#d4af37 0%,#8b7355 100%);
+      --district-color: #2d6a9f;
+      --district-light: #e8f4fd;
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: "Inter", sans-serif;
+      background: linear-gradient(135deg,#faf8f5 0%,#f0f7ff 50%,#fff 100%);
+      color: var(--text-dark);
+      min-height: 100vh;
+    }
+
+    /* ── HERO ── */
+    .district-hero {
+      background: linear-gradient(160deg, #0a2340 0%, #1a3a5c 40%, #2d6a9f 100%);
+      color: #fff;
+      padding: 4rem 0 3rem;
+      position: relative;
+      overflow: hidden;
+    }
+    .district-hero::before {
+      content: '';
+      position: absolute; inset: 0;
+      background:
+        radial-gradient(ellipse at 10% 50%, rgba(212,175,55,.18) 0%, transparent 60%),
+        radial-gradient(ellipse at 90% 20%, rgba(255,255,255,.06) 0%, transparent 50%);
+    }
+    .district-hero::after {
+      content: '';
+      position: absolute; bottom: 0; left: 0; right: 0;
+      height: 60px;
+      background: linear-gradient(to bottom right,transparent 49%,#faf8f5 50%);
+    }
+    .hero-inner { position: relative; z-index: 1; text-align: center; padding: 0 1rem; }
+    .district-badge {
+      display: inline-block;
+      background: rgba(212,175,55,.2);
+      border: 1px solid rgba(212,175,55,.5);
+      color: #d4af37;
+      font-size: .75rem;
+      font-weight: 600;
+      letter-spacing: .12em;
+      text-transform: uppercase;
+      padding: .35rem 1rem;
+      border-radius: 50px;
+      margin-bottom: 1.2rem;
+    }
+    .hero-title {
+      font-family: "Playfair Display", serif;
+      font-size: clamp(2.5rem,6vw,4.5rem);
+      font-weight: 700;
+      line-height: 1.1;
+      margin-bottom: .8rem;
+    }
+    .hero-subtitle {
+      font-family: "Cormorant Garamond", serif;
+      font-size: clamp(1.1rem,2.5vw,1.5rem);
+      font-weight: 300;
+      color: rgba(255,255,255,.8);
+      margin-bottom: 2rem;
+    }
+    .hero-stats {
+      display: flex;
+      justify-content: center;
+      gap: 2.5rem;
+      flex-wrap: wrap;
+    }
+    .stat-item { text-align: center; }
+    .stat-number {
+      font-family: "Playfair Display", serif;
+      font-size: 1.8rem;
+      font-weight: 700;
+      color: #d4af37;
+      display: block;
+    }
+    .stat-label { font-size: .75rem; color: rgba(255,255,255,.65); letter-spacing: .06em; text-transform: uppercase; }
+
+    /* ── LAYOUT ── */
+    .content-section { padding: 4rem 0; }
+    .container { max-width: 1100px; margin: 0 auto; padding: 0 1.5rem; }
+
+    /* ── SECTION HEADINGS ── */
+    .section-label {
+      display: flex; align-items: center; gap: .75rem;
+      margin-bottom: 1rem;
+    }
+    .section-label span {
+      font-size: .7rem; font-weight: 700; letter-spacing: .14em;
+      text-transform: uppercase; color: var(--district-color);
+    }
+    .section-label::before, .section-label::after {
+      content: ''; flex: 1; height: 1px;
+      background: linear-gradient(90deg,rgba(45,106,159,.3),transparent);
+    }
+    .section-label::before { background: linear-gradient(90deg,transparent,rgba(45,106,159,.3)); }
+    .section-heading {
+      font-family: "Playfair Display", serif;
+      font-size: clamp(1.6rem,3vw,2.4rem);
+      font-weight: 700;
+      color: var(--text-dark);
+      margin-bottom: 1rem;
+      text-align: center;
+    }
+    .section-intro {
+      text-align: center;
+      color: var(--text-muted);
+      max-width: 620px;
+      margin: 0 auto 3rem;
+      font-size: .95rem;
+      line-height: 1.8;
+    }
+
+    /* ── OVERVIEW CARD ── */
+    .overview-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; align-items: start; }
+    @media(max-width:768px){ .overview-grid { grid-template-columns: 1fr; } }
+    .overview-text { font-size: .95rem; line-height: 1.9; color: #444; }
+    .overview-text p { margin-bottom: 1rem; }
+    .quick-facts {
+      background: #fff;
+      border-radius: 16px;
+      box-shadow: var(--shadow-soft);
+      border: 1px solid rgba(45,106,159,.12);
+      padding: 1.8rem;
+    }
+    .quick-facts h3 {
+      font-family: "Playfair Display", serif;
+      font-size: 1.15rem;
+      color: var(--district-color);
+      margin-bottom: 1.2rem;
+      padding-bottom: .6rem;
+      border-bottom: 2px solid var(--district-light);
+    }
+    .fact-row {
+      display: flex; justify-content: space-between; align-items: center;
+      padding: .55rem 0;
+      border-bottom: 1px solid #f0f0f0;
+      font-size: .875rem;
+    }
+    .fact-row:last-child { border-bottom: none; }
+    .fact-label { color: var(--text-muted); font-weight: 500; }
+    .fact-value { font-weight: 600; color: var(--text-dark); text-align: right; max-width: 55%; }
+
+    /* ── MONASTERY CARDS ── */
+    .cards-grid { display: grid; grid-template-columns: repeat(auto-fill,minmax(300px,1fr)); gap: 1.5rem; }
+    .monastery-card {
+      background: #fff;
+      border-radius: 16px;
+      box-shadow: var(--shadow-soft);
+      border: 1px solid rgba(212,175,55,.1);
+      overflow: hidden;
+      transition: transform .3s, box-shadow .3s;
+    }
+    .monastery-card:hover { transform: translateY(-6px); box-shadow: var(--shadow-hover); }
+    .card-accent {
+      height: 5px;
+      background: var(--gradient-primary);
+    }
+    .card-body { padding: 1.5rem; }
+    .card-icon {
+      width: 44px; height: 44px; border-radius: 12px;
+      background: var(--district-light);
+      display: flex; align-items: center; justify-content: center;
+      margin-bottom: 1rem;
+      font-size: 1.3rem;
+    }
+    .card-title { font-family: "Playfair Display", serif; font-size: 1.1rem; font-weight: 600; margin-bottom: .4rem; color: var(--text-dark); }
+    .card-meta { font-size: .75rem; color: var(--district-color); font-weight: 600; letter-spacing: .05em; text-transform: uppercase; margin-bottom: .8rem; }
+    .card-desc { font-size: .875rem; line-height: 1.7; color: var(--text-muted); }
+
+    /* ── ATTRACTIONS ── */
+    .attractions-bg { background: linear-gradient(135deg,#0a2340,#1a3a5c); }
+    .attractions-bg .section-label span { color: #d4af37; }
+    .attractions-bg .section-heading { color: #fff; }
+    .attractions-bg .section-intro { color: rgba(255,255,255,.7); }
+    .attr-grid { display: grid; grid-template-columns: repeat(auto-fill,minmax(240px,1fr)); gap: 1.2rem; }
+    .attr-card {
+      background: rgba(255,255,255,.06);
+      border: 1px solid rgba(255,255,255,.12);
+      border-radius: 14px;
+      padding: 1.5rem;
+      transition: background .3s, transform .3s;
+    }
+    .attr-card:hover { background: rgba(255,255,255,.1); transform: translateY(-4px); }
+    .attr-icon { font-size: 2rem; margin-bottom: .8rem; }
+    .attr-name { font-family: "Playfair Display", serif; font-size: 1rem; font-weight: 600; color: #fff; margin-bottom: .4rem; }
+    .attr-desc { font-size: .82rem; color: rgba(255,255,255,.65); line-height: 1.6; }
+
+    /* ── CULTURE STRIP ── */
+    .culture-strip { background: #fff; }
+    .culture-items { display: grid; grid-template-columns: repeat(auto-fill,minmax(200px,1fr)); gap: 1rem; }
+    .culture-item {
+      text-align: center;
+      padding: 1.8rem 1rem;
+      border-radius: 14px;
+      background: var(--district-light);
+      transition: transform .25s;
+    }
+    .culture-item:hover { transform: translateY(-4px); }
+    .culture-item .ci-icon { font-size: 2.2rem; margin-bottom: .8rem; }
+    .culture-item h4 { font-family: "Playfair Display", serif; font-size: .95rem; font-weight: 600; color: var(--district-color); margin-bottom: .3rem; }
+    .culture-item p { font-size: .8rem; color: var(--text-muted); line-height: 1.5; }
+
+    /* ── TRAVEL INFO ── */
+    .travel-grid { display: grid; grid-template-columns: repeat(auto-fill,minmax(260px,1fr)); gap: 1.5rem; }
+    .travel-card {
+      background: #fff;
+      border-radius: 14px;
+      padding: 1.5rem;
+      box-shadow: var(--shadow-soft);
+      border-left: 4px solid var(--district-color);
+    }
+    .travel-card h4 { font-family: "Playfair Display", serif; font-size: 1rem; color: var(--text-dark); margin-bottom: .8rem; display: flex; align-items: center; gap: .5rem; }
+    .travel-card p, .travel-card li { font-size: .875rem; color: var(--text-muted); line-height: 1.7; }
+    .travel-card ul { padding-left: 1.2rem; }
+  </style>
+</head>
+<body>
+
+  <!-- HERO -->
+  <section class="district-hero">
+    <div class="hero-inner container">
+      <div class="district-badge">✦ Sikkim District</div>
+      <h1 class="hero-title">North Sikkim</h1>
+      <p class="hero-subtitle">The Roof of Sikkim — Where Glaciers Meet Ancient Monasteries</p>
+      <div class="hero-stats">
+        <div class="stat-item"><span class="stat-number">4,226 km²</span><span class="stat-label">Area</span></div>
+        <div class="stat-item"><span class="stat-number">43,709</span><span class="stat-label">Population</span></div>
+        <div class="stat-item"><span class="stat-number">8,586 m</span><span class="stat-label">Kangchenjunga Peak</span></div>
+        <div class="stat-item"><span class="stat-number">Mangan</span><span class="stat-label">District HQ</span></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- OVERVIEW -->
+  <section class="content-section">
+    <div class="container">
+      <div class="section-label"><span>Overview</span></div>
+      <h2 class="section-heading">The Wilderness of the North</h2>
+      <div class="overview-grid">
+        <div class="overview-text">
+          <p>North Sikkim is the largest and most remote district of Sikkim, covering more than half the state's total land area. It is a land of extraordinary natural beauty — towering snow-capped peaks, deep gorges, alpine lakes, and ancient monasteries perched on cliffsides.</p>
+          <p>The district borders Tibet (China) to the north and east, making it a sensitive frontier zone. Much of the area is a protected high-altitude ecosystem, home to rare flora and fauna including the snow leopard, red panda, and Himalayan blue poppy.</p>
+          <p>The Lachen and Lachung valleys are the two major inhabited valleys, each with their own distinct communities practising the traditional <em>Dzumsa</em> — a centuries-old system of village governance unique to North Sikkim.</p>
+          <p>Spiritually, North Sikkim is home to some of Sikkim's most revered Buddhist monasteries, including Gurudongmar Lake — considered one of the holiest lakes in the world — and the Lachen Monastery, a seat of Nyingma Buddhist learning.</p>
+        </div>
+        <div class="quick-facts">
+          <h3>📋 Quick Facts</h3>
+          <div class="fact-row"><span class="fact-label">District HQ</span><span class="fact-value">Mangan</span></div>
+          <div class="fact-row"><span class="fact-label">Area</span><span class="fact-value">4,226 km²</span></div>
+          <div class="fact-row"><span class="fact-label">Population (2011)</span><span class="fact-value">43,709</span></div>
+          <div class="fact-row"><span class="fact-label">Literacy Rate</span><span class="fact-value">73.8%</span></div>
+          <div class="fact-row"><span class="fact-label">Major Religion</span><span class="fact-value">Buddhism</span></div>
+          <div class="fact-row"><span class="fact-label">Languages</span><span class="fact-value">Lepcha, Bhutia, Nepali</span></div>
+          <div class="fact-row"><span class="fact-label">Best Time to Visit</span><span class="fact-value">Mar–May, Oct–Nov</span></div>
+          <div class="fact-row"><span class="fact-label">Permit Required</span><span class="fact-value">Yes — Protected Area</span></div>
+          <div class="fact-row"><span class="fact-label">Nearest Airport</span><span class="fact-value">Pakyong (126 km)</span></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- MONASTERIES -->
+  <section class="content-section" style="background:#f8f9fb; padding-top:0;">
+    <div class="container">
+      <div class="section-label"><span>Sacred Sites</span></div>
+      <h2 class="section-heading">Monasteries & Holy Sites</h2>
+      <p class="section-intro">North Sikkim's monasteries are among the oldest and most spiritually significant in the entire Himalayan belt.</p>
+      <div class="cards-grid">
+        <div class="monastery-card">
+          <div class="card-accent"></div>
+          <div class="card-body">
+            <div class="card-icon">🏔️</div>
+            <div class="card-meta">Lachen Valley · Nyingma</div>
+            <h3 class="card-title">Lachen Monastery</h3>
+            <p class="card-desc">One of the most important Buddhist monasteries in North Sikkim, Lachen Monastery is administered by the local Dzumsa council. The monastery houses ancient thangkas, religious texts, and is the spiritual centre of the Lachen community.</p>
+          </div>
+        </div>
+        <div class="monastery-card">
+          <div class="card-accent"></div>
+          <div class="card-body">
+            <div class="card-icon">❄️</div>
+            <div class="card-meta">Lachung Valley · Sacred Lake</div>
+            <h3 class="card-title">Gurudongmar Lake</h3>
+            <p class="card-desc">At 17,800 ft, one of the highest lakes in the world. Sacred to Buddhists, Sikhs, and Hindus alike. Legend holds that Guru Padmasambhava blessed the lake, and a small portion never freezes even in the depths of winter.</p>
+          </div>
+        </div>
+        <div class="monastery-card">
+          <div class="card-accent"></div>
+          <div class="card-body">
+            <div class="card-icon">🙏</div>
+            <div class="card-meta">Lachung · Nyingma</div>
+            <h3 class="card-title">Lachung Monastery</h3>
+            <p class="card-desc">Perched above the Lachung valley, this 19th-century monastery is decorated with vivid murals depicting Buddhist cosmology. It hosts the annual Chaam masked dance festival each December, drawing pilgrims from across Sikkim.</p>
+          </div>
+        </div>
+        <div class="monastery-card">
+          <div class="card-accent"></div>
+          <div class="card-body">
+            <div class="card-icon">🌿</div>
+            <div class="card-meta">Mangan · Ancient Site</div>
+            <h3 class="card-title">Phodong Monastery</h3>
+            <p class="card-desc">Located near the North-East boundary, Phodong is a Kagyu school monastery built in the early 18th century. It is one of the six major monasteries of Sikkim and is known for its annual masked Chaam dance performed before Losar.</p>
+          </div>
+        </div>
+        <div class="monastery-card">
+          <div class="card-accent"></div>
+          <div class="card-body">
+            <div class="card-icon">⛩️</div>
+            <div class="card-meta">Chungthang · Confluence</div>
+            <h3 class="card-title">Chungthang Monastery</h3>
+            <p class="card-desc">Situated at the confluence of the Lachen Chu and Lachung Chu rivers, this monastery marks the site where Guru Rinpoche is said to have meditated. The surrounding landscape is considered highly auspicious.</p>
+          </div>
+        </div>
+        <div class="monastery-card">
+          <div class="card-accent"></div>
+          <div class="card-body">
+            <div class="card-icon">🌊</div>
+            <div class="card-meta">Thangu · Sacred Lake</div>
+            <h3 class="card-title">Tso Lhamo Lake</h3>
+            <p class="card-desc">At 18,380 ft, possibly the highest lake in India. A sacred site revered by Tibetan Buddhists and considered the source of the Teesta River. Accessible only with special permits, its turquoise waters surrounded by barren highlands leave visitors awestruck.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ATTRACTIONS -->
+  <section class="content-section attractions-bg">
+    <div class="container">
+      <div class="section-label"><span>Explore</span></div>
+      <h2 class="section-heading">Natural Attractions</h2>
+      <p class="section-intro">From rhododendron forests to glacial valleys, North Sikkim is a paradise for nature lovers and adventure seekers.</p>
+      <div class="attr-grid">
+        <div class="attr-card">
+          <div class="attr-icon">🌸</div>
+          <div class="attr-name">Yumthang Valley</div>
+          <p class="attr-desc">Known as the "Valley of Flowers", Yumthang bursts into colour each spring with hundreds of rhododendron species. The Shingba Rhododendron Sanctuary here is a biodiversity hotspot.</p>
+        </div>
+        <div class="attr-card">
+          <div class="attr-icon">🧊</div>
+          <div class="attr-name">Zero Point (Yumesamdong)</div>
+          <p class="attr-desc">At 15,000 ft, this is the last point on the Lachung route before the Chinese border. Snow remains year-round, offering a surreal arctic landscape amid the Himalayas.</p>
+        </div>
+        <div class="attr-card">
+          <div class="attr-icon">🏕️</div>
+          <div class="attr-name">Thangu & Chopta Valley</div>
+          <p class="attr-desc">A high-altitude plateau at 13,000 ft used as a summer grazing ground. The Chopta Valley beyond it offers some of the most dramatic mountain panoramas in Sikkim.</p>
+        </div>
+        <div class="attr-card">
+          <div class="attr-icon">🦅</div>
+          <div class="attr-name">Kangchenjunga Views</div>
+          <p class="attr-desc">North Sikkim offers the closest and most awe-inspiring views of Kangchenjunga — the world's third-highest peak at 8,586 m — from multiple vantage points along the Lachen route.</p>
+        </div>
+        <div class="attr-card">
+          <div class="attr-icon">🌡️</div>
+          <div class="attr-name">Yumthang Hot Springs</div>
+          <p class="attr-desc">Natural hot springs at the entry of Yumthang Valley, rich in sulphur and believed to have medicinal properties. A perfect respite after a cold mountain journey.</p>
+        </div>
+        <div class="attr-card">
+          <div class="attr-icon">🌿</div>
+          <div class="attr-name">Shingba Rhododendron Sanctuary</div>
+          <p class="attr-desc">A protected sanctuary spanning 43 sq km, housing over 24 species of rhododendron. The sanctuary is at its most spectacular between April and May when the entire hillside turns crimson and pink.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CULTURE -->
+  <section class="content-section culture-strip">
+    <div class="container">
+      <div class="section-label"><span>Living Heritage</span></div>
+      <h2 class="section-heading">Culture & Traditions</h2>
+      <p class="section-intro">North Sikkim's communities have preserved ancient traditions that continue to shape daily life.</p>
+      <div class="culture-items">
+        <div class="culture-item">
+          <div class="ci-icon">🥁</div>
+          <h4>Dzumsa System</h4>
+          <p>A unique centuries-old democratic village council unique to the Lachen and Lachung communities — predating modern governance.</p>
+        </div>
+        <div class="culture-item">
+          <div class="ci-icon">🎭</div>
+          <h4>Chaam Dance</h4>
+          <p>Sacred masked dances performed by monks at monasteries during Losar and Saga Dawa, depicting the defeat of evil forces.</p>
+        </div>
+        <div class="culture-item">
+          <div class="ci-icon">🍵</div>
+          <h4>Butter Tea (Po Cha)</h4>
+          <p>A staple of life in North Sikkim — salt, yak butter, and tea churned together. Sustaining in extreme cold, and an emblem of Tibetan-influenced culture.</p>
+        </div>
+        <div class="culture-item">
+          <div class="ci-icon">🧵</div>
+          <h4>Bhutia Weaving</h4>
+          <p>Intricate patterns woven into traditional Kho and Bakhu garments, each design carrying clan and ceremonial significance.</p>
+        </div>
+        <div class="culture-item">
+          <div class="ci-icon">🎋</div>
+          <h4>Lepcha Crafts</h4>
+          <p>Indigenous Lepcha communities craft bamboo and cane items, bows, and distinctive jewellery, preserving skills passed down for generations.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- TRAVEL INFO -->
+  <section class="content-section" style="background:#f8f9fb;">
+    <div class="container">
+      <div class="section-label"><span>Plan Your Visit</span></div>
+      <h2 class="section-heading">Travel Information</h2>
+      <p class="section-intro">Everything you need to know before visiting North Sikkim.</p>
+      <div class="travel-grid">
+        <div class="travel-card">
+          <h4>🚗 How to Get There</h4>
+          <p>Drive from Gangtok via NH-10. Mangan (district HQ) is ~65 km from Gangtok. Lachung and Lachen are a further 2–3 hours by shared jeep. No railway or airport in the district.</p>
+        </div>
+        <div class="travel-card">
+          <h4>📄 Permits Required</h4>
+          <ul>
+            <li>Inner Line Permit (ILP) — for Indian nationals</li>
+            <li>Protected Area Permit (PAP) — for foreign nationals</li>
+            <li>Both can be arranged through registered travel agents in Gangtok</li>
+          </ul>
+        </div>
+        <div class="travel-card">
+          <h4>🌤️ Best Season</h4>
+          <p><strong>Spring (Mar–May):</strong> Rhododendrons in bloom, clear skies.<br>
+          <strong>Autumn (Oct–Nov):</strong> Best mountain views, dry roads.<br>
+          <strong>Winter:</strong> Heavy snowfall, most roads closed above Lachung.</p>
+        </div>
+        <div class="travel-card">
+          <h4>🏨 Where to Stay</h4>
+          <p>Homestays in Lachen and Lachung villages offer the most authentic experience. Basic guesthouses available in Mangan and Chungthang. Book well in advance for peak season.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+</body>
+</html>

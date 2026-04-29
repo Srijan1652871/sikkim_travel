@@ -398,7 +398,7 @@
             }
         }
     </style>
-  <script src="nav.js"></script>
+  <script src="/static/nav.js"></script>
 </head>
 
 <body>
@@ -458,78 +458,23 @@
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script>
-        let eventsData = [
-            {
-                "id": 1,
-                "event_name": "Pang Lhabsol Festival",
-                "monastery": "Pemayangtse Monastery",
-                "date": "2024-08-15",
-                "capacity": 150,
-                "booked": 45
-            },
-            {
-                "id": 2,
-                "event_name": "Bhumchu Festival",
-                "monastery": "Tashiding Monastery",
-                "date": "2024-03-05",
-                "capacity": 100,
-                "booked": 30
-            },
-            {
-                "id": 3,
-                "event_name": "Kagyed Dance Festival",
-                "monastery": "Enchey Monastery",
-                "date": "2024-12-18",
-                "capacity": 80,
-                "booked": 15
-            },
-            {
-                "id": 4,
-                "event_name": "Losar (Tibetan New Year)",
-                "monastery": "Rumtek Monastery",
-                "date": "2026-02-10",
-                "capacity": 100,
-                "booked": 0
-            },
-            {
-                "id": 5,
-                "event_name": "Saga Dawa",
-                "monastery": "Tashiding Monastery",
-                "date": "2026-05-23",
-                "capacity": 100,
-                "booked": 0
-            },
-            {
-                "id": 6,
-                "event_name": "Guru Rinpoche Tsechu",
-                "monastery": "Tashiding Monastery",
-                "date": "2026-07-14",
-                "capacity": 100,
-                "booked": 0
-            },
-            {
-                "id": 7,
-                "event_name": "Drupka Teshi",
-                "monastery": "Phodong Monastery",
-                "date": "2026-07-31",
-                "capacity": 100,
-                "booked": 0
-            },
-            {
-                "id": 8,
-                "event_name": "Lhabab Düchen",
-                "monastery": "Rumtek Monastery",
-                "date": "2025-11-15",
-                "capacity": 100,
-                "booked": 0
+        let eventsData = []
+
+        // Fetch events from backend API
+        async function loadEvents() {
+            try {
+                const res = await fetch('/api/events')
+                eventsData = await res.json()
+                displayEventCards()
+                populateEventDropdown()
+            } catch (e) {
+                showAlert('Could not load events from server. Please refresh.', 'danger')
             }
-        ]
-        let bootstrap // Declare the bootstrap variable
+        }
 
         // Initialize on page load
         document.addEventListener("DOMContentLoaded", () => {
-            displayEventCards()
-            populateEventDropdown()
+            loadEvents()
         })
 
         // Display event cards
@@ -586,46 +531,38 @@
             })
         }
 
-        // Handle form submission
-        document.getElementById("bookingForm").addEventListener("submit", (e) => {
+        // Handle form submission — posts to backend API
+        document.getElementById("bookingForm").addEventListener("submit", async (e) => {
             e.preventDefault()
 
             const fullName = document.getElementById("fullName").value
-            const email = document.getElementById("email").value
-            const eventId = Number.parseInt(document.getElementById("eventSelect").value)
-            const numSeats = Number.parseInt(document.getElementById("numSeats").value)
+            const email    = document.getElementById("email").value
+            const eventId  = parseInt(document.getElementById("eventSelect").value)
+            const numSeats = parseInt(document.getElementById("numSeats").value)
 
-            // Find the selected event
-            const selectedEvent = eventsData.find((event) => event.id === eventId)
-
-            if (!selectedEvent) {
+            if (!eventId) {
                 showAlert("Please select a valid event", "danger")
                 return
             }
 
-            const availableSeats = selectedEvent.capacity - selectedEvent.booked
+            try {
+                const res = await fetch('/api/bookings', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ fullName, email, eventId, numSeats })
+                })
+                const data = await res.json()
 
-            // Validate seat availability
-            if (numSeats > availableSeats) {
-                showAlert(`Sorry, only ${availableSeats} seats are available for ${selectedEvent.event_name}`, "danger")
-                return
+                if (data.success) {
+                    await loadEvents()   // refresh seat counts from server
+                    showAlert(data.message, "success")
+                    document.getElementById("bookingForm").reset()
+                } else {
+                    showAlert((data.errors || ['Booking failed.']).join(' '), "danger")
+                }
+            } catch (err) {
+                showAlert('Could not connect to server. Please try again.', 'danger')
             }
-
-            // Update booked seats (front-end only)
-            selectedEvent.booked += numSeats
-
-            // Update display
-            displayEventCards()
-            populateEventDropdown()
-
-            // Show success message
-            showAlert(
-                `Success! ${fullName}, you have successfully booked ${numSeats} seat(s) for ${selectedEvent.event_name} at ${selectedEvent.monastery}. A confirmation email will be sent to ${email}.`,
-                "success",
-            )
-
-            // Reset form
-            document.getElementById("bookingForm").reset()
         })
 
         // Show alert function

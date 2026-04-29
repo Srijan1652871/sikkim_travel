@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>South Sikkim — Monastery360</title>
+  <script src="/static/nav.js"></script>
+  <style>
+    @import url("https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Cormorant+Garamond:wght@300;400;500;600&family=Inter:wght@300;400;500;600&display=swap");
+
+    :root {
+      --primary-gold: #d4af37;
+      --primary-dark: #8b7355;
+      --soft-cream: #faf8f5;
+      --text-dark: #2c2c2c;
+      --text-muted: #6b7280;
+      --shadow-soft: 0 4px 20px rgba(0,0,0,.08);
+      --shadow-hover: 0 8px 30px rgba(0,0,0,.14);
+      --gradient-primary: linear-gradient(135deg,#d4af37 0%,#8b7355 100%);
+      --district-color: #2e7d32;
+      --district-light: #e8f5e9;
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: "Inter", sans-serif; background: linear-gradient(135deg,#faf8f5 0%,#f0fff4 50%,#fff 100%); color: var(--text-dark); min-height: 100vh; }
+
+    .district-hero {
+      background: linear-gradient(160deg,#0a2e0c 0%,#1b4d1e 40%,#2e7d32 100%);
+      color: #fff; padding: 4rem 0 3rem; position: relative; overflow: hidden;
+    }
+    .district-hero::before {
+      content:''; position:absolute; inset:0;
+      background: radial-gradient(ellipse at 10% 50%,rgba(212,175,55,.18) 0%,transparent 60%),
+                  radial-gradient(ellipse at 90% 20%,rgba(255,255,255,.06) 0%,transparent 50%);
+    }
+    .district-hero::after {
+      content:''; position:absolute; bottom:0; left:0; right:0; height:60px;
+      background: linear-gradient(to bottom right,transparent 49%,#faf8f5 50%);
+    }
+    .hero-inner { position:relative; z-index:1; text-align:center; padding:0 1rem; }
+    .district-badge { display:inline-block; background:rgba(212,175,55,.2); border:1px solid rgba(212,175,55,.5); color:#d4af37; font-size:.75rem; font-weight:600; letter-spacing:.12em; text-transform:uppercase; padding:.35rem 1rem; border-radius:50px; margin-bottom:1.2rem; }
+    .hero-title { font-family:"Playfair Display",serif; font-size:clamp(2.5rem,6vw,4.5rem); font-weight:700; line-height:1.1; margin-bottom:.8rem; }
+    .hero-subtitle { font-family:"Cormorant Garamond",serif; font-size:clamp(1.1rem,2.5vw,1.5rem); font-weight:300; color:rgba(255,255,255,.8); margin-bottom:2rem; }
+    .hero-stats { display:flex; justify-content:center; gap:2.5rem; flex-wrap:wrap; }
+    .stat-item { text-align:center; }
+    .stat-number { font-family:"Playfair Display",serif; font-size:1.8rem; font-weight:700; color:#d4af37; display:block; }
+    .stat-label { font-size:.75rem; color:rgba(255,255,255,.65); letter-spacing:.06em; text-transform:uppercase; }
+
+    .content-section { padding:4rem 0; }
+    .container { max-width:1100px; margin:0 auto; padding:0 1.5rem; }
+    .section-label { display:flex; align-items:center; gap:.75rem; margin-bottom:1rem; }
+    .section-label span { font-size:.7rem; font-weight:700; letter-spacing:.14em; text-transform:uppercase; color:var(--district-color); }
+    .section-label::before, .section-label::after { content:''; flex:1; height:1px; background:linear-gradient(90deg,transparent,rgba(46,125,50,.3)); }
+    .section-label::before { background:linear-gradient(90deg,transparent,rgba(46,125,50,.3)); }
+    .section-heading { font-family:"Playfair Display",serif; font-size:clamp(1.6rem,3vw,2.4rem); font-weight:700; color:var(--text-dark); margin-bottom:1rem; text-align:center; }
+    .section-intro { text-align:center; color:var(--text-muted); max-width:620px; margin:0 auto 3rem; font-size:.95rem; line-height:1.8; }
+
+    .overview-grid { display:grid; grid-template-columns:1fr 1fr; gap:2rem; align-items:start; }
+    @media(max-width:768px){ .overview-grid { grid-template-columns:1fr; } }
+    .overview-text { font-size:.95rem; line-height:1.9; color:#444; }
+    .overview-text p { margin-bottom:1rem; }
+    .quick-facts { background:#fff; border-radius:16px; box-shadow:var(--shadow-soft); border:1px solid rgba(46,125,50,.12); padding:1.8rem; }
+    .quick-facts h3 { font-family:"Playfair Display",serif; font-size:1.15rem; color:var(--district-color); margin-bottom:1.2rem; padding-bottom:.6rem; border-bottom:2px solid var(--district-light); }
+    .fact-row { display:flex; justify-content:space-between; align-items:center; padding:.55rem 0; border-bottom:1px solid #f0f0f0; font-size:.875rem; }
+    .fact-row:last-child { border-bottom:none; }
+    .fact-label { color:var(--text-muted); font-weight:500; }
+    .fact-value { font-weight:600; color:var(--text-dark); text-align:right; max-width:55%; }
+
+    .cards-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(300px,1fr)); gap:1.5rem; }
+    .monastery-card { background:#fff; border-radius:16px; box-shadow:var(--shadow-soft); border:1px solid rgba(212,175,55,.1); overflow:hidden; transition:transform .3s,box-shadow .3s; }
+    .monastery-card:hover { transform:translateY(-6px); box-shadow:var(--shadow-hover); }
+    .card-accent { height:5px; background:var(--gradient-primary); }
+    .card-body { padding:1.5rem; }
+    .card-icon { width:44px; height:44px; border-radius:12px; background:var(--district-light); display:flex; align-items:center; justify-content:center; margin-bottom:1rem; font-size:1.3rem; }
+    .card-title { font-family:"Playfair Display",serif; font-size:1.1rem; font-weight:600; margin-bottom:.4rem; color:var(--text-dark); }
+    .card-meta { font-size:.75rem; color:var(--district-color); font-weight:600; letter-spacing:.05em; text-transform:uppercase; margin-bottom:.8rem; }
+    .card-desc { font-size:.875rem; line-height:1.7; color:var(--text-muted); }
+
+    .attractions-bg { background:linear-gradient(135deg,#0a2e0c,#1b4d1e); }
+    .attractions-bg .section-label span { color:#d4af37; }
+    .attractions-bg .section-heading { color:#fff; }
+    .attractions-bg .section-intro { color:rgba(255,255,255,.7); }
+    .attr-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(240px,1fr)); gap:1.2rem; }
+    .attr-card { background:rgba(255,255,255,.06); border:1px solid rgba(255,255,255,.12); border-radius:14px; padding:1.5rem; transition:background .3s,transform .3s; }
+    .attr-card:hover { background:rgba(255,255,255,.1); transform:translateY(-4px); }
+    .attr-icon { font-size:2rem; margin-bottom:.8rem; }
+    .attr-name { font-family:"Playfair Display",serif; font-size:1rem; font-weight:600; color:#fff; margin-bottom:.4rem; }
+    .attr-desc { font-size:.82rem; color:rgba(255,255,255,.65); line-height:1.6; }
+
+    .culture-items { display:grid; grid-template-columns:repeat(auto-fill,minmax(200px,1fr)); gap:1rem; }
+    .culture-item { text-align:center; padding:1.8rem 1rem; border-radius:14px; background:var(--district-light); transition:transform .25s; }
+    .culture-item:hover { transform:translateY(-4px); }
+    .culture-item .ci-icon { font-size:2.2rem; margin-bottom:.8rem; }
+    .culture-item h4 { font-family:"Playfair Display",serif; font-size:.95rem; font-weight:600; color:var(--district-color); margin-bottom:.3rem; }
+    .culture-item p { font-size:.8rem; color:var(--text-muted); line-height:1.5; }
+
+    .travel-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(260px,1fr)); gap:1.5rem; }
+    .travel-card { background:#fff; border-radius:14px; padding:1.5rem; box-shadow:var(--shadow-soft); border-left:4px solid var(--district-color); }
+    .travel-card h4 { font-family:"Playfair Display",serif; font-size:1rem; color:var(--text-dark); margin-bottom:.8rem; }
+    .travel-card p, .travel-card li { font-size:.875rem; color:var(--text-muted); line-height:1.7; }
+    .travel-card ul { padding-left:1.2rem; }
+  </style>
+</head>
+<body>
+
+  <section class="district-hero">
+    <div class="hero-inner container">
+      <div class="district-badge">✦ Sikkim District</div>
+      <h1 class="hero-title">South Sikkim</h1>
+      <p class="hero-subtitle">The Sacred Heartland — Ancient Monasteries Amid Lush Green Hills</p>
+      <div class="hero-stats">
+        <div class="stat-item"><span class="stat-number">750 km²</span><span class="stat-label">Area</span></div>
+        <div class="stat-item"><span class="stat-number">1,46,850</span><span class="stat-label">Population</span></div>
+        <div class="stat-item"><span class="stat-number">Namchi</span><span class="stat-label">District HQ</span></div>
+        <div class="stat-item"><span class="stat-number">1,675 m</span><span class="stat-label">Namchi Altitude</span></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="content-section">
+    <div class="container">
+      <div class="section-label"><span>Overview</span></div>
+      <h2 class="section-heading">The Religious Hub of Sikkim</h2>
+      <div class="overview-grid">
+        <div class="overview-text">
+          <p>South Sikkim is one of the most densely populated and historically significant districts of the state. Its landscapes transition from subtropical forests at lower elevations to temperate zones higher up, giving it rich biodiversity and year-round agricultural productivity.</p>
+          <p>The district is renowned as a major pilgrimage destination. Namchi, its headquarters, is home to the iconic Char Dham complex and the towering statue of Guru Padmasambhava — one of the largest in the world — drawing visitors from across India and the globe.</p>
+          <p>South Sikkim has the highest concentration of cardamom cultivation in Sikkim, earning it an important place in the state's agricultural economy. The rolling green hills dotted with small farms and prayer flags create an iconic Sikkimese landscape.</p>
+          <p>The district is also known for its proximity to the ancient Tashiding Monastery and the sacred site of Ravangla, which commands sweeping views of the Kangchenjunga range.</p>
+        </div>
+        <div class="quick-facts">
+          <h3>📋 Quick Facts</h3>
+          <div class="fact-row"><span class="fact-label">District HQ</span><span class="fact-value">Namchi</span></div>
+          <div class="fact-row"><span class="fact-label">Area</span><span class="fact-value">750 km²</span></div>
+          <div class="fact-row"><span class="fact-label">Population (2011)</span><span class="fact-value">1,46,850</span></div>
+          <div class="fact-row"><span class="fact-label">Literacy Rate</span><span class="fact-value">82.6%</span></div>
+          <div class="fact-row"><span class="fact-label">Major Religion</span><span class="fact-value">Buddhism, Hinduism</span></div>
+          <div class="fact-row"><span class="fact-label">Languages</span><span class="fact-value">Nepali, Bhutia, Lepcha</span></div>
+          <div class="fact-row"><span class="fact-label">Best Time to Visit</span><span class="fact-value">Oct–Apr</span></div>
+          <div class="fact-row"><span class="fact-label">Major Industry</span><span class="fact-value">Cardamom, Tourism</span></div>
+          <div class="fact-row"><span class="fact-label">Nearest Airport</span><span class="fact-value">Pakyong (40 km)</span></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="content-section" style="background:#f8f9fb; padding-top:0;">
+    <div class="container">
+      <div class="section-label"><span>Sacred Sites</span></div>
+      <h2 class="section-heading">Monasteries & Pilgrimage Sites</h2>
+      <p class="section-intro">South Sikkim's sacred landscape is a blend of ancient Buddhism and Hindu pilgrimage heritage.</p>
+      <div class="cards-grid">
+        <div class="monastery-card">
+          <div class="card-accent"></div>
+          <div class="card-body">
+            <div class="card-icon">🕌</div>
+            <div class="card-meta">Tashiding · Nyingma</div>
+            <h3 class="card-title">Tashiding Monastery</h3>
+            <p class="card-desc">Built in 1716, Tashiding is considered the most sacred monastery in Sikkim. Set on a conical hill at the confluence of two rivers, it houses the Thongwa Rangdol chorten — sight of which is believed to absolve all sins. The Bhumchu festival held here each year is among Sikkim's most celebrated.</p>
+          </div>
+        </div>
+        <div class="monastery-card">
+          <div class="card-accent"></div>
+          <div class="card-body">
+            <div class="card-icon">⛩️</div>
+            <div class="card-meta">Namchi · Pilgrimage</div>
+            <h3 class="card-title">Char Dham, Namchi</h3>
+            <p class="card-desc">A unique complex replicating all four Char Dham pilgrimage sites of India — Badrinath, Dwarka, Puri, and Rameswaram — set on Solophok Hill. Presided over by a massive 87-ft statue of Lord Shiva, it is a major spiritual destination for Hindu pilgrims.</p>
+          </div>
+        </div>
+        <div class="monastery-card">
+          <div class="card-accent"></div>
+          <div class="card-body">
+            <div class="card-icon">🙏</div>
+            <div class="card-meta">Ravangla · Nyingma</div>
+            <h3 class="card-title">Buddha Park, Ravangla</h3>
+            <p class="card-desc">Home to a spectacular 130-ft Buddha statue unveiled in 2013. Set against a panoramic backdrop of the Kangchenjunga range, the park is a serene meditation and pilgrimage destination drawing thousands each year.</p>
+          </div>
+        </div>
+        <div class="monastery-card">
+          <div class="card-accent"></div>
+          <div class="card-body">
+            <div class="card-icon">🏯</div>
+            <div class="card-meta">Ralang · Kagyu</div>
+            <h3 class="card-title">Ralang Monastery</h3>
+            <p class="card-desc">A significant Kagyu sect monastery near Ravangla, known for its elaborate Kagyed Chaam dance performed over 10 days each winter. The monastery has an old and new building; the new one is decorated in vivid traditional style.</p>
+          </div>
+        </div>
+        <div class="monastery-card">
+          <div class="card-accent"></div>
+          <div class="card-body">
+            <div class="card-icon">🌄</div>
+            <div class="card-meta">Namchi · Guru Statue</div>
+            <h3 class="card-title">Samdruptse Hill</h3>
+            <p class="card-desc">Atop this hill stands one of the world's largest statues of Guru Padmasambhava at 135 ft. The hilltop commands 360° views over South Sikkim's valleys and is considered one of the most sacred spots in the region.</p>
+          </div>
+        </div>
+        <div class="monastery-card">
+          <div class="card-accent"></div>
+          <div class="card-body">
+            <div class="card-icon">🌿</div>
+            <div class="card-meta">Borong · Thermal Springs</div>
+            <h3 class="card-title">Borong Monastery & Hot Springs</h3>
+            <p class="card-desc">A remote but rewarding destination — the Borong Monastery sits above natural hot springs believed to have healing properties. The surrounding area is known for its pristine forests and the rare sight of rhododendron and orchid species.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="content-section attractions-bg">
+    <div class="container">
+      <div class="section-label"><span>Explore</span></div>
+      <h2 class="section-heading">Natural & Cultural Attractions</h2>
+      <p class="section-intro">South Sikkim offers a lush, green landscape rich in biodiversity and scenic viewpoints.</p>
+      <div class="attr-grid">
+        <div class="attr-card">
+          <div class="attr-icon">🌄</div>
+          <div class="attr-name">Ravangla</div>
+          <p class="attr-desc">A hill station at 7,000 ft with sweeping views of Kangchenjunga and the surrounding peaks. Known as a sunrise viewpoint and a gateway to multiple monasteries.</p>
+        </div>
+        <div class="attr-card">
+          <div class="attr-icon">🌿</div>
+          <div class="attr-name">Maenam Wildlife Sanctuary</div>
+          <p class="attr-desc">A 35 sq km sanctuary at 10,300 ft altitude, home to red pandas, leopards, and over 200 bird species. The summit offers a 360° Himalayan panorama.</p>
+        </div>
+        <div class="attr-card">
+          <div class="attr-icon">🍵</div>
+          <div class="attr-name">Temi Tea Garden</div>
+          <p class="attr-desc">The only tea garden in Sikkim, producing award-winning organic tea since 1969. Scenic terraced gardens with Kangchenjunga as a backdrop — a photographer's delight.</p>
+        </div>
+        <div class="attr-card">
+          <div class="attr-icon">🌸</div>
+          <div class="attr-name">Tendong Hill</div>
+          <p class="attr-desc">A sacred hill revered by the Lepcha community. A trekking destination offering dense forests, panoramic views, and the ancient Tendong Hill deity temple at the summit.</p>
+        </div>
+        <div class="attr-card">
+          <div class="attr-icon">🎪</div>
+          <div class="attr-name">Namchi Trade Fair</div>
+          <p class="attr-desc">An annual event attracting traders and visitors from across Sikkim and neighbouring states. A vibrant showcase of local crafts, cuisine, and cultural performances.</p>
+        </div>
+        <div class="attr-card">
+          <div class="attr-icon">🐦</div>
+          <div class="attr-name">Kitam Bird Sanctuary</div>
+          <p class="attr-desc">A small but rich bird sanctuary near Namchi, harbouring over 200 species including rare Himalayan birds. A must-visit for birdwatching enthusiasts.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="content-section" style="background:#fff;">
+    <div class="container">
+      <div class="section-label"><span>Living Heritage</span></div>
+      <h2 class="section-heading">Culture & Traditions</h2>
+      <p class="section-intro">South Sikkim is where Buddhist and Hindu traditions coexist in vibrant harmony.</p>
+      <div class="culture-items">
+        <div class="culture-item">
+          <div class="ci-icon">🎭</div>
+          <h4>Bhumchu Festival</h4>
+          <p>Held at Tashiding, water from a sacred vessel predicts the year's fortunes. One of the most spiritually significant festivals in Sikkim.</p>
+        </div>
+        <div class="culture-item">
+          <div class="ci-icon">🌺</div>
+          <h4>Tihar & Dashain</h4>
+          <p>Celebrated with great enthusiasm by the Nepali community — lamp festivals, family reunions, and colourful rangoli mark the festive season.</p>
+        </div>
+        <div class="culture-item">
+          <div class="ci-icon">🌾</div>
+          <h4>Cardamom Harvest</h4>
+          <p>The annual cardamom harvest in September–October is a community event; families come together to pick, process, and celebrate the spice that defines South Sikkim's economy.</p>
+        </div>
+        <div class="culture-item">
+          <div class="ci-icon">🥘</div>
+          <h4>Sikkimese Cuisine</h4>
+          <p>Gundruk, dhido, and sel roti are staples. South Sikkim's Nepali-influenced cuisine is rich in fermented foods, reflecting the high-altitude agricultural heritage.</p>
+        </div>
+        <div class="culture-item">
+          <div class="ci-icon">🎵</div>
+          <h4>Maruni Dance</h4>
+          <p>A traditional Nepali dance performed during Tihar, characterised by graceful movements and elaborate costumes. A living cultural tradition in South Sikkimese villages.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="content-section" style="background:#f8f9fb;">
+    <div class="container">
+      <div class="section-label"><span>Plan Your Visit</span></div>
+      <h2 class="section-heading">Travel Information</h2>
+      <p class="section-intro">South Sikkim is the most accessible district for pilgrimage tourism.</p>
+      <div class="travel-grid">
+        <div class="travel-card">
+          <h4>🚗 How to Get There</h4>
+          <p>Namchi is 78 km from Gangtok via NH-10 and State Highway. Regular buses and shared jeeps operate from Gangtok, Jorethang, and Melli. A ropeway connects Namchi to Solophok Hill.</p>
+        </div>
+        <div class="travel-card">
+          <h4>📄 Permits</h4>
+          <p>No special permit required for Indian nationals to visit South Sikkim. Foreign nationals need a standard Sikkim permit obtained at border checkpoints or online.</p>
+        </div>
+        <div class="travel-card">
+          <h4>🌤️ Best Season</h4>
+          <p><strong>Oct–Dec:</strong> Clear skies, ideal for mountain views and pilgrimage.<br>
+          <strong>Mar–May:</strong> Blooming rhododendrons and pleasant weather.<br>
+          <strong>Monsoon (Jun–Sep):</strong> Landslides possible; check road conditions.</p>
+        </div>
+        <div class="travel-card">
+          <h4>🏨 Where to Stay</h4>
+          <p>Namchi has a range of hotels and guesthouses. Ravangla offers eco-resorts and homestays with spectacular views. Tashiding has basic accommodation near the monastery.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+</body>
+</html>

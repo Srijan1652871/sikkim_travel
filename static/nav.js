@@ -5,17 +5,17 @@
 
 (function () {
   /* ── detect current page ── */
-  const path = location.pathname.split('/').pop() || 'index.html';
+  const path = location.pathname.replace(/\/+$/, '') || '/';
 
   const pages = [
-    { href: 'index.html',        label: 'Home',          icon: 'fa-home' },
-    { href: 'm360.html',         label: 'Virtual Tours', icon: 'fa-vr-cardboard' },
-    { href: 'map.html',          label: 'District Map',  icon: 'fa-map-marked-alt' },
-    { href: 'audguide.html',     label: 'Audio Guide',   icon: 'fa-headphones' },
-    { href: 'audio.html',        label: 'Narration',     icon: 'fa-microphone' },
-    { href: 'narrative.html',    label: 'Stories',       icon: 'fa-book-open' },
-    { href: 'digarc.html',       label: 'Archives',      icon: 'fa-archive' },
-    { href: 'cultcal.html',      label: 'Calendar',      icon: 'fa-calendar-alt' },
+    { href: '/',              label: 'Home',          icon: 'fa-home' },
+    { href: '/virtual-tours', label: 'Virtual Tours', icon: 'fa-vr-cardboard' },
+    { href: '/map',           label: 'District Map',  icon: 'fa-map-marked-alt' },
+    { href: '/audio-guide',   label: 'Audio Guide',   icon: 'fa-headphones' },
+    { href: '/narration',     label: 'Narration',     icon: 'fa-microphone' },
+    { href: '/stories',       label: 'Stories',       icon: 'fa-book-open' },
+    { href: '/archives',      label: 'Archives',      icon: 'fa-archive' },
+    { href: '/calendar',      label: 'Calendar',      icon: 'fa-calendar-alt' },
   ];
 
   /* ── inject Bootstrap + Font Awesome if not already present ── */
@@ -151,7 +151,7 @@
 
   /* ── build nav links HTML ── */
   const navItems = pages.map(p => {
-    const active = (p.href === path || (path === '' && p.href === 'index.html')) ? 'active' : '';
+    const active = (p.href === path || (path === '' && p.href === '/')) ? 'active' : '';
     return `<li class="nav-item">
       <a class="nav-link ${active}" href="${p.href}">
         <i class="fas ${p.icon}"></i>${p.label}
@@ -165,7 +165,7 @@
   navbar.className = 'navbar navbar-expand-lg';
   navbar.innerHTML = `
     <div class="container-fluid px-4">
-      <a class="navbar-brand" href="index.html">
+      <a class="navbar-brand" href="/">
         <i class="fas fa-dharmachakra me-2" style="font-size:1.4rem;color:#d4af37;-webkit-text-fill-color:#d4af37;"></i>
         Monastery360
       </a>
@@ -176,7 +176,7 @@
       <div class="collapse navbar-collapse" id="m360NavCollapse">
         <ul class="navbar-nav mx-auto gap-1">${navItems}</ul>
         <div class="d-flex align-items-center gap-2 mt-2 mt-lg-0">
-          <a class="btn-explore" href="evbook.html"><i class="fas fa-ticket-alt me-1"></i>Book Events</a>
+          <a class="btn-explore" href="/book-events"><i class="fas fa-ticket-alt me-1"></i>Book Events</a>
         </div>
       </div>
     </div>`;
@@ -189,8 +189,8 @@
   breadcrumb.innerHTML = `
     <div class="container-fluid px-4">
       <ol class="breadcrumb mb-0">
-        <li class="breadcrumb-item"><a href="index.html"><i class="fas fa-home me-1"></i>Home</a></li>
-        ${path !== 'index.html' ? `<li class="breadcrumb-item active">${bcLabel}</li>` : ''}
+        <li class="breadcrumb-item"><a href="/"><i class="fas fa-home me-1"></i>Home</a></li>
+        ${path !== '/' ? `<li class="breadcrumb-item active">${bcLabel}</li>` : ''}
       </ol>
     </div>`;
 
@@ -221,10 +221,10 @@
         <div class="col-lg-2 col-md-4">
           <div class="footer-heading">Explore</div>
           <ul class="list-unstyled footer-links">
-            <li><a href="m360.html"><i class="fas fa-vr-cardboard me-1"></i>Virtual Tours</a></li>
-            <li><a href="map.html"><i class="fas fa-map me-1"></i>District Map</a></li>
-            <li><a href="audguide.html"><i class="fas fa-headphones me-1"></i>Audio Guide</a></li>
-            <li><a href="narrative.html"><i class="fas fa-book-open me-1"></i>Stories</a></li>
+            <li><a href="/virtual-tours"><i class="fas fa-vr-cardboard me-1"></i>Virtual Tours</a></li>
+            <li><a href="/map"><i class="fas fa-map me-1"></i>District Map</a></li>
+            <li><a href="/audio-guide"><i class="fas fa-headphones me-1"></i>Audio Guide</a></li>
+            <li><a href="/stories"><i class="fas fa-book-open me-1"></i>Stories</a></li>
           </ul>
         </div>
 
@@ -232,10 +232,10 @@
         <div class="col-lg-2 col-md-4">
           <div class="footer-heading">Resources</div>
           <ul class="list-unstyled footer-links">
-            <li><a href="digarc.html"><i class="fas fa-archive me-1"></i>Digital Archives</a></li>
-            <li><a href="cultcal.html"><i class="fas fa-calendar-alt me-1"></i>Cultural Calendar</a></li>
-            <li><a href="evbook.html"><i class="fas fa-ticket-alt me-1"></i>Book Events</a></li>
-            <li><a href="audio.html"><i class="fas fa-microphone me-1"></i>Narration</a></li>
+            <li><a href="/archives"><i class="fas fa-archive me-1"></i>Digital Archives</a></li>
+            <li><a href="/calendar"><i class="fas fa-calendar-alt me-1"></i>Cultural Calendar</a></li>
+            <li><a href="/book-events"><i class="fas fa-ticket-alt me-1"></i>Book Events</a></li>
+            <li><a href="/narration"><i class="fas fa-microphone me-1"></i>Narration</a></li>
           </ul>
         </div>
 
@@ -301,7 +301,7 @@
     document.body.insertBefore(navbar, document.body.firstChild);
 
     /* breadcrumb only on inner pages */
-    if (path !== 'index.html') {
+    if (path !== '/') {
       document.body.insertBefore(breadcrumb, navbar.nextSibling);
     }
 
@@ -328,13 +328,23 @@
   }
 
   /* ── global helpers ── */
-  window.m360Subscribe = function () {
+  window.m360Subscribe = async function () {
     const inp = document.getElementById('m360-email-input');
-    if (inp && inp.value && inp.value.includes('@')) {
-      alert(`✅ Thank you! ${inp.value} has been subscribed to Monastery360 updates.`);
-      inp.value = '';
-    } else {
+    if (!inp || !inp.value || !inp.value.includes('@')) {
       alert('⚠️ Please enter a valid email address.');
+      return;
+    }
+    try {
+      const res = await fetch('/api/subscribe', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email: inp.value.trim() })
+      });
+      const data = await res.json();
+      alert(data.success ? '✅ ' + data.message : '⚠️ ' + (data.error || 'Something went wrong.'));
+      if (data.success) inp.value = '';
+    } catch (e) {
+      alert('⚠️ Could not connect to server. Please try again.');
     }
   };
 })();

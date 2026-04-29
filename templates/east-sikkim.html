@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>East Sikkim — Monastery360</title>
+  <script src="/static/nav.js"></script>
+  <style>
+    @import url("https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Cormorant+Garamond:wght@300;400;500;600&family=Inter:wght@300;400;500;600&display=swap");
+
+    :root {
+      --primary-gold: #d4af37;
+      --primary-dark: #8b7355;
+      --soft-cream: #faf8f5;
+      --text-dark: #2c2c2c;
+      --text-muted: #6b7280;
+      --shadow-soft: 0 4px 20px rgba(0,0,0,.08);
+      --shadow-hover: 0 8px 30px rgba(0,0,0,.14);
+      --gradient-primary: linear-gradient(135deg,#d4af37 0%,#8b7355 100%);
+      --district-color: #b5451b;
+      --district-light: #fde8e2;
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: "Inter", sans-serif; background: linear-gradient(135deg,#faf8f5 0%,#fff5f2 50%,#fff 100%); color: var(--text-dark); min-height: 100vh; }
+
+    .district-hero {
+      background: linear-gradient(160deg,#2e0e00 0%,#5c2010 40%,#b5451b 100%);
+      color: #fff; padding: 4rem 0 3rem; position: relative; overflow: hidden;
+    }
+    .district-hero::before {
+      content:''; position:absolute; inset:0;
+      background: radial-gradient(ellipse at 10% 50%,rgba(212,175,55,.18) 0%,transparent 60%),
+                  radial-gradient(ellipse at 90% 20%,rgba(255,255,255,.06) 0%,transparent 50%);
+    }
+    .district-hero::after {
+      content:''; position:absolute; bottom:0; left:0; right:0; height:60px;
+      background: linear-gradient(to bottom right,transparent 49%,#faf8f5 50%);
+    }
+    .hero-inner { position:relative; z-index:1; text-align:center; padding:0 1rem; }
+    .district-badge { display:inline-block; background:rgba(212,175,55,.2); border:1px solid rgba(212,175,55,.5); color:#d4af37; font-size:.75rem; font-weight:600; letter-spacing:.12em; text-transform:uppercase; padding:.35rem 1rem; border-radius:50px; margin-bottom:1.2rem; }
+    .hero-title { font-family:"Playfair Display",serif; font-size:clamp(2.5rem,6vw,4.5rem); font-weight:700; line-height:1.1; margin-bottom:.8rem; }
+    .hero-subtitle { font-family:"Cormorant Garamond",serif; font-size:clamp(1.1rem,2.5vw,1.5rem); font-weight:300; color:rgba(255,255,255,.8); margin-bottom:2rem; }
+    .hero-stats { display:flex; justify-content:center; gap:2.5rem; flex-wrap:wrap; }
+    .stat-item { text-align:center; }
+    .stat-number { font-family:"Playfair Display",serif; font-size:1.8rem; font-weight:700; color:#d4af37; display:block; }
+    .stat-label { font-size:.75rem; color:rgba(255,255,255,.65); letter-spacing:.06em; text-transform:uppercase; }
+
+    .content-section { padding:4rem 0; }
+    .container { max-width:1100px; margin:0 auto; padding:0 1.5rem; }
+    .section-label { display:flex; align-items:center; gap:.75rem; margin-bottom:1rem; }
+    .section-label span { font-size:.7rem; font-weight:700; letter-spacing:.14em; text-transform:uppercase; color:var(--district-color); }
+    .section-label::before, .section-label::after { content:''; flex:1; height:1px; background:linear-gradient(90deg,transparent,rgba(181,69,27,.3)); }
+    .section-heading { font-family:"Playfair Display",serif; font-size:clamp(1.6rem,3vw,2.4rem); font-weight:700; color:var(--text-dark); margin-bottom:1rem; text-align:center; }
+    .section-intro { text-align:center; color:var(--text-muted); max-width:620px; margin:0 auto 3rem; font-size:.95rem; line-height:1.8; }
+
+    .overview-grid { display:grid; grid-template-columns:1fr 1fr; gap:2rem; align-items:start; }
+    @media(max-width:768px){ .overview-grid { grid-template-columns:1fr; } }
+    .overview-text { font-size:.95rem; line-height:1.9; color:#444; }
+    .overview-text p { margin-bottom:1rem; }
+    .quick-facts { background:#fff; border-radius:16px; box-shadow:var(--shadow-soft); border:1px solid rgba(181,69,27,.12); padding:1.8rem; }
+    .quick-facts h3 { font-family:"Playfair Display",serif; font-size:1.15rem; color:var(--district-color); margin-bottom:1.2rem; padding-bottom:.6rem; border-bottom:2px solid var(--district-light); }
+    .fact-row { display:flex; justify-content:space-between; align-items:center; padding:.55rem 0; border-bottom:1px solid #f0f0f0; font-size:.875rem; }
+    .fact-row:last-child { border-bottom:none; }
+    .fact-label { color:var(--text-muted); font-weight:500; }
+    .fact-value { font-weight:600; color:var(--text-dark); text-align:right; max-width:55%; }
+
+    .cards-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(300px,1fr)); gap:1.5rem; }
+    .monastery-card { background:#fff; border-radius:16px; box-shadow:var(--shadow-soft); border:1px solid rgba(212,175,55,.1); overflow:hidden; transition:transform .3s,box-shadow .3s; }
+    .monastery-card:hover { transform:translateY(-6px); box-shadow:var(--shadow-hover); }
+    .card-accent { height:5px; background:var(--gradient-primary); }
+    .card-body { padding:1.5rem; }
+    .card-icon { width:44px; height:44px; border-radius:12px; background:var(--district-light); display:flex; align-items:center; justify-content:center; margin-bottom:1rem; font-size:1.3rem; }
+    .card-title { font-family:"Playfair Display",serif; font-size:1.1rem; font-weight:600; margin-bottom:.4rem; color:var(--text-dark); }
+    .card-meta { font-size:.75rem; color:var(--district-color); font-weight:600; letter-spacing:.05em; text-transform:uppercase; margin-bottom:.8rem; }
+    .card-desc { font-size:.875rem; line-height:1.7; color:var(--text-muted); }
+
+    .attractions-bg { background:linear-gradient(135deg,#2e0e00,#5c2010); }
+    .attractions-bg .section-label span { color:#d4af37; }
+    .attractions-bg .section-heading { color:#fff; }
+    .attractions-bg .section-intro { color:rgba(255,255,255,.7); }
+    .attr-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(240px,1fr)); gap:1.2rem; }
+    .attr-card { background:rgba(255,255,255,.06); border:1px solid rgba(255,255,255,.12); border-radius:14px; padding:1.5rem; transition:background .3s,transform .3s; }
+    .attr-card:hover { background:rgba(255,255,255,.1); transform:translateY(-4px); }
+    .attr-icon { font-size:2rem; margin-bottom:.8rem; }
+    .attr-name { font-family:"Playfair Display",serif; font-size:1rem; font-weight:600; color:#fff; margin-bottom:.4rem; }
+    .attr-desc { font-size:.82rem; color:rgba(255,255,255,.65); line-height:1.6; }
+
+    .culture-items { display:grid; grid-template-columns:repeat(auto-fill,minmax(200px,1fr)); gap:1rem; }
+    .culture-item { text-align:center; padding:1.8rem 1rem; border-radius:14px; background:var(--district-light); transition:transform .25s; }
+    .culture-item:hover { transform:translateY(-4px); }
+    .culture-item .ci-icon { font-size:2.2rem; margin-bottom:.8rem; }
+    .culture-item h4 { font-family:"Playfair Display",serif; font-size:.95rem; font-weight:600; color:var(--district-color); margin-bottom:.3rem; }
+    .culture-item p { font-size:.8rem; color:var(--text-muted); line-height:1.5; }
+
+    .travel-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(260px,1fr)); gap:1.5rem; }
+    .travel-card { background:#fff; border-radius:14px; padding:1.5rem; box-shadow:var(--shadow-soft); border-left:4px solid var(--district-color); }
+    .travel-card h4 { font-family:"Playfair Display",serif; font-size:1rem; color:var(--text-dark); margin-bottom:.8rem; }
+    .travel-card p, .travel-card li { font-size:.875rem; color:var(--text-muted); line-height:1.7; }
+    .travel-card ul { padding-left:1.2rem; }
+  </style>
+</head>
+<body>
+
+  <section class="district-hero">
+    <div class="hero-inner container">
+      <div class="district-badge">✦ Sikkim District</div>
+      <h1 class="hero-title">East Sikkim</h1>
+      <p class="hero-subtitle">The Gateway to Sikkim — Capital, Culture & Kangchenjunga Views</p>
+      <div class="hero-stats">
+        <div class="stat-item"><span class="stat-number">954 km²</span><span class="stat-label">Area</span></div>
+        <div class="stat-item"><span class="stat-number">2,83,583</span><span class="stat-label">Population</span></div>
+        <div class="stat-item"><span class="stat-number">Gangtok</span><span class="stat-label">District HQ</span></div>
+        <div class="stat-item"><span class="stat-number">1,650 m</span><span class="stat-label">Gangtok Altitude</span></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="content-section">
+    <div class="container">
+      <div class="section-label"><span>Overview</span></div>
+      <h2 class="section-heading">The Capital & Cultural Heart</h2>
+      <div class="overview-grid">
+        <div class="overview-text">
+          <p>East Sikkim is the most populous and economically developed district of Sikkim, home to the state capital Gangtok. Perched on a ridge at 1,650 m, Gangtok is the nerve centre of governance, commerce, and tourism for the entire state.</p>
+          <p>The district shares its eastern border with Tibet (China), making it historically and strategically significant. The ancient Silk Route — now a major tourist trail — passes through East Sikkim, connecting India to Tibet via the Nathu La pass at 4,310 m.</p>
+          <p>East Sikkim hosts the most visited monasteries in the state, including Rumtek — the seat of the Kagyu school of Tibetan Buddhism — and Enchey Monastery, an iconic landmark of Gangtok. The district blends monastic heritage with a lively modern town culture.</p>
+          <p>Tsomgo Lake (Changu Lake), the ancient Baba Harbhajan Singh Temple, and the views from Tashi Viewpoint make East Sikkim one of the most diverse and rewarding districts for travellers of all kinds.</p>
+        </div>
+        <div class="quick-facts">
+          <h3>📋 Quick Facts</h3>
+          <div class="fact-row"><span class="fact-label">District HQ</span><span class="fact-value">Gangtok</span></div>
+          <div class="fact-row"><span class="fact-label">Area</span><span class="fact-value">954 km²</span></div>
+          <div class="fact-row"><span class="fact-label">Population (2011)</span><span class="fact-value">2,83,583</span></div>
+          <div class="fact-row"><span class="fact-label">Literacy Rate</span><span class="fact-value">82.2%</span></div>
+          <div class="fact-row"><span class="fact-label">Major Religion</span><span class="fact-value">Buddhism, Hinduism</span></div>
+          <div class="fact-row"><span class="fact-label">Languages</span><span class="fact-value">Nepali, Bhutia, Lepcha, English</span></div>
+          <div class="fact-row"><span class="fact-label">Best Time to Visit</span><span class="fact-value">Mar–May, Oct–Dec</span></div>
+          <div class="fact-row"><span class="fact-label">Notable Pass</span><span class="fact-value">Nathu La (4,310 m)</span></div>
+          <div class="fact-row"><span class="fact-label">Airport</span><span class="fact-value">Pakyong Airport (31 km)</span></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="content-section" style="background:#f8f9fb; padding-top:0;">
+    <div class="container">
+      <div class="section-label"><span>Sacred Sites</span></div>
+      <h2 class="section-heading">Monasteries & Buddhist Heritage</h2>
+      <p class="section-intro">East Sikkim's monasteries are among the most visited and historically significant in the Himalayan region.</p>
+      <div class="cards-grid">
+        <div class="monastery-card">
+          <div class="card-accent"></div>
+          <div class="card-body">
+            <div class="card-icon">🏯</div>
+            <div class="card-meta">Rumtek · Kagyu</div>
+            <h3 class="card-title">Rumtek Monastery</h3>
+            <p class="card-desc">The largest monastery in Sikkim and the seat-in-exile of the Kagyu school of Tibetan Buddhism. Built by the 16th Karmapa in the 1960s, Rumtek houses rare Buddhist artefacts, golden chortens, and a vast monastic complex. It is considered one of the most important Kagyu centres in the world.</p>
+          </div>
+        </div>
+        <div class="monastery-card">
+          <div class="card-accent"></div>
+          <div class="card-body">
+            <div class="card-icon">🌅</div>
+            <div class="card-meta">Gangtok · Nyingma</div>
+            <h3 class="card-title">Enchey Monastery</h3>
+            <p class="card-desc">Perched at 6,000 ft above Gangtok, Enchey was built in 1909 on a site blessed by Lama Druptob Karpo. The monastery is famous for its annual Chaam dance held in winter, and for its sweeping views over Gangtok and the Kangchenjunga range.</p>
+          </div>
+        </div>
+        <div class="monastery-card">
+          <div class="card-accent"></div>
+          <div class="card-body">
+            <div class="card-icon">📚</div>
+            <div class="card-meta">Gangtok · Institute</div>
+            <h3 class="card-title">Namgyal Institute of Tibetology</h3>
+            <p class="card-desc">A world-class research institute and museum dedicated to Tibetan and Buddhist studies. Its collection of rare manuscripts, thangkas, ritual objects, and Lepcha texts is one of the finest in Asia. Essential for anyone interested in Himalayan culture and religion.</p>
+          </div>
+        </div>
+        <div class="monastery-card">
+          <div class="card-accent"></div>
+          <div class="card-body">
+            <div class="card-icon">🕉️</div>
+            <div class="card-meta">Gangtok · Temple</div>
+            <h3 class="card-title">Thakurbari Temple</h3>
+            <p class="card-desc">One of the most important Hindu temples in Gangtok, dedicated to Lord Shiva. Surrounded by lush gardens, it serves as a spiritual anchor for the Hindu community in East Sikkim and hosts major festivals including Shivratri.</p>
+          </div>
+        </div>
+        <div class="monastery-card">
+          <div class="card-accent"></div>
+          <div class="card-body">
+            <div class="card-icon">🌸</div>
+            <div class="card-meta">Lingdum · Nyingma</div>
+            <h3 class="card-title">Lingdum Monastery</h3>
+            <p class="card-desc">A modern but beautifully designed monastery near Rumtek, built by the Zurmang Kagyud tradition. The monastery complex includes a large prayer hall, meditation retreat quarters, and is set against a forested hillside.</p>
+          </div>
+        </div>
+        <div class="monastery-card">
+          <div class="card-accent"></div>
+          <div class="card-body">
+            <div class="card-icon">🎖️</div>
+            <div class="card-meta">Nathu La · Military Shrine</div>
+            <h3 class="card-title">Baba Harbhajan Singh Temple</h3>
+            <p class="card-desc">A unique shrine dedicated to a martyred Indian Army soldier, believed by both Indian and Chinese troops to guard the Nathu La pass. Visited by thousands of pilgrims and soldiers annually; one of the most unusual sacred sites in Sikkim.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="content-section attractions-bg">
+    <div class="container">
+      <div class="section-label"><span>Explore</span></div>
+      <h2 class="section-heading">Attractions & Landmarks</h2>
+      <p class="section-intro">From ancient passes to glacial lakes — East Sikkim has something for every traveller.</p>
+      <div class="attr-grid">
+        <div class="attr-card">
+          <div class="attr-icon">🏔️</div>
+          <div class="attr-name">Nathu La Pass</div>
+          <p class="attr-desc">A historic mountain pass at 4,310 m on the old Silk Route, now a trade and tourism corridor between India and China. Accessible by permit from Gangtok.</p>
+        </div>
+        <div class="attr-card">
+          <div class="attr-icon">🌊</div>
+          <div class="attr-name">Tsomgo (Changu) Lake</div>
+          <p class="attr-desc">A glacial lake at 12,310 ft, sacred to the Sikkimese people. The lake changes colour with the seasons and is surrounded by snow-covered mountains and alpine flora.</p>
+        </div>
+        <div class="attr-card">
+          <div class="attr-icon">🌇</div>
+          <div class="attr-name">MG Marg, Gangtok</div>
+          <p class="attr-desc">The heart of Gangtok — a pedestrian promenade lined with restaurants, shops, and colonial-era buildings. The best place to experience Sikkim's cosmopolitan side.</p>
+        </div>
+        <div class="attr-card">
+          <div class="attr-icon">🌄</div>
+          <div class="attr-name">Tashi Viewpoint</div>
+          <p class="attr-desc">One of the best panoramic viewpoints in Gangtok, offering clear views of Kangchenjunga and the surrounding Himalayan peaks on clear days.</p>
+        </div>
+        <div class="attr-card">
+          <div class="attr-icon">🌺</div>
+          <div class="attr-name">Flower Exhibition Centre</div>
+          <p class="attr-desc">A stunning showcase of Sikkim's diverse flora — over 600 species of orchids and other high-altitude flowers displayed seasonally. A must-visit in spring.</p>
+        </div>
+        <div class="attr-card">
+          <div class="attr-icon">🛤️</div>
+          <div class="attr-name">Old Silk Route</div>
+          <p class="attr-desc">A historic trail through Zuluk, Lungthung, and Nathang Valley — one of Sikkim's most breathtaking road journeys, passing ancient trading posts and offering stunning sunrise views.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="content-section" style="background:#fff;">
+    <div class="container">
+      <div class="section-label"><span>Living Heritage</span></div>
+      <h2 class="section-heading">Culture & Traditions</h2>
+      <p class="section-intro">Gangtok is Sikkim's cultural melting pot — where Bhutia, Lepcha, and Nepali traditions converge.</p>
+      <div class="culture-items">
+        <div class="culture-item">
+          <div class="ci-icon">🎭</div>
+          <h4>Losar Festival</h4>
+          <p>Tibetan New Year celebrated with masked Chaam dances at Rumtek and Enchey monasteries, drawing pilgrims and tourists from across the world.</p>
+        </div>
+        <div class="culture-item">
+          <div class="ci-icon">🌸</div>
+          <h4>Saga Dawa</h4>
+          <p>The holiest month in the Buddhist calendar — celebrated with processions, prayers, and charitable acts throughout Gangtok and the district's monasteries.</p>
+        </div>
+        <div class="culture-item">
+          <div class="ci-icon">🎨</div>
+          <h4>Thangka Painting</h4>
+          <p>East Sikkim has active workshops producing traditional Tibetan thangka paintings — scroll paintings on cotton or silk depicting Buddhist deities and mandalas.</p>
+        </div>
+        <div class="culture-item">
+          <div class="ci-icon">🍜</div>
+          <h4>Momos & Thukpa</h4>
+          <p>Gangtok's food culture is famous for its Tibetan-influenced cuisine — steamed dumplings (momos), hearty noodle soups (thukpa), and butter tea are staples of daily life.</p>
+        </div>
+        <div class="culture-item">
+          <div class="ci-icon">🎪</div>
+          <h4>Gangtok Food Street</h4>
+          <p>A lively evening market along MG Marg showcasing the culinary diversity of Sikkim — from local fermented foods to Tibetan snacks and Sikkimese craft beer.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="content-section" style="background:#f8f9fb;">
+    <div class="container">
+      <div class="section-label"><span>Plan Your Visit</span></div>
+      <h2 class="section-heading">Travel Information</h2>
+      <p class="section-intro">East Sikkim is the most well-connected district — the ideal base for exploring the entire state.</p>
+      <div class="travel-grid">
+        <div class="travel-card">
+          <h4>✈️ How to Get There</h4>
+          <p>Pakyong Airport (31 km from Gangtok) has flights from Kolkata and Delhi. Nearest railway station is New Jalpaiguri (NJP), 124 km away. Shared jeeps, taxis, and Sikkim Nationalised Transport buses run regularly from NJP to Gangtok.</p>
+        </div>
+        <div class="travel-card">
+          <h4>📄 Permits</h4>
+          <ul>
+            <li>Indian nationals: Sikkim entry permit at border checkpoints</li>
+            <li>Foreign nationals: Restricted Area Permit (RAP)</li>
+            <li>Nathu La visit: Additional permit required for Indians</li>
+            <li>Foreign nationals cannot visit Nathu La</li>
+          </ul>
+        </div>
+        <div class="travel-card">
+          <h4>🌤️ Best Season</h4>
+          <p><strong>Mar–May:</strong> Warm, rhododendrons in bloom, best trekking.<br>
+          <strong>Oct–Dec:</strong> Crystal clear skies, mountain views, festive season.<br>
+          <strong>Monsoon (Jun–Sep):</strong> Lush green but landslide-prone roads.</p>
+        </div>
+        <div class="travel-card">
+          <h4>🏨 Where to Stay</h4>
+          <p>Gangtok offers everything from budget guesthouses to luxury hotels. MG Marg area is most convenient. Book well ahead during peak season (April–May and October–November).</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+</body>
+</html>

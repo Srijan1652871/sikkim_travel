@@ -5,14 +5,38 @@
 <meta name="viewport" content="width=device-width,initial-scale=1" />
 <title>Sikkim — Clickable District Map</title>
 <style>
-  @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Inter:wght@300;400;500&display=swap');
-  body { font-family:'Inter',system-ui,sans-serif; margin:0; padding:0; background:linear-gradient(135deg,#faf8f5,#f8f6f3,#fff); }
-  .page-hero { background:linear-gradient(135deg,#d4af37 0%,#8b7355 100%); color:#fff; padding:2.5rem 0 1.5rem; text-align:center; }
-  .page-hero h1 { font-family:'Playfair Display',serif; font-size:2rem; margin:0 0 .4rem; }
-  .page-hero p { opacity:.85; margin:0; font-size:.95rem; }
-  .map-wrapper { padding: 1.5rem 1rem 0; max-width:960px; margin:0 auto; }
-  h1 { text-align:center; margin-bottom:8px; }
-  #map { display:block; margin:0 auto; max-width:900px; border:1px solid #ddd; background:white; }
+  @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Inter:wght@300;400;500;600&display=swap');
+  :root {
+    --primary-gold: #d4af37;
+    --primary-dark: #8b7355;
+    --gradient-primary: linear-gradient(135deg, #d4af37 0%, #8b7355 100%);
+  }
+  body { font-family: 'Inter', system-ui, sans-serif; margin:0; padding:0; background: linear-gradient(135deg,#faf8f5,#f8f6f3,#fff); }
+
+  /* page hero banner */
+  .page-title-banner {
+    background: var(--gradient-primary);
+    color: #fff;
+    padding: 2.5rem 0 1.8rem;
+    text-align: center;
+    margin-bottom: 2rem;
+  }
+  .page-title-banner h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: 2.2rem;
+    font-weight: 700;
+    margin: 0 0 .4rem;
+    color: #fff;
+  }
+  .page-title-banner p {
+    color: rgba(255,255,255,.85);
+    margin: 0;
+    font-size: .95rem;
+  }
+
+  /* map container */
+  .map-wrapper { max-width: 900px; margin: 0 auto; padding: 0 1rem 2rem; }
+  #map { display:block; border-radius: 16px; overflow: hidden; box-shadow: 0 4px 20px rgba(0,0,0,.08); border: 1px solid rgba(212,175,55,.2); background:white; }
   .district { stroke:#444; stroke-width:0.7px; cursor:pointer; transition:fill 150ms, transform 120ms; }
   .district:hover { transform: translateY(-2px); filter:brightness(1.06); }
   .tooltip {
@@ -20,28 +44,29 @@
     pointer-events: none;
     background: rgba(0,0,0,0.8);
     color: white;
-    padding:6px 8px;
-    border-radius:4px;
-    font-size:13px;
-    display:none;
-    z-index:10;
+    padding: 6px 10px;
+    border-radius: 6px;
+    font-size: 13px;
+    display: none;
+    z-index: 10;
   }
-  .legend { text-align:center; margin-top:10px; color:#444; font-size:14px; }
-  a.credits { color:#666; text-decoration:none; font-size:13px; display:block; text-align:center; margin-top:10px; }
+  .legend { text-align:center; margin-top: 12px; color: #6b7280; font-size: 14px; }
 </style>
-  <script src="nav.js"></script>
+<script src="/static/nav.js"></script>
 </head>
 <body>
-  <div class="page-hero">
+  <div class="page-title-banner">
     <div class="container">
-      <h1><i class="fas fa-map me-2"></i>Sikkim District Map</h1>
+      <h1><i class="fas fa-map-marked-alt me-2"></i>Sikkim District Map</h1>
       <p>Click on any district to explore its monasteries and heritage</p>
     </div>
   </div>
+
   <div class="map-wrapper">
-  <div id="map"></div>
-  </div><!-- /.map-wrapper -->
-  <div class="text-center py-2" style="color:#6b7280;font-size:.875rem;">Click any district to open its page.</div>
+    <div id="map"></div>
+    <div class="legend">Click any district to open its page.</div>
+  </div>
+
   <div class="tooltip" id="tt"></div>
 
   <!-- D3 (v7) -->
@@ -49,7 +74,7 @@
   <script>
   (async function(){
     // --- CONFIG ---
-    const GEOJSON_URL = "Sikkim.geojson"; // local file (next to this HTML)
+    const GEOJSON_URL = "/static/sikkim.geojson"; // local file (next to this HTML)
 
     const container = d3.select("#map");
     const width = 900;
@@ -109,9 +134,8 @@
          tt.style("display","none");
       })
       .on("click", function(event,d){
-         const name = getName(d);
-         const filename = slugify(name) + ".html";
-         window.location.href = filename;
+         const name = slugify(getName(d));
+         window.location.href = "/district/" + name;
       });
 
     svg.append("g").attr("class","labels")
